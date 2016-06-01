@@ -16,7 +16,8 @@ var options = {
 		"till": false,
 		"agri": false,
 		"arti": false
-	}
+	},
+	"extra": false
 };
 
 var levels = [

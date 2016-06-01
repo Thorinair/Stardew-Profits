@@ -4,19 +4,7 @@
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>  
-  		<style>
-  			.axis {
-    			font: 12px sans-serif;
-    			fill: white;
-  			}
-
-  			.axis path,
-  			.axis line {
-    			fill: none;
-    			stroke: white;
-    			shape-rendering: crispEdges;
-  			}
-  		</style>
+		<link rel="stylesheet" type="text/css" href="style/style.css" />
 	</head>
 	<body>
 		<script src="crops.js"> </script>
@@ -39,16 +27,17 @@
 		<br />Farming level: <input type="number" id="number_level" value="0" onChange="refresh()"/>
 		<br />Season: 
 		<select id="select_season" onChange="rebuild()">
-			<option value="0" selected="true">Spring</option>
-			<option value="1">Summer</option>
-			<option value="2">Fall</option>
-			<option value="3">Greenhouse</option>
+			<option value="0" selected="true">Spring (28 days)</option>
+			<option value="1">Summer (28 days)</option>
+			<option value="2">Fall (28 days)</option>
+			<option value="3">Greenhouse (112 days)</option>
 		</select>
 		<br /><input type="checkbox" id="check_buySeed" onChange="refresh()" checked="true" /> Buy seeds
 		<br /><input type="checkbox" id="check_buyFert" onChange="refresh()" /> Buy fertilizer
 		<br /><input type="checkbox" id="check_average" onChange="refresh()" /> Average
 		<br />Seed sources: <input type="checkbox" id="check_seedsPierre" onChange="rebuild()" checked="true" /> Pierre <input type="checkbox" id="check_seedsJoja" onChange="rebuild()" checked="true" /> Joja <input type="checkbox" id="check_seedsSpecial" onChange="rebuild()" checked="true" /> Special 
 		<br />Skills: <input type="checkbox" id="check_skillsTill" onChange="refresh()" /> Tiller <input type="checkbox" id="check_skillsAgri" onChange="refresh()" /> Agriculturist <input type="checkbox" id="check_skillsArti" onChange="refresh()" /> Artisan
+		<br /><input type="checkbox" id="check_extra" onChange="refresh()" checked="true" /> Show extra info
 		<script>initial();</script>
 	</body>
 </html>

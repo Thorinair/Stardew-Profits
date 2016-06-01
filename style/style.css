@@ -1,0 +1,80 @@
+.tooltipTitle {
+	font: 1em sans-serif;
+	color: #eeeeee;
+	margin: 0px;
+}
+
+.tooltipTitleExtra {
+	font: 1em sans-serif;
+	color: #eeeeee;
+	margin: 0px;
+	margin-top: 12px;
+}
+
+.tooltipTable {
+	padding: 4px 8px 4px 8px;
+}
+
+.tooltipTdLeft {
+	font: 0.875em sans-serif;
+	color: #eeeeee;
+	padding: 1px 4px 0px 4px;
+	margin-bottom: 1px;
+    vertical-align: bottom;
+}
+
+.tooltipTdLeftSpace {
+	font: 0.875em sans-serif;
+	color: #eeeeee;
+	padding: 8px 4px 0px 4px;
+	margin-bottom: 1px;
+    vertical-align: bottom;
+}
+
+.tooltipTdRight {
+	font: 0.875em sans-serif;
+	color: #eeeeee;
+	padding: 0px 4px 0px 4px;
+	margin-bottom: 1px;
+    vertical-align: bottom;
+}
+
+.tooltipTdRightPos {
+	font: 0.875em sans-serif;
+	color: lime;
+	padding: 0px 4px 0px 4px;
+	margin-bottom: 1px;
+    vertical-align: bottom;
+}
+
+.tooltipTdRightNeg {
+	font: 0.875em sans-serif;
+	color: red;
+	padding: 0px 4px 0px 4px;
+	margin-bottom: 1px;
+    vertical-align: bottom;
+}
+
+.gold {
+	width: 16px;
+	height: 16px;
+	margin-bottom: -2px;
+	margin-left: 2px;
+	display: inline-block;
+	background-image: url("../img/gold.png");
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center center;
+	color: transparent;
+}
+
+.axis {
+	font: 0.875em sans-serif;
+	fill: #eeeeee;
+}
+
+.axis path, .axis line {
+	fill: none;
+	stroke: #eeeeee;
+	shape-rendering: crispEdges;
+}
