@@ -64,12 +64,11 @@ function formatNumber(num) {
 
 function harvests(cropID) {
 	var crop = seasons[options.season].crops[cropID];
-	var season = seasons[options.season];
 	var fertilizer = fertilizers[options.fertilizer];
 
 	console.log("=== " + crop.name + " ===");
 
-	var harvests = 1;
+	var harvests = 0;
 	var day = 1;
 
 	if (options.skills.agri)
@@ -77,7 +76,10 @@ function harvests(cropID) {
 	else
 		day += Math.floor(crop.growth.initial * fertilizer.growth);
 
-	while (day <= season.duration) {
+	if (day <= options.days)
+		harvests++;
+
+	while (day <= options.days) {
 		if (crop.growth.regrow > 0) {
 			console.log("Harvest on day: " + day);
 			day += crop.growth.regrow;
@@ -87,7 +89,7 @@ function harvests(cropID) {
 			day += Math.floor(crop.growth.initial * fertilizer.growth);
 		}
 
-		if (day <= season.duration)
+		if (day <= options.days)
 			harvests++;
 	} 
 
@@ -195,7 +197,7 @@ function seedLoss(crop) {
 
     var loss = -lossArray[0];
 
-	if (crop.growth.regrow == 0)
+	if (crop.growth.regrow == 0 && harvests > 0)
 		loss = loss * harvests;
 
 	return loss * options.planted;
@@ -212,7 +214,7 @@ function fertLoss(crop) {
 }
 
 function perDay(value) {
-	return value / seasons[options.season].duration;
+	return value / options.days;
 }
 
 function fetchCrops() {
@@ -506,32 +508,10 @@ function renderGraph() {
 					.attr("class", "tooltipTable")
 					.attr("cellspacing", 0);
 				var tooltipTr;
-
-				tooltipTr = tooltipTable.append("tr");
-				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Duration:");
-				tooltipTr.append("td").attr("class", "tooltipTdRight").text(seasons[options.season].duration + " days");
-
-				tooltipTr = tooltipTable.append("tr");
-				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Produce sold:");
-				switch (options.produce) {
-					case 0: tooltipTr.append("td").attr("class", "tooltipTdRight").text("Raw crops"); break;
-					case 1: 
-						if (d.produce.jar > 0)
-							tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.jarType);
-						else
-							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("None");
-						break;
-					case 2:
-						if (d.produce.keg > 0)
-							tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.kegType);
-						else
-							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("None");
-						break;
-				}
 				
 
 				tooltipTr = tooltipTable.append("tr");
-				tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Total profit:");
+				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Total profit:");
 				if (d.profit > 0)
 					tooltipTr.append("td").attr("class", "tooltipTdRightPos").text(formatNumber(d.profit))
 						.append("div").attr("class", "gold");
@@ -571,6 +551,31 @@ function renderGraph() {
 					tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text(formatNumber(d.averageFertLoss))
 						.append("div").attr("class", "gold");
 				}
+
+
+				tooltipTr = tooltipTable.append("tr");
+				tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Produce sold:");
+				switch (options.produce) {
+					case 0: tooltipTr.append("td").attr("class", "tooltipTdRight").text("Raw crops"); break;
+					case 1: 
+						if (d.produce.jar > 0)
+							tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.jarType);
+						else
+							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("None");
+						break;
+					case 2:
+						if (d.produce.keg > 0)
+							tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.kegType);
+						else
+							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("None");
+						break;
+				}
+				tooltipTr = tooltipTable.append("tr");
+				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Duration:");
+				tooltipTr.append("td").attr("class", "tooltipTdRight").text(options.days + " days");
+				tooltipTr = tooltipTable.append("tr");
+				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Harvests:");
+				tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.harvests);
 
 				if (options.extra) {
 
@@ -825,6 +830,12 @@ function updateData() {
 	if (document.getElementById('number_planted').value <= 0)
 		document.getElementById('number_planted').value = 1;
 	options.planted = document.getElementById('number_planted').value;
+
+	if (document.getElementById('number_days').value <= 0)
+		document.getElementById('number_days').value = 1;
+	if (document.getElementById('number_days').value > 28 && options.season != 3)
+		document.getElementById('number_days').value = 28;
+	options.days = document.getElementById('number_days').value;
 
 	options.fertilizer = parseInt(document.getElementById('select_fertilizer').value);
 

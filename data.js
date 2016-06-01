@@ -1,6 +1,7 @@
 var options = {
 	"produce" : 0,
 	"planted": 1,
+	"days": 28,
 	"fertilizer": 2,
 	"level": 0,
 	"season": 3,
