@@ -1,25 +1,37 @@
 var cropList;
 
-var svgWidth = 1024;
+var svgWidth = 1080;
 var svgHeight = 512;
-var svg = d3.select("body")
-		.append("svg")
-		.attr("width", svgWidth)
-		.attr("height", svgHeight)
-		.style("background-color", "gray");
 
-var width = svgWidth - 32;
+var width = svgWidth - 64;
 var height = (svgHeight - 128) / 2;
 var barPadding = 4;
 var barWidth = width / seasons[options.season].crops.length - barPadding;
 var miniBar = 8;
-var barOffset = 64;
+var barOffsetX = 56;
+var barOffsetY = 64;
 
+var svg = d3.select("body")
+	.append("svg")
+	.attr("width", svgWidth)
+	.attr("height", svgHeight)
+	.style("background-color", "gray");
+
+svg.append("g")
+	.append("text")
+		.attr("class", "axis")
+		.attr("x", 48)
+		.attr("y", 48)
+ 		.style("text-anchor", "end")
+		.text("Profit");
+
+var gAxis = svg.append("g");
 var gProfit = svg.append("g");
 var gSeedLoss = svg.append("g");
 var gFertLoss = svg.append("g");
 var gIcons = svg.append("g");
 
+var axisY;
 var barsProfit;
 var barsSeed;
 var barsFert;
@@ -264,10 +276,61 @@ function updateScaleY() {
 		.range([height, 0]);
 }
 
+function updateScaleAxis() {
+	return d3.scale.linear()
+		.domain([
+			-d3.max(cropList, function(d) { 
+				if (d.drawProfit >= 0) {
+					return (~~((d.drawProfit + 99) / 100) * 100);
+				}
+				else {
+					var profit = d.drawProfit;
+					if (options.buySeed) {
+						if (d.seedLoss < profit)
+							profit = d.drawSeedLoss;
+					}
+					if (options.buyFert) {
+						if (d.fertLoss < profit)
+							profit = d.drawFertLoss;
+					}
+					return (~~((-profit + 99) / 100) * 100);
+				}
+			}),
+			d3.max(cropList, function(d) { 
+				if (d.drawProfit >= 0) {
+					return (~~((d.drawProfit + 99) / 100) * 100);
+				}
+				else {
+					var profit = d.drawProfit;
+					if (options.buySeed) {
+						if (d.seedLoss < profit)
+							profit = d.drawSeedLoss;
+					}
+					if (options.buyFert) {
+						if (d.fertLoss < profit)
+							profit = d.drawFertLoss;
+					}
+					return (~~((-profit + 99) / 100) * 100);
+				}
+			})])
+		.range([height*2, 0]);
+}
+
 function renderGraph() {
 
 	var x = updateScaleX();
 	var y = updateScaleY();
+	var ax = updateScaleAxis();
+
+	var yAxis = d3.svg.axis()
+		.scale(ax)
+		.orient("left")
+		.tickFormat(d3.format(",s"))
+		.ticks(16);
+
+	axisY = gAxis.attr("class", "axis")
+		.call(yAxis)
+		.attr("transform", "translate(48, " + (height - barOffsetY*2) + ")");
 
 	barsProfit = gProfit.selectAll("rect")
 		.data(cropList)
@@ -275,19 +338,19 @@ function renderGraph() {
 		.append("rect")
 			.attr("x", function(d, i) { 
 				if (d.drawProfit < 0 && options.buySeed && options.buyFert)
-					return x(i) + 16 + (barWidth / miniBar) * 2;
+					return x(i) + barOffsetX + (barWidth / miniBar) * 2;
 				else if (d.drawProfit < 0 && !options.buySeed && options.buyFert)
-					return x(i) + 16 + barWidth / miniBar;
+					return x(i) + barOffsetX + barWidth / miniBar;
 				else if (d.drawProfit < 0 && options.buySeed && !options.buyFert)
-					return x(i) + 16 + barWidth / miniBar;
+					return x(i) + barOffsetX + barWidth / miniBar;
 				else 
-					return x(i) + 16;				
+					return x(i) + barOffsetX;				
 			})
 			.attr("y", function(d) { 
 				if (d.drawProfit >= 0)
-					return y(d.drawProfit) + barOffset;
+					return y(d.drawProfit) + barOffsetY;
 				else 
-					return height + barOffset;
+					return height + barOffsetY;
 			})
 			.attr("height", function(d) { 
 				if (d.drawProfit >= 0)
@@ -316,8 +379,8 @@ function renderGraph() {
 		.data(cropList)
 		.enter()
 		.append("rect")
-			.attr("x", function(d, i) { return x(i) + 16; })
-			.attr("y", height + barOffset)
+			.attr("x", function(d, i) { return x(i) + barOffsetX; })
+			.attr("y", height + barOffsetY)
 			.attr("height", function(d) { 
 				if (options.buySeed)
 					return height - y(-d.drawSeedLoss); 
@@ -333,11 +396,11 @@ function renderGraph() {
 		.append("rect")
 			.attr("x", function(d, i) { 
 				if (options.buySeed)
-					return x(i) + 16 + barWidth / miniBar; 
+					return x(i) + barOffsetX + barWidth / miniBar; 
 				else
-					return x(i) + 16; 
+					return x(i) + barOffsetX; 
 			})
-			.attr("y", height + barOffset)
+			.attr("y", height + barOffsetY)
 			.attr("height", function(d) { 
 				if (options.buyFert)
 					return height - y(-d.drawFertLoss); 
@@ -351,12 +414,12 @@ function renderGraph() {
 		.data(cropList)
 		.enter()
 		.append("svg:image")
-			.attr("x", function(d, i) { return x(i) + 16; })
+			.attr("x", function(d, i) { return x(i) + barOffsetX; })
 			.attr("y", function(d) { 
 				if (d.drawProfit >= 0)
-					return y(d.drawProfit) + barOffset - barWidth - barPadding;
+					return y(d.drawProfit) + barOffsetY - barWidth - barPadding;
 				else 
-					return height + barOffset - barWidth - barPadding;
+					return height + barOffsetY - barWidth - barPadding;
 			})
 		    .attr('width', barWidth)
 		    .attr('height', barWidth)
@@ -366,24 +429,34 @@ function renderGraph() {
 function updateGraph() {
 	var x = updateScaleX();
 	var y = updateScaleY();
+	var ax = updateScaleAxis();
+
+	var yAxis = d3.svg.axis()
+		.scale(ax)
+		.orient("left")
+		.tickFormat(d3.format(",s"))
+		.ticks(16);
+
+	axisY.transition()
+		.call(yAxis);
 
 	barsProfit.data(cropList)
 		.transition()
 			.attr("x", function(d, i) { 
 				if (d.drawProfit < 0 && options.buySeed && options.buyFert)
-					return x(i) + 16 + (barWidth / miniBar) * 2;
+					return x(i) + barOffsetX + (barWidth / miniBar) * 2;
 				else if (d.drawProfit < 0 && !options.buySeed && options.buyFert)
-					return x(i) + 16 + barWidth / miniBar;
+					return x(i) + barOffsetX + barWidth / miniBar;
 				else if (d.drawProfit < 0 && options.buySeed && !options.buyFert)
-					return x(i) + 16 + barWidth / miniBar;
+					return x(i) + barOffsetX + barWidth / miniBar;
 				else 
-					return x(i) + 16;				
+					return x(i) + barOffsetX;				
 			})
 			.attr("y", function(d) { 
 				if (d.drawProfit >= 0)
-					return y(d.drawProfit) + barOffset;
+					return y(d.drawProfit) + barOffsetY;
 				else 
-					return height + barOffset;
+					return height + barOffsetY;
 			})
 			.attr("height", function(d) { 
 				if (d.drawProfit >= 0)
@@ -410,8 +483,8 @@ function updateGraph() {
 
 	barsSeed.data(cropList)
 		.transition()
-			.attr("x", function(d, i) { return x(i) + 16; })
-			.attr("y", height + barOffset)
+			.attr("x", function(d, i) { return x(i) + barOffsetX; })
+			.attr("y", height + barOffsetY)
 			.attr("height", function(d) { 
 				if (options.buySeed)
 					return height - y(-d.drawSeedLoss); 
@@ -425,11 +498,11 @@ function updateGraph() {
 		.transition()
 			.attr("x", function(d, i) { 
 				if (options.buySeed)
-					return x(i) + 16 + barWidth / miniBar; 
+					return x(i) + barOffsetX + barWidth / miniBar; 
 				else
-					return x(i) + 16; 
+					return x(i) + barOffsetX; 
 			})
-			.attr("y", height + barOffset)
+			.attr("y", height + barOffsetY)
 			.attr("height", function(d) { 
 				if (options.buyFert)
 					return height - y(-d.drawFertLoss); 
@@ -441,12 +514,12 @@ function updateGraph() {
 
  	imgIcons.data(cropList)
 		.transition()
-			.attr("x", function(d, i) { return x(i) + 16; })
+			.attr("x", function(d, i) { return x(i) + barOffsetX; })
 			.attr("y", function(d) { 
 				if (d.drawProfit >= 0)
-					return y(d.drawProfit) + barOffset - barWidth - barPadding;
+					return y(d.drawProfit) + barOffsetY - barWidth - barPadding;
 				else 
-					return height + barOffset - barWidth - barPadding;
+					return height + barOffsetY - barWidth - barPadding;
 			})
 		    .attr('width', barWidth)
 		    .attr('height', barWidth)
@@ -500,6 +573,7 @@ function refresh() {
 }
 
 function rebuild() {
+	gAxis.selectAll("*").remove();
 	gProfit.selectAll("*").remove();
 	gSeedLoss.selectAll("*").remove();
 	gFertLoss.selectAll("*").remove();
