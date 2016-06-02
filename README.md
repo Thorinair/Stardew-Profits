@@ -1,5 +1,5 @@
 # Stardew Profits
-Stardew Profits is a calculation and graphing tool designed to help the players of the popular game "Stardew Valley" to easily calculate anc compare their profits from planting different crops under different conditions.
+Stardew Profits is a calculation and graphing tool designed to help the players of the popular game "Stardew Valley" to easily calculate and compare their profits from planting different crops under different conditions.
 
 # Usage
 The tool is split up to two sections: graph box and options box. The options box lets the user quickly change the parameters which are then reflected on the graph.
