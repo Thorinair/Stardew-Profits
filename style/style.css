@@ -42,7 +42,7 @@ body {
 .options {
 	margin: auto;
 	margin-top: 8px;
-	margin-bottom: 64px;
+	margin-bottom: 8px;
 	font: 0.875em sans-serif;
 	color: #eeeeee;
 	background-color: #333333;
@@ -179,14 +179,32 @@ input[type=checkbox] {
 }
 
 .footer {
-    position: fixed;
     bottom: 0px;
     text-align: center;
     width: 100%;
-	color: #eeeeee;
-	font: 0.875em sans-serif;
     -webkit-filter: drop-shadow(0px 0px 2px rgba(0,0,0,1));
     filter: url(#drop-shadow);
     -ms-filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#444')";
     filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#444')";
+}
+
+.footer a {
+	color: #eeeeee;
+	font: 0.875em sans-serif;
+	text-decoration: none;
+	opacity: 0.5;
+}
+
+.footer a:hover {
+	color: #eeeeee;
+	font: 0.875em sans-serif;
+	text-decoration: underline;
+	opacity: 0.5;
+}
+
+.footer a:visited {
+	color: #eeeeee;
+	font: 0.875em sans-serif;
+	text-decoration: none;
+	opacity: 0.5;
 }
