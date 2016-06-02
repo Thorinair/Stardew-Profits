@@ -530,24 +530,24 @@ function renderGraph() {
 
 				if (options.buySeed) {
 					tooltipTr = tooltipTable.append("tr");
-					tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Total seed cost:");
+					tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Total seed loss:");
 					tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text(formatNumber(d.seedLoss))
 						.append("div").attr("class", "gold");
 
 					tooltipTr = tooltipTable.append("tr");
-					tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Seed cost per day:");
+					tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Seed loss per day:");
 					tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text(formatNumber(d.averageSeedLoss))
 						.append("div").attr("class", "gold");
 				}
 
 				if (options.buyFert) {
 					tooltipTr = tooltipTable.append("tr");
-					tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Total fertilizer cost:");
+					tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Total fertilizer loss:");
 					tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text(formatNumber(d.fertLoss))
 						.append("div").attr("class", "gold");
 
 					tooltipTr = tooltipTable.append("tr");
-					tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Fertilizer cost per day:");
+					tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Fertilizer loss per day:");
 					tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text(formatNumber(d.averageFertLoss))
 						.append("div").attr("class", "gold");
 				}
