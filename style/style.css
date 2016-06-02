@@ -42,6 +42,7 @@ body {
 .options {
 	margin: auto;
 	margin-top: 8px;
+	margin-bottom: 64px;
 	font: 0.875em sans-serif;
 	color: #eeeeee;
 	background-color: #333333;
