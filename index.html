@@ -7,38 +7,124 @@
 		<link rel="stylesheet" type="text/css" href="style/style.css" />
 	</head>
 	<body>
-		<script src="crops.js"> </script>
-		<script src="data.js"> </script>
-		<script src="main.js"> </script>
-		<br />
-		<br />Produce type: <select id="select_produce" onChange="refresh()">
-			<option value="0" selected="true">Normal</option>
-			<option value="1">Jar</option>
-			<option value="2">Keg</option>
-		</select>
-		<br />Number of crops: <input type="number" id="number_planted" value="1" onChange="refresh()"/>
-		<br />Number of days: <input type="number" id="number_days" value="28" onChange="refresh()"/>
-		<br />Fertilizer: <select id="select_fertilizer" onChange="refresh()">
-			<option value="0" selected="true">None</option>
-			<option value="1">Basic Fertilizer</option>
-			<option value="2">Quality Fertilizer</option>
-			<option value="3">Speed-Gro</option>
-			<option value="4">Deluxe Speed-Gro</option>
-		</select>
-		<br />Farming level: <input type="number" id="number_level" value="0" onChange="refresh()"/>
-		<br />Season: 
-		<select id="select_season" onChange="rebuild()">
-			<option value="0" selected="true">Spring (28 days)</option>
-			<option value="1">Summer (28 days)</option>
-			<option value="2">Fall (28 days)</option>
-			<option value="3">Greenhouse (112 days)</option>
-		</select>
-		<br /><input type="checkbox" id="check_buySeed" onChange="refresh()" checked="true" /> Buy seeds
-		<br /><input type="checkbox" id="check_buyFert" onChange="refresh()" /> Buy fertilizer
-		<br /><input type="checkbox" id="check_average" onChange="refresh()" /> Average
-		<br />Seed sources: <input type="checkbox" id="check_seedsPierre" onChange="rebuild()" checked="true" /> Pierre <input type="checkbox" id="check_seedsJoja" onChange="rebuild()" checked="true" /> Joja <input type="checkbox" id="check_seedsSpecial" onChange="rebuild()" checked="true" /> Special 
-		<br />Skills: <input type="checkbox" id="check_skillsTill" onChange="refresh()" /> Tiller <input type="checkbox" id="check_skillsAgri" onChange="refresh()" /> Agriculturist <input type="checkbox" id="check_skillsArti" onChange="refresh()" /> Artisan
-		<br /><input type="checkbox" id="check_extra" onChange="refresh()" checked="true" /> Show extra info
+
+		<div class="title">
+		</div>
+
+		<script src="js/crops.js"> </script>
+		<script src="js/data.js"> </script>
+		<div class="graph">
+			<script src="js/main.js"> </script>
+		</div>
+
+		<div class="options">
+		<table cellspacing="2">
+		
+			<tr>
+				<td>Season:</td>
+				<td>
+					<select id="select_season" onChange="rebuild()">
+						<option value="0" selected="true">Spring (28 days)</option>
+						<option value="1">Summer (28 days)</option>
+						<option value="2">Fall (28 days)</option>
+						<option value="3">Greenhouse</option>
+					</select>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Number of days:</td>
+				<td><input type="number" id="number_days" value="28" onChange="refresh()"/></td>
+			</tr>
+
+			<tr>
+				<td>Produce type:</td>
+				<td>
+					<select id="select_produce" onChange="refresh()">
+						<option value="0" selected="true">Normal</option>
+						<option value="1">Jar</option>
+						<option value="2">Keg</option>
+					</select>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Number of crops:</td>
+				<td><input type="number" id="number_planted" value="1" onChange="refresh()"/></td>
+			</tr>
+
+			<tr>
+				<td>Average profits:</td>
+				<td><input type="checkbox" id="check_average" onChange="refresh()" /></td>
+			</tr>
+
+		</table>
+
+		<table cellspacing="2">
+
+			<tr>
+				<td>Seed sources:</td>
+				<td>
+					<input type="checkbox" id="check_seedsPierre" onChange="rebuild()" checked="true" /> Pierre<br />
+					<input type="checkbox" id="check_seedsJoja" onChange="rebuild()" checked="true" /> Joja<br />
+					<input type="checkbox" id="check_seedsSpecial" onChange="rebuild()" checked="true" /> Special
+				</td>
+			</tr>
+
+			<tr>
+				<td>Pay for seeds:</td>
+				<td><input type="checkbox" id="check_buySeed" onChange="refresh()" checked="true" /></td>
+			</tr>
+
+			<tr>
+				<td>Fertilizer:</td>
+				<td>
+					<select id="select_fertilizer" onChange="refresh()">
+						<option value="0" selected="true">None</option>
+						<option value="1">Basic Fertilizer</option>
+						<option value="2">Quality Fertilizer</option>
+						<option value="3">Speed-Gro</option>
+						<option value="4">Deluxe Speed-Gro</option>
+					</select>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Pay for fertilizer:</td>
+				<td><input type="checkbox" id="check_buyFert" onChange="refresh()" /></td>
+			</tr>
+
+		</table>
+
+		<table cellspacing="2">
+
+			<tr>
+				<td>Farming level:</td>
+				<td><input type="number" id="number_level" value="0" onChange="refresh()"/></td>
+			</tr>
+
+			<tr>
+				<td>Player skills:</td>
+				<td>
+					<input type="checkbox" id="check_skillsTill" onChange="refresh()" /> Tiller<br />
+					<input type="checkbox" id="check_skillsAgri" onChange="refresh()" /> Agriculturist<br />
+					<input type="checkbox" id="check_skillsArti" onChange="refresh()" /> Artisan
+				</td>
+			</tr>
+
+			<tr>
+				<td>Show extra info:</td>
+				<td><input type="checkbox" id="check_extra" onChange="refresh()" checked="true" /></td>
+			</tr>
+
+		</table>	
+		</div>
+
+		<div class="footer">
+			<p>Website designed by Thorinair</p>
+		</div>
+
+		<script src="js/time.js"> </script>
 		<script>initial();</script>
 	</body>
 </html>

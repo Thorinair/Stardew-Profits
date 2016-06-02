@@ -1,27 +1,28 @@
 var cropList;
 
 var svgWidth = 1080;
-var svgHeight = 512;
+var svgHeight = 480;
 
 var width = svgWidth - 64;
-var height = (svgHeight - 128) / 2;
+var height = (svgHeight - 56) / 2;
 var barPadding = 4;
 var barWidth = width / seasons[options.season].crops.length - barPadding;
 var miniBar = 8;
 var barOffsetX = 56;
-var barOffsetY = 64;
+var barOffsetY = 40;
 
-var svg = d3.select("body")
+var svg = d3.select("div.graph")
 	.append("svg")
 	.attr("width", svgWidth)
 	.attr("height", svgHeight)
-	.style("background-color", "#343434");
+	.style("background-color", "#333333")
+	.style("border-radius", "8px");
 
 svg.append("g")
 	.append("text")
 		.attr("class", "axis")
 		.attr("x", 48)
-		.attr("y", 48)
+		.attr("y", 24)
  		.style("text-anchor", "end")
 		.text("Profit");
 
@@ -349,6 +350,9 @@ function renderGraph() {
 	var y = updateScaleY();
 	var ax = updateScaleAxis();
 
+	svg.attr("width", barOffsetX + barPadding * 2 + (barWidth + barPadding) * cropList.length);
+	d3.select(".graph").attr("width", barOffsetX + barPadding * 2 + (barWidth + barPadding) * cropList.length);
+
 	var yAxis = d3.svg.axis()
 		.scale(ax)
 		.orient("left")
@@ -357,7 +361,7 @@ function renderGraph() {
 
 	axisY = gAxis.attr("class", "axis")
 		.call(yAxis)
-		.attr("transform", "translate(48, " + (height - barOffsetY*2) + ")");
+		.attr("transform", "translate(48, " + barOffsetY + ")");
 
 	barsProfit = gProfit.selectAll("rect")
 		.data(cropList)
