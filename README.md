@@ -9,6 +9,7 @@ The graph box displays a live rendered graph based on the options that the user 
 
 ### Options Box
 The following table describes all the options and how they affect the graph.
+
 Option | Description
 --- | ---
 Season | Changes the season of the crops. This will affect list of the crops shown in the graph, as only some crops grow at certain seasons. Additionally, all seasons have a limit of 28 maximum days for calculation. The *Greenhouse* season doesn't have such limitations and shows all crops and allows for infinite duration.
