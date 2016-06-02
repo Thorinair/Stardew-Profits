@@ -513,7 +513,7 @@ function renderGraph() {
 				tooltipTr = tooltipTable.append("tr");
 				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Total profit:");
 				if (d.profit > 0)
-					tooltipTr.append("td").attr("class", "tooltipTdRightPos").text(formatNumber(d.profit))
+					tooltipTr.append("td").attr("class", "tooltipTdRightPos").text("+" + formatNumber(d.profit))
 						.append("div").attr("class", "gold");
 				else
 					tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text(formatNumber(d.profit))
@@ -522,7 +522,7 @@ function renderGraph() {
 				tooltipTr = tooltipTable.append("tr");
 				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Profit per day:");
 				if (d.averageProfit > 0)
-					tooltipTr.append("td").attr("class", "tooltipTdRightPos").text(formatNumber(d.averageProfit))
+					tooltipTr.append("td").attr("class", "tooltipTdRightPos").text("+" + formatNumber(d.averageProfit))
 						.append("div").attr("class", "gold");
 				else
 					tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text(formatNumber(d.averageProfit))
