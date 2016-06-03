@@ -10,7 +10,7 @@ function styleByTime() {
 		temp = "night";
 
 	if (temp != current) {
-		console.log("Switching time to " + temp + "!");
+		// console.log("Switching time to " + temp + "!");
 		if (temp == "day") {
 			d3.select("body").style("background-image", "url(\"img/bg_day.png\")");
 			current = "day";

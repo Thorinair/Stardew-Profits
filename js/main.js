@@ -67,7 +67,7 @@ function harvests(cropID) {
 	var crop = seasons[options.season].crops[cropID];
 	var fertilizer = fertilizers[options.fertilizer];
 
-	console.log("=== " + crop.name + " ===");
+	// console.log("=== " + crop.name + " ===");
 
 	var harvests = 0;
 	var day = 1;
@@ -82,11 +82,11 @@ function harvests(cropID) {
 
 	while (day <= options.days) {
 		if (crop.growth.regrow > 0) {
-			console.log("Harvest on day: " + day);
+			// console.log("Harvest on day: " + day);
 			day += crop.growth.regrow;
 		}
 		else {
-			console.log("Harvest on day: " + day);
+			// console.log("Harvest on day: " + day);
 			day += Math.floor(crop.growth.initial * fertilizer.growth);
 		}
 
@@ -94,7 +94,7 @@ function harvests(cropID) {
 			harvests++;
 	} 
 
-	console.log("Harvests: " + harvests);
+	// console.log("Harvests: " + harvests);
 	return harvests;
 }
 
@@ -119,23 +119,23 @@ function profit(crop) {
 
 	if (options.buySeed) {
 		profit += crop.seedLoss;
-		console.log("Profit (After seeds): " + profit);
+		// console.log("Profit (After seeds): " + profit);
 	}
 
 	if (options.buyFert) {
 		profit += crop.fertLoss;
-		console.log("Profit (After fertilizer): " + profit);
+		// console.log("Profit (After fertilizer): " + profit);
 	}
 
 	if (produce == 0) {
 		profit += crop.produce.rawN * ratioN * harvests * options.planted;
 		profit += crop.produce.rawS * ratioS * harvests * options.planted;
 		profit += crop.produce.rawG * ratioG * harvests * options.planted;
-		console.log("Profit (After normal produce): " + profit);
+		// console.log("Profit (After normal produce): " + profit);
 
 		if (crop.produce.extra > 0) {
 			profit += crop.produce.rawN * crop.produce.extraPerc * crop.produce.extra * harvests * options.planted;
-			console.log("Profit (After extra produce): " + profit);
+			// console.log("Profit (After extra produce): " + profit);
 		}
 
 		if (options.skills.till) {
@@ -146,7 +146,7 @@ function profit(crop) {
 			if (crop.produce.extra > 0)
 				profit += crop.produce.rawN * crop.produce.extraPerc * crop.produce.extra * harvests * options.planted * 0.1;
 
-			console.log("Profit (After skills): " + profit);
+			// console.log("Profit (After skills): " + profit);
 		}
 	}
 	else {
@@ -167,7 +167,7 @@ function profit(crop) {
 	}
 	
 
-	console.log("Profit: " + profit);
+	// console.log("Profit: " + profit);
 	return profit;
 }
 
@@ -270,9 +270,9 @@ function sortCrops() {
     } while (swapped);
 
 
-	console.log("==== SORTED ====");
+	// console.log("==== SORTED ====");
 	for (var i = 0; i < cropList.length; i++) {
-		console.log(cropList[i].drawProfit.toFixed(2) + "  " + cropList[i].name);
+		// console.log(cropList[i].drawProfit.toFixed(2) + "  " + cropList[i].name);
 	}
 }
 
@@ -678,7 +678,9 @@ function renderGraph() {
 
 				}
 			})
-			.on("mousemove", function() { tooltip.style("top", (event.pageY - 16) + "px").style("left",(event.pageX + 16) + "px");})
+			.on("mousemove", function() { 
+				tooltip.style("top", (d3.event.pageY - 16) + "px").style("left",(d3.event.pageX + 20) + "px");
+			})
 			.on("mouseout", function() { tooltip.style("visibility", "hidden"); })
 			.on("click", function(d) { window.open(d.url, "_blank"); });
 
@@ -836,6 +838,8 @@ function updateData() {
 		document.getElementById('number_days').value = 1;
 	if (document.getElementById('number_days').value > 28 && options.season != 3)
 		document.getElementById('number_days').value = 28;
+	else if (document.getElementById('number_days').value > 100000 && options.season == 3)
+		document.getElementById('number_days').value = 100000;
 	options.days = document.getElementById('number_days').value;
 
 	options.produce = parseInt(document.getElementById('select_produce').value);
