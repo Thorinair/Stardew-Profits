@@ -22,8 +22,9 @@ Pay for seeds | Selecting this means that the player is buying the seeds from on
 Fertilizer | Different fertilizers can either speed up growth or increase the Normal/Silver/Gold ratios. The type of fertilizer can be selected here.
 Pay for fertilizer | Selecting this means that the player is buying the fertilizer from one of the sources, instead of producing the fertilizer themselves (like crafting). A brown bar will be shown for every crop, showing the fertilizer loss if selected.
 Farming level | The level of the player's *Farming* skill. This has direct impact to the Normal/Silver/Gold ratios, but does not affect artisan goods.
-Player skills | Different specific skills can be selected here. Different skills have different impact on player's profit, some affect artisan goods, some just raw crops.
+Level 5 skills | The *Tilling* skill is available once the player reaches level 5 in *Farming*. This option is disabled unless the correct level is set.
+Level 10 skills | Specific skills available once the player reaches level 10 in *Farming*. This option is disabled unless the correct level is set and unless *Tilling* is enabled under Level 5 skills.
 Show extra info | Selecting this will show additional detailed info about every crop on the tooltip.
 
-### Contact
+# Contact
 You may contact me on the following locations: [Twitter](https://twitter.com/thorinair_music) | [Reddit](https://www.reddit.com/user/Thorinair/) | [YouTube](https://www.youtube.com/user/Thorinair) | [deviantArt](http://thorinair.deviantart.com/)

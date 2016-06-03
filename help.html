@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>  
+		<link rel="stylesheet" type="text/css" href="style/style.css" />
+	</head>
+	<body>
+
+		<div class="title">
+		</div>
+
+		<div class="help">
+			<h1>Stardew Profits</h1>
+			<p>Stardew Profits is a calculation and graphing tool designed to help the players of the popular game "Stardew Valley" to easily calculate and compare their profits from planting different crops under different conditions.</p>
+			<h1>Usage</h1>
+			<p>The tool is split up to two sections: graph box and options box. The options box lets the user quickly change the parameters which are then reflected on the graph.</p>
+			<h2>Graph Box</h2>
+			<p>The graph box displays a live rendered graph based on the options that the user has set. The number of bars changes based on the set conditions (like different seasons). The profit in gold can be viewed on the side as a scale. The graph shows both profit and loss. Additionally, if the seed buying loss is selected, the loss will be shown in orange, and if fertilizer buying loss is selected, the loss will be shown in brown. Hovering the mouse over a crop will show a tooltip with information about profits, loss and more. Pressing on a crop will open the official Wiki page for that crop.</p>
+			<h2>Options Box</h2>
+			<p>The following table describes all the options and how they affect the graph.</p>
+			<table cellspacing="4">
+  				<col width="18%">
+				<thead>
+					<tr>
+						<th>Option</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Season</td>
+						<td>Changes the season of the crops. This will affect list of the crops shown in the graph, as only some crops grow at certain seasons. Additionally, all seasons have a limit of 28 maximum days for calculation. The <em>Greenhouse</em> season doesn’t have such limitations and shows all crops and allows for infinite duration.</td>
+					</tr>
+					<tr>
+						<td>Number of days</td>
+						<td>Designates the number of days to be used in the calculation. The shorter the duration, the less crops will have time to grow. Some crops might not have time to grow even once if a too low value is set.</td>
+					</tr>
+					<tr>
+						<td>Produce type</td>
+						<td>Designates the type of produce to be sold after harvesting. By default, all crops are harvested and sold as raw. This option accounts for Normal/Silver/Gold ratios, <em>Farming</em> skill level, and some additional skills. Other options let you select the two different artisan goods.</td>
+					</tr>
+					<tr>
+						<td>Number of crops</td>
+						<td>This controls the number of crops that the player has planted.</td>
+					</tr>
+					<tr>
+						<td>Average profits</td>
+						<td>Checking this, only average profits per day will be calculated. The average is calculated through the number of days set earlier.</td>
+					</tr>
+					<tr>
+						<td>Seed sources</td>
+						<td>Seeds can be obtained at different locations and different locations always have different costs too. This option lets you check which sources the graph should be looking for. Note that the cheapest option will always be shown on the graph. Unselecting certain locations might hide no longer obtainable crops.</td>
+					</tr>
+					<tr>
+						<td>Pay for seeds</td>
+						<td>Selecting this means that the player is buying the seeds from one of the sources, instead of producing the seeds themselves (like using the <em>Seed Maker</em>). An orange bar will be shown for every crop, showing the seed loss if selected.</td>
+					</tr>
+					<tr>
+						<td>Fertilizer</td>
+						<td>Different fertilizers can either speed up growth or increase the Normal/Silver/Gold ratios. The type of fertilizer can be selected here.</td>
+					</tr>
+					<tr>
+						<td>Pay for fertilizer</td>
+						<td>Selecting this means that the player is buying the fertilizer from one of the sources, instead of producing the fertilizer themselves (like crafting). A brown bar will be shown for every crop, showing the fertilizer loss if selected.</td>
+					</tr>
+					<tr>
+						<td>Farming level</td>
+						<td>The level of the player’s <em>Farming</em> skill. This has direct impact to the Normal/Silver/Gold ratios, but does not affect artisan goods.</td>
+					</tr>
+					<tr>
+						<td>Level 5 skills</td>
+						<td>The <em>Tilling</em> skill is available once the player reaches level 5 in <em>Farming</em>. This option is disabled unless the correct level is set.</td>
+					</tr>
+					<tr>
+						<td>Level 10 skills</td>
+						<td>Specific skills available once the player reaches level 10 in <em>Farming</em>. This option is disabled unless the correct level is set and unless <em>Tilling</em> is enabled under Level 5 skills.</td>
+					</tr>
+					<tr>
+						<td>Show extra info</td>
+						<td>Selecting this will show additional detailed info about every crop on the tooltip.</td>
+					</tr>
+				</tbody>
+			</table>
+			<br />
+			<h1>Contact</h1>
+			<p>You may contact me on the following locations: <a href="https://twitter.com/thorinair_music" target="_blank">Twitter</a> | <a href="https://www.reddit.com/user/Thorinair/" target="_blank">Reddit</a> | <a href="https://www.youtube.com/user/Thorinair" target="_blank">YouTube</a> | <a href="http://thorinair.deviantart.com/" target="_blank">deviantArt</a>
+			<br />Project source code is available on <a href="https://github.com/Thorinair/Stardew-Profits" target="_blank">GitHub</a>.</p>
+			<div id="divhelp"><a href="index.html">Back</a></div>
+		</div>
+
+		<div class="footer">
+			<p><a href="http://stardewvalley.net/" target="_blank">Stardew Valley</a> &copy; <a href="https://twitter.com/ConcernedApe" target="_blank">ConcernedApe</a> | Website designed by <a href="https://twitter.com/thorinair_music" target="_blank">Thorinair</a> | v1.0.0</p>
+		</div>
+
+		<script src="js/time.js"> </script>
+	</body>
+</html>

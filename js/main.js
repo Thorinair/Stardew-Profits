@@ -829,11 +829,8 @@ function updateGraph() {
 }
 
 function updateData() {
-	options.produce = parseInt(document.getElementById('select_produce').value);
 
-	if (document.getElementById('number_planted').value <= 0)
-		document.getElementById('number_planted').value = 1;
-	options.planted = document.getElementById('number_planted').value;
+	options.season = parseInt(document.getElementById('select_season').value);
 
 	if (document.getElementById('number_days').value <= 0)
 		document.getElementById('number_days').value = 1;
@@ -841,19 +838,11 @@ function updateData() {
 		document.getElementById('number_days').value = 28;
 	options.days = document.getElementById('number_days').value;
 
-	options.fertilizer = parseInt(document.getElementById('select_fertilizer').value);
+	options.produce = parseInt(document.getElementById('select_produce').value);
 
-	if (document.getElementById('number_level').value < 0)
-		document.getElementById('number_level').value = 0;
-	if (document.getElementById('number_level').value > 10)
-		document.getElementById('number_level').value = 10;
-	options.level = document.getElementById('number_level').value;
-
-	options.season = parseInt(document.getElementById('select_season').value);
-
-	options.buySeed = document.getElementById('check_buySeed').checked;
-
-	options.buyFert = document.getElementById('check_buyFert').checked;
+	if (document.getElementById('number_planted').value <= 0)
+		document.getElementById('number_planted').value = 1;
+	options.planted = document.getElementById('number_planted').value;
 
 	options.average = document.getElementById('check_average').checked;
 
@@ -861,9 +850,50 @@ function updateData() {
 	options.seeds.joja = document.getElementById('check_seedsJoja').checked;
 	options.seeds.special = document.getElementById('check_seedsSpecial').checked;
 
-	options.skills.till = document.getElementById('check_skillsTill').checked;
-	options.skills.agri = document.getElementById('check_skillsAgri').checked;
-	options.skills.arti = document.getElementById('check_skillsArti').checked;
+	options.buySeed = document.getElementById('check_buySeed').checked;
+
+	options.fertilizer = parseInt(document.getElementById('select_fertilizer').value);
+
+	options.buyFert = document.getElementById('check_buyFert').checked;
+
+	if (document.getElementById('number_level').value < 0)
+		document.getElementById('number_level').value = 0;
+	if (document.getElementById('number_level').value > 10)
+		document.getElementById('number_level').value = 10;
+	options.level = document.getElementById('number_level').value;
+
+	if (options.level >= 5) {
+		document.getElementById('check_skillsTill').disabled = false;
+		document.getElementById('check_skillsTill').style.cursor = "pointer";
+		options.skills.till = document.getElementById('check_skillsTill').checked;
+	}
+	else {
+		document.getElementById('check_skillsTill').disabled = true;
+		document.getElementById('check_skillsTill').style.cursor = "default";
+		document.getElementById('check_skillsTill').checked = false;
+	}
+
+	if (options.level == 10 && options.skills.till) {
+		document.getElementById('select_skills').disabled = false;
+		document.getElementById('select_skills').style.cursor = "pointer";
+	}
+	else {
+		document.getElementById('select_skills').disabled = true;
+		document.getElementById('select_skills').style.cursor = "default";
+		document.getElementById('select_skills').value = 0;
+	}
+	if (document.getElementById('select_skills').value == 1) {
+		options.skills.agri = true;
+		options.skills.arti = false;
+	}
+	else if (document.getElementById('select_skills').value == 2) {
+		options.skills.agri = false;
+		options.skills.arti = true;
+	}
+	else {
+		options.skills.agri = false;
+		options.skills.arti = false;
+	}
 
 	options.extra = document.getElementById('check_extra').checked;
 

@@ -49,12 +49,12 @@ body {
 	background-color: #333333;
 	border-radius: 8px;
 	padding: 8px;
-	width: 804px;
+	width: 768px;
 	height: 168px;
     -webkit-filter: drop-shadow(0px 2px 8px rgba(0,0,0,0.75));
     filter: url(#drop-shadow);
-    -ms-filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=2, Color='#444')";
-    filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=2, Color='#444')";
+    -ms-filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=2, Color='#000')";
+    filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=2, Color='#000')";
 }
 
 .options table {
@@ -62,13 +62,39 @@ body {
 	margin: 4px;
 }
 
-.options table tr {
-}
-
 .options table tr td {
 	padding: 4px;
 	background-color: #222222;
 	border-radius: 4px;
+}
+
+#tdhelp {
+	background-color: transparent;
+}
+
+#divhelp {
+	padding: 12px;
+	margin: auto;
+	text-align: center;
+}
+
+#divhelp a {
+	padding: 8px 12px 8px 12px;
+	background-color: #111111;
+	border: 1px #000000 solid;
+	border-radius: 8px;
+	color: #eeeeee;
+	text-decoration: none;
+}
+
+#divhelp a:hover {
+	color: #eeeeee;
+	text-decoration: none;
+}
+
+#divhelp a:visited {
+	color: #eeeeee;
+	text-decoration: none;
 }
 
 input[type=number] {
@@ -103,6 +129,15 @@ select {
 	padding: 2px 16px 2px 4px;
 	border-radius: 3px;
 	border-width: 0px;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+select:disabled {
+    background: url("../img/drop_dis.png") no-repeat #111111 right;
+	color: #888888;
 }
 
 input[type=checkbox] { 
@@ -185,27 +220,82 @@ input[type=checkbox] {
     width: 100%;
     -webkit-filter: drop-shadow(0px 0px 2px rgba(0,0,0,1));
     filter: url(#drop-shadow);
-    -ms-filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#444')";
-    filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#444')";
+    -ms-filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#000')";
+    filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#000')";
+}
+
+.footer p {
+	color: #eeeeee;
+	font: 0.875em sans-serif;
+	opacity: 0.75;
 }
 
 .footer a {
 	color: #eeeeee;
-	font: 0.875em sans-serif;
 	text-decoration: none;
-	opacity: 0.5;
 }
 
 .footer a:hover {
 	color: #eeeeee;
-	font: 0.875em sans-serif;
 	text-decoration: underline;
-	opacity: 0.5;
 }
 
 .footer a:visited {
 	color: #eeeeee;
-	font: 0.875em sans-serif;
 	text-decoration: none;
-	opacity: 0.5;
+}
+
+.help {
+	margin: auto;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	font: 0.875em sans-serif;
+	text-align: justify;
+	color: #eeeeee;
+	background-color: #333333;
+	border-radius: 8px;
+	padding: 16px;
+	width: 768px;
+    -webkit-filter: drop-shadow(0px 2px 8px rgba(0,0,0,0.75));
+    filter: url(#drop-shadow);
+    -ms-filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=2, Color='#000')";
+    filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=2, Color='#000')";
+}
+
+.help h1 {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+.help h2 {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+.help p {
+	margin-top: 8px;
+	margin-bottom: 24px;
+}
+
+.help table thead tr th {
+	padding: 6px;
+}
+
+.help table tbody tr td {
+	padding: 6px;
+	background-color: #222222;
+	border-radius: 4px;
+	vertical-align: top;
+}
+
+.help a {
+	color: #eeeeee;
+}
+
+.help a:hover {
+	color: #eeeeee;
+}
+
+.help a:visited {
+	color: #eeeeee;
 }

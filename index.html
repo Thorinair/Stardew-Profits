@@ -104,11 +104,20 @@
 			</tr>
 
 			<tr>
-				<td>Player skills:</td>
+				<td>Level 5 skills:</td>
 				<td>
 					<input type="checkbox" id="check_skillsTill" onChange="refresh()" /> Tiller<br />
-					<input type="checkbox" id="check_skillsAgri" onChange="refresh()" /> Agriculturist<br />
-					<input type="checkbox" id="check_skillsArti" onChange="refresh()" /> Artisan
+				</td>
+			</tr>
+
+			<tr>
+				<td>Level 10 skills:</td>
+				<td>
+					<select id="select_skills" onChange="refresh()">
+						<option value="0" selected="true">None</option>
+						<option value="1">Agriculturist</option>
+						<option value="2">Artisan</option>
+					</select>
 				</td>
 			</tr>
 
@@ -117,11 +126,15 @@
 				<td><input type="checkbox" id="check_extra" onChange="refresh()" checked="true" /></td>
 			</tr>
 
+			<tr>
+				<td id="tdhelp" colspan="2"><div id="divhelp"><a href="help.html">Help</a></div></td>
+			</tr>
+
 		</table>	
 		</div>
 
 		<div class="footer">
-			<a href="https://twitter.com/thorinair_music" target="_blank">Website designed by Thorinair</a>
+			<p><a href="http://stardewvalley.net/" target="_blank">Stardew Valley</a> &copy; <a href="https://twitter.com/ConcernedApe" target="_blank">ConcernedApe</a> | Website designed by <a href="https://twitter.com/thorinair_music" target="_blank">Thorinair</a> | v1.0.0</p>
 		</div>
 
 		<script src="js/time.js"> </script>
