@@ -1,4 +1,14 @@
+/*
+ * All data gathered from:
+ * 	Official Stardew Valley Wiki: http://stardewvalleywiki.com/Stardew_Valley_Wiki
+ * 	Stardew Valley Crop Planner: http://exnil.github.io/crop_planner/
+ */
+
+// Crop List
 var crops = {
+
+	// Spring
+
 	"strawberry": {
 		"name": "Strawberry", 
 		"url": "http://stardewvalleywiki.com/Strawberry",
@@ -270,6 +280,7 @@ var crops = {
 		}
 	},
 
+	// Summer
 
 	"blueberry": {
 		"name": "Blueberry", 
@@ -596,6 +607,7 @@ var crops = {
 		}
 	},
 
+	// Autumn
 
 	"sweetgemberry": {
 		"name": "Sweet Gem Berry", 
@@ -922,6 +934,7 @@ var crops = {
 		}
 	},
 
+	// Special
 
 	"ancientfruit": {
 		"name": "Ancient Fruit", 

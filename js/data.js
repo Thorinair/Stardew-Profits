@@ -1,3 +1,4 @@
+// Options used to draw the graph.
 var options = {
 	"produce" : 0,
 	"planted": 1,
@@ -21,6 +22,7 @@ var options = {
 	"extra": false
 };
 
+// Different player levels with respective ratios.
 var levels = [
 	{
 		"ratioN": 0.97,
@@ -79,6 +81,7 @@ var levels = [
 	}
 ];
 
+// Different fertilizers with their stats.
 var fertilizers = [
 	{
 		"name": "None",
@@ -122,6 +125,7 @@ var fertilizers = [
 	}
 ];
 
+// Different seasons with predefined crops.
 var seasons = [
 	{
 		"name": "Spring",

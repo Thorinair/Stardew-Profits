@@ -1,5 +1,8 @@
 var current = "";
 
+/*
+ * Changes the website design based on local time.
+ */
 function styleByTime() {
 	var t = new Date();
 	var h = t.getHours();
