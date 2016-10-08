@@ -186,6 +186,7 @@ var seasons = [
 		"name": "Greenhouse",
 		"duration": 112,
 		"crops": [
+			crops.coffeebean,
 			crops.strawberry,
 			crops.rhubarb,
 			crops.potato,
