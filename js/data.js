@@ -131,6 +131,7 @@ var seasons = [
 		"name": "Spring",
 		"duration": 28,
 		"crops": [
+			crops.coffeebean,
 			crops.strawberry,
 			crops.rhubarb,
 			crops.potato,
