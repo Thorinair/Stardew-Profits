@@ -8,7 +8,34 @@
 var crops = {
 
 	// Spring
-
+	
+	"coffeebean": {
+		"name": "Coffee Bean", 
+		"url": "http://stardewvalleywiki.com/Coffee_Bean",
+		"img": "Coffee_Bean.png",
+		"seeds": {
+			"pierre": 0, 
+			"joja": 0, 
+			"special": 2500, 
+			"specialLoc": "Travelling Cart", 
+			"specialUrl": "http://stardewvalleywiki.com/Travelling_Cart"
+		},
+		"growth": {
+			"initial": 10,
+			"regrow": 2
+		},
+		"produce": {
+			"extra": 3,
+			"extraPerc": 1,
+			"rawN": 15,
+			"rawS": 18,
+			"rawG": 22,
+			"jar": 0,
+			"keg": 300,
+			"jarType": "",
+			"kegType": "Coffee"
+		}
+	},
 	"strawberry": {
 		"name": "Strawberry", 
 		"url": "http://stardewvalleywiki.com/Strawberry",
@@ -300,11 +327,11 @@ var crops = {
 		"produce": {
 			"extra": 2,
 			"extraPerc": 1,
-			"rawN": 80,
-			"rawS": 100,
-			"rawG": 120,
-			"jar": 210,
-			"keg": 240,
+			"rawN": 50,
+			"rawS": 62,
+			"rawG": 75,
+			"jar": 150,
+			"keg": 150,
 			"jarType": "Jelly",
 			"kegType": "Wine"
 		}
@@ -327,11 +354,11 @@ var crops = {
 		"produce": {
 			"extra": 0,
 			"extraPerc": 0,
-			"rawN": 800,
-			"rawS": 1000,
-			"rawG": 1200,
-			"jar": 1650,
-			"keg": 2400,
+			"rawN": 750,
+			"rawS": 937,
+			"rawG": 1125,
+			"jar": 1550,
+			"keg": 2250,
 			"jarType": "Jelly",
 			"kegType": "Wine"
 		}
@@ -654,11 +681,11 @@ var crops = {
 		"produce": {
 			"extra": 1,
 			"extraPerc": 1,
-			"rawN": 130,
-			"rawS": 162,
-			"rawG": 195,
-			"jar": 310,
-			"keg": 390,
+			"rawN": 75,
+			"rawS": 93,
+			"rawG": 112,
+			"jar": 200,
+			"keg": 225,
 			"jarType": "Jelly",
 			"kegType": "Wine"
 		}
@@ -954,11 +981,11 @@ var crops = {
 		"produce": {
 			"extra": 0,
 			"extraPerc": 0,
-			"rawN": 750,
-			"rawS": 937,
-			"rawG": 1125,
-			"jar": 1550,
-			"keg": 2250,
+			"rawN": 550,
+			"rawS": 687,
+			"rawG": 825,
+			"jar": 1150,
+			"keg": 1650,
 			"jarType": "Jelly",
 			"kegType": "Wine"
 		}
