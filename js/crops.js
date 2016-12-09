@@ -31,7 +31,7 @@ var crops = {
 			"rawS": 18,
 			"rawG": 22,
 			"jar": 0,
-			"keg": 300,
+			"keg": 30,
 			"jarType": "",
 			"kegType": "Coffee"
 		}
