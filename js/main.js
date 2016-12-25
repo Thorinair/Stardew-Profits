@@ -177,8 +177,8 @@ function profit(crop) {
 		
 		if (options.skills.arti) {
 			switch (produce) {
-				case 1: profit += items * crop.produce.jar * options.planted * 0.5; break;
-				case 2: profit += items * crop.produce.keg * options.planted * 0.5; break;
+				case 1: profit += items * crop.produce.jar * options.planted * 0.4; break;
+				case 2: profit += items * crop.produce.keg * options.planted * 0.4; break;
 			}
 		}
 	}
