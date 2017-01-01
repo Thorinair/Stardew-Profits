@@ -6,8 +6,8 @@ var options = {
 	"fertilizer": 2,
 	"level": 0,
 	"season": 3,
-	"buySeed": true,
-	"buyFert": true,
+	"buySeed": false,
+	"buyFert": false,
 	"average": false,
 	"seeds": {
 		"pierre": true,
