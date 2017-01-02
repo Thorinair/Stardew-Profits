@@ -85,9 +85,9 @@ function harvests(cropID) {
 	var day = 1;
 
 	if (options.skills.agri)
-		day += Math.round(crop.growth.initial * (fertilizer.growth - 0.1));
+		day += Math.floor(crop.growth.initial * (fertilizer.growth - 0.1));
 	else
-		day += Math.round(crop.growth.initial * fertilizer.growth);
+		day += Math.floor(crop.growth.initial * fertilizer.growth);
 
 	if (day <= options.days)
 		harvests++;
@@ -99,7 +99,7 @@ function harvests(cropID) {
 		}
 		else {
 			// console.log("Harvest on day: " + day);
-			day += Math.round(crop.growth.initial * fertilizer.growth);
+			day += Math.floor(crop.growth.initial * fertilizer.growth);
 		}
 
 		if (day <= options.days)
