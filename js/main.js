@@ -79,6 +79,20 @@ function harvests(cropID) {
 	var crop = seasons[options.season].crops[cropID];
 	var fertilizer = fertilizers[options.fertilizer];
 
+	// if the crop is cross season, add 28 extra days for each extra season
+	var remainingDays = options.days;
+	if (options.crossSeason && options.season < 2) {
+		for (var i = options.season + 1; i < 3; i++) {
+			for (var j = 0; j < seasons[i].crops.length; j++) {
+				var seasonCrop = seasons[i].crops[j];
+				if (crop.name == seasonCrop.name) {
+					remainingDays += 28;
+					break;
+				}
+			}
+		}
+	}
+
 	// console.log("=== " + crop.name + " ===");
 
 	var harvests = 0;
@@ -89,10 +103,10 @@ function harvests(cropID) {
 	else
 		day += Math.floor(crop.growth.initial * fertilizer.growth);
 
-	if (day <= options.days)
+	if (day <= remainingDays)
 		harvests++;
 
-	while (day <= options.days) {
+	while (day <= remainingDays) {
 		if (crop.growth.regrow > 0) {
 			// console.log("Harvest on day: " + day);
 			day += crop.growth.regrow;
@@ -102,7 +116,7 @@ function harvests(cropID) {
 			day += Math.floor(crop.growth.initial * fertilizer.growth);
 		}
 
-		if (day <= options.days)
+		if (day <= remainingDays)
 			harvests++;
 	} 
 
@@ -913,6 +927,8 @@ function updateData() {
 	options.planted = document.getElementById('number_planted').value;
 
 	options.average = document.getElementById('check_average').checked;
+
+	options.crossSeason = document.getElementById('cross_season').checked;
 
 	options.seeds.pierre = document.getElementById('check_seedsPierre').checked;
 	options.seeds.joja = document.getElementById('check_seedsJoja').checked;

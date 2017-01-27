@@ -141,7 +141,8 @@ var seasons = [
 			crops.garlic,
 			crops.parsnip,
 			crops.bluejazz,
-			crops.tulip
+			crops.tulip,
+			crops.ancientfruit
 		]
 	},
 	{
@@ -159,7 +160,10 @@ var seasons = [
 			crops.summerspangle,
 			crops.poppy,
 			crops.wheat,
-			crops.corn
+			crops.corn,
+			crops.coffeebean,
+			crops.sunflower,
+			crops.ancientfruit
 		]
 	},
 	{
@@ -179,7 +183,8 @@ var seasons = [
 			crops.bokchoy,
 			crops.sunflower,
 			crops.wheat,
-			crops.corn
+			crops.corn,
+			crops.ancientfruit
 		]
 	},
 	{
