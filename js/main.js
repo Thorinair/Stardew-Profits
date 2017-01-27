@@ -912,13 +912,25 @@ function updateData() {
 
 	options.season = parseInt(document.getElementById('select_season').value);
 
-	if (document.getElementById('number_days').value <= 0)
-		document.getElementById('number_days').value = 1;
-	if (document.getElementById('number_days').value > 28 && options.season != 3)
-		document.getElementById('number_days').value = 28;
-	else if (document.getElementById('number_days').value > 100000 && options.season == 3)
-		document.getElementById('number_days').value = 100000;
-	options.days = document.getElementById('number_days').value;
+	if (options.season != 3) {
+		document.getElementById('current_day_row').style.display = 'table-row';
+		document.getElementById('number_days_row').style.display = 'none';
+		document.getElementById('cross_season_row').style.display = 'table-row';
+
+		if (document.getElementById('current_day').value <= 0)
+			document.getElementById('current_day').value = 1;
+		if (document.getElementById('current_day').value > 28 && options.season != 3)
+			document.getElementById('current_day').value = 28;
+		options.days = 28 - document.getElementById('current_day').value;
+	} else {
+		document.getElementById('current_day_row').style.display = 'none';
+		document.getElementById('number_days_row').style.display = 'table-row';
+		document.getElementById('cross_season_row').style.display = 'none';
+
+		if (document.getElementById('number_days').value > 100000 && options.season == 3)
+			document.getElementById('number_days').value = 100000;
+		options.days = document.getElementById('number_days').value;
+	}
 
 	options.produce = parseInt(document.getElementById('select_produce').value);
 
