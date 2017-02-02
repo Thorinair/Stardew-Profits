@@ -35,7 +35,12 @@
 				</td>
 			</tr>
 
-			<tr>
+			<tr id="current_day_row">
+				<td>Current day:</td>
+				<td><input type="number" id="current_day" value="1" onChange="refresh()"/></td>
+			</tr>
+
+			<tr id="number_days_row">
 				<td>Number of days:</td>
 				<td><input type="number" id="number_days" value="28" onChange="refresh()"/></td>
 			</tr>
@@ -59,6 +64,11 @@
 			<tr>
 				<td>Average profits:</td>
 				<td><input type="checkbox" id="check_average" onChange="refresh()" /></td>
+			</tr>
+
+			<tr id="cross_season_row">
+				<td>Cross season:</td>
+				<td><input type="checkbox" id="cross_season" onChange="refresh()" /></td>
 			</tr>
 
 		</table>

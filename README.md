@@ -14,9 +14,11 @@ Option | Description
 --- | ---
 Season | Changes the season of the crops. This will affect list of the crops shown in the graph, as only some crops grow at certain seasons. Additionally, all seasons have a limit of 28 maximum days for calculation. The *Greenhouse* season doesn't have such limitations, shows all crops and allows for a duration of up to 100 thousand days.
 Number of days | Designates the number of days to be used in the calculation. The shorter the duration, the less crops will have time to grow. Some crops might not have time to grow even once if a too low value is set.
+Current day | The current date within the selected season. This is almost the same as "Number of days", but instead of specifying how many days are left, as a convenience you can just input the current in-game date.
 Produce type | Designates the type of produce to be sold after harvesting. By default, all crops are harvested and sold as raw. This option accounts for Normal/Silver/Gold ratios, *Farming* skill level, and some additional skills. Other options let you select the two different artisan goods.
 Number of crops | This controls the number of crops that the player has planted.
 Average profits | Checking this, only average profits per day will be calculated. The average is calculated through the number of days set earlier.
+Cross season | If this is checked, the calculations will take into account the crops that don't die when there's a season change.
 Seed sources | Seeds can be obtained at different locations and different locations always have different costs too. This option lets you check which sources the graph should be looking for. Note that the cheapest option will always be shown on the graph. Unselecting certain locations might hide no longer obtainable crops.
 Pay for seeds | Selecting this means that the player is buying the seeds from one of the sources, instead of producing the seeds themselves (like using the *Seed Maker*). An orange bar will be shown for every crop, showing the seed loss if selected.
 Fertilizer | Different fertilizers can either speed up growth or increase the Normal/Silver/Gold ratios. The type of fertilizer can be selected here.
