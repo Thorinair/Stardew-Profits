@@ -80,7 +80,7 @@ function harvests(cropID) {
 	var fertilizer = fertilizers[options.fertilizer];
 
 	// if the crop is cross season, add 28 extra days for each extra season
-	var remainingDays = options.days;
+	var remainingDays = options.days + 1;
 	if (options.crossSeason && options.season < 2) {
 		for (var i = options.season + 1; i < 3; i++) {
 			for (var j = 0; j < seasons[i].crops.length; j++) {
