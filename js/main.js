@@ -80,7 +80,7 @@ function harvests(cropID) {
 	var fertilizer = fertilizers[options.fertilizer];
 
 	// if the crop is cross season, add 28 extra days for each extra season
-	var remainingDays = options.days + 1;
+	var remainingDays = options.days;
 	if (options.crossSeason && options.season < 2) {
 		for (var i = options.season + 1; i < 3; i++) {
 			for (var j = 0; j < seasons[i].crops.length; j++) {
@@ -921,7 +921,7 @@ function updateData() {
 			document.getElementById('current_day').value = 1;
 		if (document.getElementById('current_day').value > 28 && options.season != 3)
 			document.getElementById('current_day').value = 28;
-		options.days = 28 - document.getElementById('current_day').value;
+		options.days = 29 - document.getElementById('current_day').value;
 	} else {
 		document.getElementById('current_day_row').style.display = 'none';
 		document.getElementById('number_days_row').style.display = 'table-row';
