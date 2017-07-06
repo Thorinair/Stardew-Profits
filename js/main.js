@@ -131,9 +131,7 @@ function harvests(cropID) {
  */
 function profit(crop) {
 	var harvests = crop.harvests;
-	var season = seasons[options.season];
 	var fertilizer = fertilizers[options.fertilizer];
-	var seeds = options.seeds;
 	var produce = options.produce;
 
 	var ratioN = levels[options.level].ratioN;
