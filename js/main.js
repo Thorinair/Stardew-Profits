@@ -131,9 +131,7 @@ function harvests(cropID) {
  */
 function profit(crop) {
 	var harvests = crop.harvests;
-	var season = seasons[options.season];
 	var fertilizer = fertilizers[options.fertilizer];
-	var seeds = options.seeds;
 	var produce = options.produce;
 
 	var ratioN = levels[options.level].ratioN;
@@ -165,7 +163,7 @@ function profit(crop) {
 		// console.log("Profit (After normal produce): " + profit);
 
 		if (crop.produce.extra > 0) {
-			profit += crop.produce.rawN * crop.produce.extraPerc * crop.produce.extra * harvests * options.planted;
+			profit += crop.produce.extraPerc * crop.produce.extra * harvests * options.planted;
 			// console.log("Profit (After extra produce): " + profit);
 		}
 
