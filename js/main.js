@@ -165,7 +165,7 @@ function profit(crop) {
 		// console.log("Profit (After normal produce): " + profit);
 
 		if (crop.produce.extra > 0) {
-			profit += crop.produce.rawN * crop.produce.extraPerc * crop.produce.extra * harvests * options.planted;
+			profit += crop.produce.extraPerc * crop.produce.extra * harvests * options.planted;
 			// console.log("Profit (After extra produce): " + profit);
 		}
 
