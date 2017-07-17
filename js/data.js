@@ -27,7 +27,7 @@ var levels = [
 	{
 		"ratioN": 0.97,
 		"ratioS": 0.02,
-		"ratioG": 0.02
+		"ratioG": 0.01
 	},
 	{
 		"ratioN": 0.91,
