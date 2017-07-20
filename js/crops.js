@@ -6,18 +6,15 @@
 
 // Crop List
 var crops = {
-
-	// Spring
-	
 	"coffeebean": {
-		"name": "Coffee Bean", 
+		"name": "Coffee Bean",
 		"url": "http://stardewvalleywiki.com/Coffee_Bean",
 		"img": "Coffee_Bean.png",
 		"seeds": {
-			"pierre": 0, 
-			"joja": 0, 
-			"special": 2500, 
-			"specialLoc": "Travelling Cart", 
+			"pierre": 0,
+			"joja": 0,
+			"special": 2500,
+			"specialLoc": "Travelling Cart",
 			"specialUrl": "http://stardewvalleywiki.com/Travelling_Cart"
 		},
 		"growth": {
@@ -37,14 +34,14 @@ var crops = {
 		}
 	},
 	"strawberry": {
-		"name": "Strawberry", 
+		"name": "Strawberry",
 		"url": "http://stardewvalleywiki.com/Strawberry",
 		"img": "strawberry.png",
 		"seeds": {
-			"pierre": 0, 
-			"joja": 0, 
-			"special": 100, 
-			"specialLoc": "Egg Festival", 
+			"pierre": 0,
+			"joja": 0,
+			"special": 100,
+			"specialLoc": "Egg Festival",
 			"specialUrl": "http://stardewvalleywiki.com/Egg_Festival"
 		},
 		"growth": {
@@ -64,15 +61,15 @@ var crops = {
 		}
 	},
 	"rhubarb": {
-		"name": "Rhubarb", 
+		"name": "Rhubarb",
 		"url": "http://stardewvalleywiki.com/Rhubarb",
 		"img": "rhubarb.png",
 		"seeds": {
-			"pierre": 0, 
-			"joja": 0, 
-			"special": 100, 
-			"specialLoc": "Oasis", 
-			"specialUrl": "http://stardewvalleywiki.com/Oasis" 
+			"pierre": 0,
+			"joja": 0,
+			"special": 100,
+			"specialLoc": "Oasis",
+			"specialUrl": "http://stardewvalleywiki.com/Oasis"
 		},
 		"growth": {
 			"initial": 13,
@@ -91,15 +88,15 @@ var crops = {
 		}
 	},
 	"potato": {
-		"name": "Potato", 
+		"name": "Potato",
 		"url": "http://stardewvalleywiki.com/Potato",
 		"img": "potato.png",
 		"seeds": {
-			"pierre": 50, 
-			"joja": 62, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 50,
+			"joja": 62,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 6,
@@ -118,15 +115,15 @@ var crops = {
 		}
 	},
 	"cauliflower": {
-		"name": "Cauliflower", 
+		"name": "Cauliflower",
 		"url": "http://stardewvalleywiki.com/Cauliflower",
 		"img": "cauliflower.png",
 		"seeds": {
-			"pierre": 80, 
-			"joja": 100, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 80,
+			"joja": 100,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 12,
@@ -145,15 +142,15 @@ var crops = {
 		}
 	},
 	"greenbean": {
-		"name": "Green Bean", 
+		"name": "Green Bean",
 		"url": "http://stardewvalleywiki.com/Green_Bean",
 		"img": "greenbean.png",
 		"seeds": {
-			"pierre": 60, 
-			"joja": 75, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 60,
+			"joja": 75,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 10,
@@ -172,15 +169,15 @@ var crops = {
 		}
 	},
 	"kale": {
-		"name": "Kale", 
+		"name": "Kale",
 		"url": "http://stardewvalleywiki.com/Kale",
 		"img": "kale.png",
 		"seeds": {
-			"pierre": 70, 
-			"joja": 87, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 70,
+			"joja": 87,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 6,
@@ -199,15 +196,15 @@ var crops = {
 		}
 	},
 	"garlic": {
-		"name": "Garlic", 
+		"name": "Garlic",
 		"url": "http://stardewvalleywiki.com/Garlic",
 		"img": "garlic.png",
 		"seeds": {
-			"pierre": 40, 
-			"joja": 0, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 40,
+			"joja": 0,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 4,
@@ -226,15 +223,15 @@ var crops = {
 		}
 	},
 	"parsnip": {
-		"name": "Parsnip", 
+		"name": "Parsnip",
 		"url": "http://stardewvalleywiki.com/Parsnip",
 		"img": "parsnip.png",
 		"seeds": {
-			"pierre": 20, 
-			"joja": 25, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 20,
+			"joja": 25,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 4,
@@ -253,15 +250,15 @@ var crops = {
 		}
 	},
 	"bluejazz": {
-		"name": "Blue Jazz", 
+		"name": "Blue Jazz",
 		"url": "http://stardewvalleywiki.com/Blue_Jazz",
 		"img": "bluejazz.png",
 		"seeds": {
-			"pierre": 30, 
-			"joja": 37, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 30,
+			"joja": 37,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 7,
@@ -280,15 +277,15 @@ var crops = {
 		}
 	},
 	"tulip": {
-		"name": "Tulip", 
+		"name": "Tulip",
 		"url": "http://stardewvalleywiki.com/Tulip",
 		"img": "tulip.png",
 		"seeds": {
-			"pierre": 20, 
-			"joja": 30, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 20,
+			"joja": 30,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 6,
@@ -306,19 +303,16 @@ var crops = {
 			"kegType": ""
 		}
 	},
-
-	// Summer
-
 	"blueberry": {
-		"name": "Blueberry", 
+		"name": "Blueberry",
 		"url": "http://stardewvalleywiki.com/Blueberry",
 		"img": "blueberry.png",
 		"seeds": {
-			"pierre": 80, 
-			"joja": 0, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 80,
+			"joja": 0,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 13,
@@ -337,15 +331,15 @@ var crops = {
 		}
 	},
 	"starfruit": {
-		"name": "Starfruit", 
+		"name": "Starfruit",
 		"url": "http://stardewvalleywiki.com/Starfruit",
 		"img": "starfruit.png",
 		"seeds": {
-			"pierre": 0, 
-			"joja": 0, 
-			"special": 400, 
-			"specialLoc": "Oasis", 
-			"specialUrl": "http://stardewvalleywiki.com/Oasis" 
+			"pierre": 0,
+			"joja": 0,
+			"special": 400,
+			"specialLoc": "Oasis",
+			"specialUrl": "http://stardewvalleywiki.com/Oasis"
 		},
 		"growth": {
 			"initial": 13,
@@ -364,15 +358,15 @@ var crops = {
 		}
 	},
 	"redcabbage": {
-		"name": "Red Cabbage", 
+		"name": "Red Cabbage",
 		"url": "http://stardewvalleywiki.com/Red_Cabbage",
 		"img": "redcabbage.png",
 		"seeds": {
-			"pierre": 100, 
-			"joja": 0, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 100,
+			"joja": 0,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 9,
@@ -391,15 +385,15 @@ var crops = {
 		}
 	},
 	"hops": {
-		"name": "Hops", 
+		"name": "Hops",
 		"url": "http://stardewvalleywiki.com/Hops",
 		"img": "hops.png",
 		"seeds": {
-			"pierre": 60, 
-			"joja": 75, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 60,
+			"joja": 75,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 11,
@@ -418,15 +412,15 @@ var crops = {
 		}
 	},
 	"melon": {
-		"name": "Melon", 
+		"name": "Melon",
 		"url": "http://stardewvalleywiki.com/Melon",
 		"img": "melon.png",
 		"seeds": {
-			"pierre": 80, 
-			"joja": 100, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 80,
+			"joja": 100,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 12,
@@ -445,15 +439,15 @@ var crops = {
 		}
 	},
 	"hotpepper": {
-		"name": "Hot Pepper", 
+		"name": "Hot Pepper",
 		"url": "http://stardewvalleywiki.com/Hot_Pepper",
 		"img": "hotpepper.png",
 		"seeds": {
-			"pierre": 40, 
-			"joja": 50, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 40,
+			"joja": 50,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 5,
@@ -472,15 +466,15 @@ var crops = {
 		}
 	},
 	"tomato": {
-		"name": "Tomato", 
+		"name": "Tomato",
 		"url": "http://stardewvalleywiki.com/Tomato",
 		"img": "tomato.png",
 		"seeds": {
-			"pierre": 50, 
-			"joja": 62, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 50,
+			"joja": 62,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 11,
@@ -499,15 +493,15 @@ var crops = {
 		}
 	},
 	"radish": {
-		"name": "Radish", 
+		"name": "Radish",
 		"url": "http://stardewvalleywiki.com/Radish",
 		"img": "radish.png",
 		"seeds": {
-			"pierre": 40, 
-			"joja": 50, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 40,
+			"joja": 50,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 6,
@@ -526,15 +520,15 @@ var crops = {
 		}
 	},
 	"summerspangle": {
-		"name": "Summer Spangle", 
+		"name": "Summer Spangle",
 		"url": "http://stardewvalleywiki.com/Summer_Spangle",
 		"img": "summerspangle.png",
 		"seeds": {
-			"pierre": 50, 
-			"joja": 62, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 50,
+			"joja": 62,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 8,
@@ -553,15 +547,15 @@ var crops = {
 		}
 	},
 	"poppy": {
-		"name": "Poppy", 
+		"name": "Poppy",
 		"url": "http://stardewvalleywiki.com/Poppy",
 		"img": "poppy.png",
 		"seeds": {
-			"pierre": 100, 
-			"joja": 125, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 100,
+			"joja": 125,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 7,
@@ -580,15 +574,15 @@ var crops = {
 		}
 	},
 	"wheat": {
-		"name": "Wheat", 
+		"name": "Wheat",
 		"url": "http://stardewvalleywiki.com/Wheat",
 		"img": "wheat.png",
 		"seeds": {
-			"pierre": 10, 
-			"joja": 12, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 10,
+			"joja": 12,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 4,
@@ -607,15 +601,15 @@ var crops = {
 		}
 	},
 	"corn": {
-		"name": "Corn", 
+		"name": "Corn",
 		"url": "http://stardewvalleywiki.com/Corn",
 		"img": "corn.png",
 		"seeds": {
-			"pierre": 150, 
-			"joja": 187, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 150,
+			"joja": 187,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 14,
@@ -633,19 +627,16 @@ var crops = {
 			"kegType": "Juice"
 		}
 	},
-
-	// Autumn
-
 	"sweetgemberry": {
-		"name": "Sweet Gem Berry", 
+		"name": "Sweet Gem Berry",
 		"url": "http://stardewvalleywiki.com/Sweet_Gem_Berry",
 		"img": "sweetgemberry.png",
 		"seeds": {
-			"pierre": 0, 
-			"joja": 0, 
-			"special": 1000, 
-			"specialLoc": "Traveling Cart", 
-			"specialUrl": "http://stardewvalleywiki.com/Traveling_Cart" 
+			"pierre": 0,
+			"joja": 0,
+			"special": 1000,
+			"specialLoc": "Traveling Cart",
+			"specialUrl": "http://stardewvalleywiki.com/Traveling_Cart"
 		},
 		"growth": {
 			"initial": 24,
@@ -664,15 +655,15 @@ var crops = {
 		}
 	},
 	"cranberries": {
-		"name": "Cranberries", 
+		"name": "Cranberries",
 		"url": "http://stardewvalleywiki.com/Cranberries",
 		"img": "cranberries.png",
 		"seeds": {
-			"pierre": 240, 
-			"joja": 300, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 240,
+			"joja": 300,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 7,
@@ -691,15 +682,15 @@ var crops = {
 		}
 	},
 	"pumpkin": {
-		"name": "Pumpkin", 
+		"name": "Pumpkin",
 		"url": "http://stardewvalleywiki.com/Pumpkin",
 		"img": "pumpkin.png",
 		"seeds": {
-			"pierre": 100, 
-			"joja": 125, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 100,
+			"joja": 125,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 13,
@@ -718,15 +709,15 @@ var crops = {
 		}
 	},
 	"grape": {
-		"name": "Grape", 
+		"name": "Grape",
 		"url": "http://stardewvalleywiki.com/Grape",
 		"img": "grape.png",
 		"seeds": {
-			"pierre": 60, 
-			"joja": 75, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 60,
+			"joja": 75,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 10,
@@ -745,15 +736,15 @@ var crops = {
 		}
 	},
 	"artichoke": {
-		"name": "Artichoke", 
+		"name": "Artichoke",
 		"url": "http://stardewvalleywiki.com/Artichoke",
 		"img": "artichoke.png",
 		"seeds": {
-			"pierre": 30, 
-			"joja": 0, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 30,
+			"joja": 0,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 8,
@@ -772,15 +763,15 @@ var crops = {
 		}
 	},
 	"beet": {
-		"name": "Beet", 
+		"name": "Beet",
 		"url": "http://stardewvalleywiki.com/Beet",
 		"img": "beet.png",
 		"seeds": {
-			"pierre": 0, 
-			"joja": 0, 
-			"special": 20, 
-			"specialLoc": "Oasis", 
-			"specialUrl": "http://stardewvalleywiki.com/Oasis" 
+			"pierre": 0,
+			"joja": 0,
+			"special": 20,
+			"specialLoc": "Oasis",
+			"specialUrl": "http://stardewvalleywiki.com/Oasis"
 		},
 		"growth": {
 			"initial": 6,
@@ -799,15 +790,15 @@ var crops = {
 		}
 	},
 	"eggplant": {
-		"name": "Eggplant", 
+		"name": "Eggplant",
 		"url": "http://stardewvalleywiki.com/Eggplant",
 		"img": "eggplant.png",
 		"seeds": {
-			"pierre": 20, 
-			"joja": 25, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 20,
+			"joja": 25,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 5,
@@ -826,15 +817,15 @@ var crops = {
 		}
 	},
 	"amaranth": {
-		"name": "Amaranth", 
+		"name": "Amaranth",
 		"url": "http://stardewvalleywiki.com/Amaranth",
 		"img": "amaranth.png",
 		"seeds": {
-			"pierre": 70, 
-			"joja": 87, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 70,
+			"joja": 87,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 7,
@@ -853,15 +844,15 @@ var crops = {
 		}
 	},
 	"yam": {
-		"name": "Yam", 
+		"name": "Yam",
 		"url": "http://stardewvalleywiki.com/Yam",
 		"img": "yam.png",
 		"seeds": {
-			"pierre": 50, 
-			"joja": 75, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 50,
+			"joja": 75,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 10,
@@ -880,15 +871,15 @@ var crops = {
 		}
 	},
 	"fairyrose": {
-		"name": "Fairy Rose", 
+		"name": "Fairy Rose",
 		"url": "http://stardewvalleywiki.com/Fairy_Rose",
 		"img": "fairyrose.png",
 		"seeds": {
-			"pierre": 200, 
-			"joja": 250, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 200,
+			"joja": 250,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 12,
@@ -907,15 +898,15 @@ var crops = {
 		}
 	},
 	"bokchoy": {
-		"name": "Bok Choy", 
+		"name": "Bok Choy",
 		"url": "http://stardewvalleywiki.com/Bok_Choy",
 		"img": "bokchoy.png",
 		"seeds": {
-			"pierre": 50, 
-			"joja": 62, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 50,
+			"joja": 62,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 4,
@@ -934,15 +925,15 @@ var crops = {
 		}
 	},
 	"sunflower": {
-		"name": "Sunflower", 
+		"name": "Sunflower",
 		"url": "http://stardewvalleywiki.com/Sunflower",
 		"img": "sunflower.png",
 		"seeds": {
-			"pierre": 200, 
-			"joja": 125, 
-			"special": 0, 
-			"specialLoc": "", 
-			"specialUrl": "" 
+			"pierre": 200,
+			"joja": 125,
+			"special": 0,
+			"specialLoc": "",
+			"specialUrl": ""
 		},
 		"growth": {
 			"initial": 8,
@@ -960,19 +951,16 @@ var crops = {
 			"kegType": ""
 		}
 	},
-
-	// Special
-
 	"ancientfruit": {
-		"name": "Ancient Fruit", 
+		"name": "Ancient Fruit",
 		"url": "http://stardewvalleywiki.com/Ancient_Fruit",
 		"img": "ancientfruit.png",
 		"seeds": {
-			"pierre": 0, 
-			"joja": 0, 
-			"special": 800, 
-			"specialLoc": "Traveling Cart", 
-			"specialUrl": "http://stardewvalleywiki.com/Traveling_Cart" 
+			"pierre": 0,
+			"joja": 0,
+			"special": 800,
+			"specialLoc": "Traveling Cart",
+			"specialUrl": "http://stardewvalleywiki.com/Traveling_Cart"
 		},
 		"growth": {
 			"initial": 28,
