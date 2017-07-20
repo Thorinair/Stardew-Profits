@@ -9,7 +9,7 @@ var crops = {
 	"coffeebean": {
 		"name": "Coffee Bean",
 		"url": "http://stardewvalleywiki.com/Coffee_Bean",
-		"img": "Coffee_Bean.png",
+		"img": "coffeebean.png",
 		"seeds": {
 			"pierre": 0,
 			"joja": 0,
