@@ -242,16 +242,15 @@ function seedLoss(crop) {
 
 /*
  * Calculates the loss to profit when fertilizer is bought.
+ *
+ * Note that harvesting does not destroy fertilizer, so this is
+ * independent of the number of harvests.
+ *
  * @param crop The crop object, containing all the crop data.
  * @return The total loss.
  */
 function fertLoss(crop) {
-	var harvests = crop.harvests;
-	var loss = 0;
-	if (crop.growth.regrow > 0)
-		loss -= fertilizers[options.fertilizer].cost;
-	else
-		loss -= fertilizers[options.fertilizer].cost * harvests;
+	var loss = -fertilizers[options.fertilizer].cost;
 	return loss * options.planted;
 }
 
