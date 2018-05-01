@@ -7,7 +7,7 @@ function styleByTime() {
 	var t = new Date();
 	var h = t.getHours();
 	var temp;
-	if (h >= 6 && h < 20)
+	if (h >= 7 && h < 18)
 		temp = "day";
 	else
 		temp = "night";
