@@ -155,7 +155,6 @@ function profit(crop) {
 
 		if (options.skills.till) {
 			profit *= 1.1;
-
 			// console.log("Profit (After skills): " + profit);
 		}
 	}
