@@ -130,7 +130,7 @@ function harvests(cropID) {
  * @return The total profit.
  */
 function profit(crop) {
-	var harvests = crop.harvests;
+	var total_harvests = crop.harvests * options.planted;
 	var season = seasons[options.season];
 	var fertilizer = fertilizers[options.fertilizer];
 	var seeds = options.seeds;
@@ -142,6 +142,38 @@ function profit(crop) {
 
 	var profit = 0;
 
+	if (produce == 0) {
+		profit += crop.produce.rawN * ratioN * total_harvests;
+		profit += crop.produce.rawS * ratioS * total_harvests;
+		profit += crop.produce.rawG * ratioG * total_harvests;
+		// console.log("Profit (After normal produce): " + profit);
+
+		if (crop.produce.extra > 0) {
+			profit += crop.produce.rawN * crop.produce.extraPerc * crop.produce.extra * total_harvests;
+			// console.log("Profit (After extra produce): " + profit);
+		}
+
+		if (options.skills.till) {
+			profit *= 1.1;
+
+			// console.log("Profit (After skills): " + profit);
+		}
+	}
+	else {
+		var items = total_harvests;
+		items += crop.produce.extraPerc * crop.produce.extra * total_harvests;
+
+		switch (produce) {
+			case 1: profit += items * crop.produce.jar; break;
+			case 2: profit += items * crop.produce.keg; break;
+		}
+		
+		if (options.skills.arti) {
+			profit *= 1.4;
+		}
+	}
+	
+
 	if (options.buySeed) {
 		profit += crop.seedLoss;
 		// console.log("Profit (After seeds): " + profit);
@@ -151,46 +183,6 @@ function profit(crop) {
 		profit += crop.fertLoss;
 		// console.log("Profit (After fertilizer): " + profit);
 	}
-
-	if (produce == 0) {
-		profit += crop.produce.rawN * ratioN * harvests * options.planted;
-		profit += crop.produce.rawS * ratioS * harvests * options.planted;
-		profit += crop.produce.rawG * ratioG * harvests * options.planted;
-		// console.log("Profit (After normal produce): " + profit);
-
-		if (crop.produce.extra > 0) {
-			profit += crop.produce.rawN * crop.produce.extraPerc * crop.produce.extra * harvests * options.planted;
-			// console.log("Profit (After extra produce): " + profit);
-		}
-
-		if (options.skills.till) {
-			profit += crop.produce.rawN * ratioN * harvests * options.planted * 0.1;
-			profit += crop.produce.rawS * ratioS * harvests * options.planted * 0.1;
-			profit += crop.produce.rawG * ratioG * harvests * options.planted * 0.1;
-
-			if (crop.produce.extra > 0)
-				profit += crop.produce.rawN * crop.produce.extraPerc * crop.produce.extra * harvests * options.planted * 0.1;
-
-			// console.log("Profit (After skills): " + profit);
-		}
-	}
-	else {
-		var items = harvests;
-		items += crop.produce.extraPerc * crop.produce.extra * harvests;
-
-		switch (produce) {
-			case 1: profit += items * crop.produce.jar * options.planted; break;
-			case 2: profit += items * crop.produce.keg * options.planted; break;
-		}
-		
-		if (options.skills.arti) {
-			switch (produce) {
-				case 1: profit += items * crop.produce.jar * options.planted * 0.4; break;
-				case 2: profit += items * crop.produce.keg * options.planted * 0.4; break;
-			}
-		}
-	}
-	
 
 	// console.log("Profit: " + profit);
 	return profit;
@@ -236,16 +228,15 @@ function seedLoss(crop) {
 
 /*
  * Calculates the loss to profit when fertilizer is bought.
+ *
+ * Note that harvesting does not destroy fertilizer, so this is
+ * independent of the number of harvests.
+ *
  * @param crop The crop object, containing all the crop data.
  * @return The total loss.
  */
 function fertLoss(crop) {
-	var harvests = crop.harvests;
-	var loss = 0;
-	if (crop.growth.regrow > 0)
-		loss -= fertilizers[options.fertilizer].cost;
-	else
-		loss -= fertilizers[options.fertilizer].cost * harvests;
+	var loss = -fertilizers[options.fertilizer].cost;
 	return loss * options.planted;
 }
 
