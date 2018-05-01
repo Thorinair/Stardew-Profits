@@ -136,15 +136,9 @@ function profit(crop) {
 	var seeds = options.seeds;
 	var produce = options.produce;
 
-	var ratioN = levels[options.level].ratioN;
-	var ratioS = levels[options.level].ratioS;
-	var ratioG = levels[options.level].ratioG;
-
-	if (fertilizer.ratioN != 0) {
-		ratioN = fertilizer.ratioN;
-		ratioS = fertilizer.ratioS;
-		ratioG = fertilizer.ratioG;
-	}
+	var ratioN = ratios[fertilizer.ratio][options.level].ratioN;
+	var ratioS = ratios[fertilizer.ratio][options.level].ratioS;
+	var ratioG = ratios[fertilizer.ratio][options.level].ratioG;
 
 	var profit = 0;
 
