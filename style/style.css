@@ -130,6 +130,7 @@ select {
 	padding: 2px 16px 2px 4px;
 	border-radius: 3px;
 	border-width: 0px;
+	width: 100%;
 }
 
 select::-ms-expand {

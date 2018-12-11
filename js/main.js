@@ -235,7 +235,11 @@ function seedLoss(crop) {
  * @return The total loss.
  */
 function fertLoss(crop) {
-	var loss = -fertilizers[options.fertilizer].cost;
+	var loss;
+	if(options.fertilizer == 4 && options.fertilizer_source == 1)
+		loss = -fertilizers[options.fertilizer].alternate_cost;
+	else
+		loss = -fertilizers[options.fertilizer].cost;
 	return loss * options.planted;
 }
 
@@ -935,6 +939,8 @@ function updateData() {
 	options.fertilizer = parseInt(document.getElementById('select_fertilizer').value);
 
 	options.buyFert = document.getElementById('check_buyFert').checked;
+	
+	options.fertilizer_source = parseInt(document.getElementById('speed_gro_source').value);
 
 	if (document.getElementById('number_level').value < 0)
 		document.getElementById('number_level').value = 0;
@@ -974,6 +980,10 @@ function updateData() {
 		options.skills.agri = false;
 		options.skills.arti = false;
 	}
+	if (options.buyFert && options.fertilizer == 4)
+		document.getElementById('speed_gro_source').disabled = false;
+	else
+		document.getElementById('speed_gro_source').disabled = true;
 
 	options.extra = document.getElementById('check_extra').checked;
 

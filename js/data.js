@@ -227,7 +227,8 @@ var fertilizers = [
 		"name": "Deluxe Speed-Gro",
 		"ratio": "none",
 		"growth": 0.75,
-		"cost": 150
+		"cost": 150,
+		"alternate_cost": 80
 	}
 ];
 
