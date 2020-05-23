@@ -37,7 +37,7 @@ var tooltip = d3.select("body")
 	.style("background", "rgba(0, 0, 0, 0.75)")
 	.style("padding", "8px")
 	.style("border-radius", "8px")
-	.style("border", "2px solid black");	
+	.style("border", "2px solid black");
 
 var gAxis = svg.append("g");
 var gProfit = svg.append("g");
@@ -118,7 +118,7 @@ function harvests(cropID) {
 
 		if (day <= remainingDays)
 			harvests++;
-	} 
+	}
 
 	// console.log("Harvests: " + harvests);
 	return harvests;
@@ -166,12 +166,12 @@ function profit(crop) {
 			case 1: profit += items * crop.produce.jar; break;
 			case 2: profit += items * crop.produce.keg; break;
 		}
-		
+
 		if (options.skills.arti) {
 			profit *= 1.4;
 		}
 	}
-	
+
 
 	if (options.buySeed) {
 		profit += crop.seedLoss;
@@ -321,7 +321,7 @@ function sortCrops() {
  */
 function updateScaleX() {
 	return d3.scale.ordinal()
-		.domain(d3.range(seasons[3].crops.length))
+		.domain(d3.range(seasons[4].crops.length))
 		.rangeRoundBands([0, width]);
 }
 
@@ -331,7 +331,7 @@ function updateScaleX() {
  */
 function updateScaleY() {
 	return d3.scale.linear()
-		.domain([0, d3.max(cropList, function(d) { 
+		.domain([0, d3.max(cropList, function(d) {
 			if (d.drawProfit >= 0) {
 				return (~~((d.drawProfit + 99) / 100) * 100);
 			}
@@ -358,7 +358,7 @@ function updateScaleY() {
 function updateScaleAxis() {
 	return d3.scale.linear()
 		.domain([
-			-d3.max(cropList, function(d) { 
+			-d3.max(cropList, function(d) {
 				if (d.drawProfit >= 0) {
 					return (~~((d.drawProfit + 99) / 100) * 100);
 				}
@@ -375,7 +375,7 @@ function updateScaleAxis() {
 					return (~~((-profit + 99) / 100) * 100);
 				}
 			}),
-			d3.max(cropList, function(d) { 
+			d3.max(cropList, function(d) {
 				if (d.drawProfit >= 0) {
 					return (~~((d.drawProfit + 99) / 100) * 100);
 				}
@@ -422,36 +422,36 @@ function renderGraph() {
 		.data(cropList)
 		.enter()
 		.append("rect")
-			.attr("x", function(d, i) { 
+			.attr("x", function(d, i) {
 				if (d.drawProfit < 0 && options.buySeed && options.buyFert)
 					return x(i) + barOffsetX + (barWidth / miniBar) * 2;
 				else if (d.drawProfit < 0 && !options.buySeed && options.buyFert)
 					return x(i) + barOffsetX + barWidth / miniBar;
 				else if (d.drawProfit < 0 && options.buySeed && !options.buyFert)
 					return x(i) + barOffsetX + barWidth / miniBar;
-				else 
-					return x(i) + barOffsetX;				
+				else
+					return x(i) + barOffsetX;
 			})
-			.attr("y", function(d) { 
+			.attr("y", function(d) {
 				if (d.drawProfit >= 0)
 					return y(d.drawProfit) + barOffsetY;
-				else 
+				else
 					return height + barOffsetY;
 			})
-			.attr("height", function(d) { 
+			.attr("height", function(d) {
 				if (d.drawProfit >= 0)
 					return height - y(d.drawProfit);
-				else 
+				else
 					return height - y(-d.drawProfit);
 			})
-			.attr("width", function(d) { 
+			.attr("width", function(d) {
 				if (d.drawProfit < 0 && options.buySeed && options.buyFert)
 					return barWidth - (barWidth / miniBar) * 2;
 				else if (d.drawProfit < 0 && !options.buySeed && options.buyFert)
 					return barWidth - barWidth / miniBar;
 				else if (d.drawProfit < 0 && options.buySeed && !options.buyFert)
 					return barWidth - barWidth / miniBar;
-				else 
+				else
 					return barWidth;
 			})
  			.attr("fill", function (d) {
@@ -467,9 +467,9 @@ function renderGraph() {
 		.append("rect")
 			.attr("x", function(d, i) { return x(i) + barOffsetX; })
 			.attr("y", height + barOffsetY)
-			.attr("height", function(d) { 
+			.attr("height", function(d) {
 				if (options.buySeed)
-					return height - y(-d.drawSeedLoss); 
+					return height - y(-d.drawSeedLoss);
 				else
 					return 0;
 			})
@@ -480,31 +480,31 @@ function renderGraph() {
 		.data(cropList)
 		.enter()
 		.append("rect")
-			.attr("x", function(d, i) { 
+			.attr("x", function(d, i) {
 				if (options.buySeed)
-					return x(i) + barOffsetX + barWidth / miniBar; 
+					return x(i) + barOffsetX + barWidth / miniBar;
 				else
-					return x(i) + barOffsetX; 
+					return x(i) + barOffsetX;
 			})
 			.attr("y", height + barOffsetY)
-			.attr("height", function(d) { 
+			.attr("height", function(d) {
 				if (options.buyFert)
-					return height - y(-d.drawFertLoss); 
+					return height - y(-d.drawFertLoss);
 				else
 					return 0;
 			})
 			.attr("width", barWidth / miniBar)
- 			.attr("fill", "brown");	
+ 			.attr("fill", "brown");
 
  	imgIcons = gIcons.selectAll("image")
 		.data(cropList)
 		.enter()
 		.append("svg:image")
 			.attr("x", function(d, i) { return x(i) + barOffsetX; })
-			.attr("y", function(d) { 
+			.attr("y", function(d) {
 				if (d.drawProfit >= 0)
 					return y(d.drawProfit) + barOffsetY - barWidth - barPadding;
-				else 
+				else
 					return height + barOffsetY - barWidth - barPadding;
 			})
 		    .attr('width', barWidth)
@@ -516,13 +516,13 @@ function renderGraph() {
 		.enter()
 		.append("rect")
 			.attr("x", function(d, i) { return x(i) + barOffsetX - barPadding/2; })
-			.attr("y", function(d) { 
+			.attr("y", function(d) {
 				if (d.drawProfit >= 0)
 					return y(d.drawProfit) + barOffsetY - barWidth - barPadding;
-				else 
+				else
 					return height + barOffsetY - barWidth - barPadding;
 			})
-			.attr("height", function(d) { 
+			.attr("height", function(d) {
 				var topHeight = 0;
 
 				if (d.drawProfit >= 0)
@@ -557,7 +557,7 @@ function renderGraph() {
 			.attr("width", barWidth + barPadding)
  			.attr("opacity", "0")
  			.attr("cursor", "pointer")
-			.on("mouseover", function(d) { 
+			.on("mouseover", function(d) {
 				tooltip.selectAll("*").remove();
 				tooltip.style("visibility", "visible");
 
@@ -567,7 +567,7 @@ function renderGraph() {
 					.attr("class", "tooltipTable")
 					.attr("cellspacing", 0);
 				var tooltipTr;
-				
+
 
 				tooltipTr = tooltipTable.append("tr");
 				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Total profit:");
@@ -616,7 +616,7 @@ function renderGraph() {
 				tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Produce sold:");
 				switch (options.produce) {
 					case 0: tooltipTr.append("td").attr("class", "tooltipTdRight").text("Raw crops"); break;
-					case 1: 
+					case 1:
 						if (d.produce.jar > 0)
 							tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.jarType);
 						else
@@ -733,7 +733,7 @@ function renderGraph() {
 
 				}
 			})
-			.on("mousemove", function() { 
+			.on("mousemove", function() {
 				tooltip.style("top", (d3.event.pageY - 16) + "px").style("left",(d3.event.pageX + 20) + "px");
 			})
 			.on("mouseout", function() { tooltip.style("visibility", "hidden"); })
@@ -761,36 +761,36 @@ function updateGraph() {
 
 	barsProfit.data(cropList)
 		.transition()
-			.attr("x", function(d, i) { 
+			.attr("x", function(d, i) {
 				if (d.drawProfit < 0 && options.buySeed && options.buyFert)
 					return x(i) + barOffsetX + (barWidth / miniBar) * 2;
 				else if (d.drawProfit < 0 && !options.buySeed && options.buyFert)
 					return x(i) + barOffsetX + barWidth / miniBar;
 				else if (d.drawProfit < 0 && options.buySeed && !options.buyFert)
 					return x(i) + barOffsetX + barWidth / miniBar;
-				else 
-					return x(i) + barOffsetX;				
+				else
+					return x(i) + barOffsetX;
 			})
-			.attr("y", function(d) { 
+			.attr("y", function(d) {
 				if (d.drawProfit >= 0)
 					return y(d.drawProfit) + barOffsetY;
-				else 
+				else
 					return height + barOffsetY;
 			})
-			.attr("height", function(d) { 
+			.attr("height", function(d) {
 				if (d.drawProfit >= 0)
 					return height - y(d.drawProfit);
-				else 
+				else
 					return height - y(-d.drawProfit);
 			})
-			.attr("width", function(d) { 
+			.attr("width", function(d) {
 				if (d.drawProfit < 0 && options.buySeed && options.buyFert)
 					return barWidth - (barWidth / miniBar) * 2;
 				else if (d.drawProfit < 0 && !options.buySeed && options.buyFert)
 					return barWidth - barWidth / miniBar;
 				else if (d.drawProfit < 0 && options.buySeed && !options.buyFert)
 					return barWidth - barWidth / miniBar;
-				else 
+				else
 					return barWidth;
 			})
  			.attr("fill", function (d) {
@@ -804,9 +804,9 @@ function updateGraph() {
 		.transition()
 			.attr("x", function(d, i) { return x(i) + barOffsetX; })
 			.attr("y", height + barOffsetY)
-			.attr("height", function(d) { 
+			.attr("height", function(d) {
 				if (options.buySeed)
-					return height - y(-d.drawSeedLoss); 
+					return height - y(-d.drawSeedLoss);
 				else
 					return 0;
 			})
@@ -815,29 +815,29 @@ function updateGraph() {
 
 	barsFert.data(cropList)
 		.transition()
-			.attr("x", function(d, i) { 
+			.attr("x", function(d, i) {
 				if (options.buySeed)
-					return x(i) + barOffsetX + barWidth / miniBar; 
+					return x(i) + barOffsetX + barWidth / miniBar;
 				else
-					return x(i) + barOffsetX; 
+					return x(i) + barOffsetX;
 			})
 			.attr("y", height + barOffsetY)
-			.attr("height", function(d) { 
+			.attr("height", function(d) {
 				if (options.buyFert)
-					return height - y(-d.drawFertLoss); 
+					return height - y(-d.drawFertLoss);
 				else
 					return 0;
 			})
 			.attr("width", barWidth / miniBar)
- 			.attr("fill", "brown");	
+ 			.attr("fill", "brown");
 
  	imgIcons.data(cropList)
 		.transition()
 			.attr("x", function(d, i) { return x(i) + barOffsetX; })
-			.attr("y", function(d) { 
+			.attr("y", function(d) {
 				if (d.drawProfit >= 0)
 					return y(d.drawProfit) + barOffsetY - barWidth - barPadding;
-				else 
+				else
 					return height + barOffsetY - barWidth - barPadding;
 			})
 		    .attr('width', barWidth)
@@ -847,13 +847,13 @@ function updateGraph() {
 	barsTooltips.data(cropList)
 		.transition()
 			.attr("x", function(d, i) { return x(i) + barOffsetX - barPadding/2; })
-			.attr("y", function(d) { 
+			.attr("y", function(d) {
 				if (d.drawProfit >= 0)
 					return y(d.drawProfit) + barOffsetY - barWidth - barPadding;
-				else 
+				else
 					return height + barOffsetY - barWidth - barPadding;
 			})
-			.attr("height", function(d) { 
+			.attr("height", function(d) {
 				var topHeight = 0;
 
 				if (d.drawProfit >= 0)
@@ -896,14 +896,16 @@ function updateData() {
 
 	options.season = parseInt(document.getElementById('select_season').value);
 
-	if (options.season != 3) {
+	const isGreenhouse = options.season === 4;
+
+	if (!isGreenhouse) {
 		document.getElementById('current_day_row').style.display = 'table-row';
 		document.getElementById('number_days_row').style.display = 'none';
 		document.getElementById('cross_season_row').style.display = 'table-row';
 
 		if (document.getElementById('current_day').value <= 0)
 			document.getElementById('current_day').value = 1;
-		if (document.getElementById('current_day').value > 28 && options.season != 3)
+		if (document.getElementById('current_day').value > 28)
 			document.getElementById('current_day').value = 28;
 		options.days = 29 - document.getElementById('current_day').value;
 	} else {
@@ -911,7 +913,7 @@ function updateData() {
 		document.getElementById('number_days_row').style.display = 'table-row';
 		document.getElementById('cross_season_row').style.display = 'none';
 
-		if (document.getElementById('number_days').value > 100000 && options.season == 3)
+		if (document.getElementById('number_days').value > 100000)
 			document.getElementById('number_days').value = 100000;
 		options.days = document.getElementById('number_days').value;
 	}
