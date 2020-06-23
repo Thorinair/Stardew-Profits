@@ -127,15 +127,45 @@ function harvests(cropID) {
 }
 
 /*
+ * Calculates the minimum cost of a single packet of seeds.
+ * @param crop The crop object, containing all the crop data.
+ * @return The minimum cost of a packet of seeds, taking options into account.
+ */
+function minSeedCost(crop) {
+	var minSeedCost = Infinity;
+
+	if (crop.seeds.pierre != 0 && options.seeds.pierre && crop.seeds.pierre < minSeedCost)
+		minSeedCost = crop.seeds.pierre;
+	if (crop.seeds.joja != 0 && options.seeds.joja && crop.seeds.joja < minSeedCost)
+		minSeedCost = crop.seeds.joja;
+	if (crop.seeds.special != 0 && options.seeds.special && crop.seeds.special < minSeedCost)
+		minSeedCost = crop.seeds.special;
+	
+	return minSeedCost;
+}
+
+/*
+ * Calculates the number of crops planted.
+ * @param crop The crop object, containing all the crop data.
+ * @return The number of crops planted, taking the desired number planted and the max seed money into account.
+ */
+function planted(crop) {
+	if (options.buySeed && options.max_seed_money !== null) {
+		return Math.min(options.planted, Math.floor(options.max_seed_money / minSeedCost(crop)));
+	} else {
+		return options.planted;
+	}
+}
+
+/*
  * Calculates the profit for a specified crop.
  * @param crop The crop object, containing all the crop data.
  * @return The total profit.
  */
 function profit(crop) {
-	var total_harvests = crop.harvests * options.planted;
-	var season = seasons[options.season];
+	var num_planted = planted(crop);
+	var total_harvests = crop.harvests * num_planted;
 	var fertilizer = fertilizers[options.fertilizer];
-	var seeds = options.seeds;
 	var produce = options.produce;
 
 	var ratioN = ratios[fertilizer.ratio][options.level].ratioN;
@@ -213,34 +243,12 @@ function profit(crop) {
 function seedLoss(crop) {
 	var harvests = crop.harvests;
 
-	var lossArray = [];
-
-	if (crop.seeds.pierre != 0 && options.seeds.pierre)
-		lossArray.push(crop.seeds.pierre);
-	if (crop.seeds.joja != 0 && options.seeds.joja)
-		lossArray.push(crop.seeds.joja);
-	if (crop.seeds.special != 0 && options.seeds.special)
-		lossArray.push(crop.seeds.special);
-
-	var swapped;
-    do {
-        swapped = false;
-        for (var i = 0; i < lossArray.length - 1; i++) {
-            if (lossArray[i] > lossArray[i + 1]) {
-                var temp = lossArray[i];
-                lossArray[i] = lossArray[i + 1];
-                lossArray[i + 1] = temp;
-                swapped = true;
-            }
-        }
-    } while (swapped);
-
-    var loss = -lossArray[0];
+    var loss = -minSeedCost(crop);
 
 	if (crop.growth.regrow == 0 && harvests > 0)
 		loss = loss * harvests;
 
-	return loss * options.planted;
+	return loss * planted(crop);
 }
 
 /*
@@ -254,7 +262,7 @@ function seedLoss(crop) {
  */
 function fertLoss(crop) {
 	var loss = -fertilizers[options.fertilizer].cost;
-	return loss * options.planted;
+	return loss * planted(crop);
 }
 
 /*
@@ -289,6 +297,7 @@ function fetchCrops() {
  */
 function valueCrops() {
 	for (var i = 0; i < cropList.length; i++) {
+		cropList[i].planted = planted(cropList[i]);
 		cropList[i].harvests = harvests(cropList[i].id);
 		cropList[i].seedLoss = seedLoss(cropList[i]);
 		cropList[i].fertLoss = fertLoss(cropList[i]);
@@ -652,6 +661,9 @@ function renderGraph() {
 				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Duration:");
 				tooltipTr.append("td").attr("class", "tooltipTdRight").text(options.days + " days");
 				tooltipTr = tooltipTable.append("tr");
+				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Planted:");
+				tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.planted);
+				tooltipTr = tooltipTable.append("tr");
 				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Harvests:");
 				tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.harvests);
 
@@ -940,6 +952,13 @@ function updateData() {
 	if (document.getElementById('number_planted').value <= 0)
 		document.getElementById('number_planted').value = 1;
 	options.planted = document.getElementById('number_planted').value;
+
+	if (document.getElementById('max_seed_money').value < 0)
+		document.getElementById('max_seed_money').value = '';
+	options.max_seed_money = parseInt(document.getElementById('max_seed_money').value);
+	if (isNaN(options.max_seed_money)) {
+		options.max_seed_money = null;
+	}
 
 	options.average = document.getElementById('check_average').checked;
 
