@@ -37,7 +37,7 @@ var tooltip = d3.select("body")
 	.style("background", "rgba(0, 0, 0, 0.75)")
 	.style("padding", "8px")
 	.style("border-radius", "8px")
-	.style("border", "2px solid black");	
+	.style("border", "2px solid black");
 
 var gAxis = svg.append("g");
 var gProfit = svg.append("g");
@@ -52,6 +52,8 @@ var barsSeed;
 var barsFert;
 var imgIcons;
 var barsTooltips;
+var options;
+var MAX_INT = Number.MAX_SAFE_INTEGER || Number.MAX_VALUE;
 
 /*
  * Formats a specified number, adding separators for thousands.
@@ -118,10 +120,41 @@ function harvests(cropID) {
 
 		if (day <= remainingDays)
 			harvests++;
-	} 
+	}
 
 	// console.log("Harvests: " + harvests);
 	return harvests;
+}
+
+/*
+ * Calculates the minimum cost of a single packet of seeds.
+ * @param crop The crop object, containing all the crop data.
+ * @return The minimum cost of a packet of seeds, taking options into account.
+ */
+function minSeedCost(crop) {
+	var minSeedCost = Infinity;
+
+	if (crop.seeds.pierre != 0 && options.seeds.pierre && crop.seeds.pierre < minSeedCost)
+		minSeedCost = crop.seeds.pierre;
+	if (crop.seeds.joja != 0 && options.seeds.joja && crop.seeds.joja < minSeedCost)
+		minSeedCost = crop.seeds.joja;
+	if (crop.seeds.special != 0 && options.seeds.special && crop.seeds.special < minSeedCost)
+		minSeedCost = crop.seeds.special;
+	
+	return minSeedCost;
+}
+
+/*
+ * Calculates the number of crops planted.
+ * @param crop The crop object, containing all the crop data.
+ * @return The number of crops planted, taking the desired number planted and the max seed money into account.
+ */
+function planted(crop) {
+	if (options.buySeed && options.max_seed_money !== -1) {
+		return Math.min(options.planted, Math.floor(options.max_seed_money / minSeedCost(crop)));
+	} else {
+		return options.planted;
+	}
 }
 
 /*
@@ -130,10 +163,9 @@ function harvests(cropID) {
  * @return The total profit.
  */
 function profit(crop) {
-	var total_harvests = crop.harvests * options.planted;
-	var season = seasons[options.season];
+	var num_planted = planted(crop);
+	var total_harvests = crop.harvests * num_planted;
 	var fertilizer = fertilizers[options.fertilizer];
-	var seeds = options.seeds;
 	var produce = options.produce;
 
 	var ratioN = ratios[fertilizer.ratio][options.level].ratioN;
@@ -141,8 +173,24 @@ function profit(crop) {
 	var ratioG = ratios[fertilizer.ratio][options.level].ratioG;
 
 	var profit = 0;
+	
+	//Skip keg/jar calculations for ineligible crops (where corp.produce.jar or crop.produce.keg = 0)
+	
+	var userawproduce = false;
+	
+	switch(produce) {
+		case 0:	userawproduce = true; break; 
+		case 1: 
+			if(crop.produce.jar == 0) userawproduce = true;
+			break;
+		case 2:
+			if(crop.produce.keg == 0) userawproduce = true;
+			break;
+	}
+	
+	console.log("Calculating raw produce value for: " + crop.name);
 
-	if (produce == 0) {
+	if (produce == 0 || userawproduce) {
 		profit += crop.produce.rawN * ratioN * total_harvests;
 		profit += crop.produce.rawS * ratioS * total_harvests;
 		profit += crop.produce.rawG * ratioG * total_harvests;
@@ -166,12 +214,12 @@ function profit(crop) {
 			case 1: profit += items * crop.produce.jar; break;
 			case 2: profit += items * crop.produce.keg; break;
 		}
-		
+
 		if (options.skills.arti) {
 			profit *= 1.4;
 		}
 	}
-	
+
 
 	if (options.buySeed) {
 		profit += crop.seedLoss;
@@ -195,34 +243,12 @@ function profit(crop) {
 function seedLoss(crop) {
 	var harvests = crop.harvests;
 
-	var lossArray = [];
-
-	if (crop.seeds.pierre != 0 && options.seeds.pierre)
-		lossArray.push(crop.seeds.pierre);
-	if (crop.seeds.joja != 0 && options.seeds.joja)
-		lossArray.push(crop.seeds.joja);
-	if (crop.seeds.special != 0 && options.seeds.special)
-		lossArray.push(crop.seeds.special);
-
-	var swapped;
-    do {
-        swapped = false;
-        for (var i = 0; i < lossArray.length - 1; i++) {
-            if (lossArray[i] > lossArray[i + 1]) {
-                var temp = lossArray[i];
-                lossArray[i] = lossArray[i + 1];
-                lossArray[i + 1] = temp;
-                swapped = true;
-            }
-        }
-    } while (swapped);
-
-    var loss = -lossArray[0];
+    var loss = -minSeedCost(crop);
 
 	if (crop.growth.regrow == 0 && harvests > 0)
 		loss = loss * harvests;
 
-	return loss * options.planted;
+	return loss * planted(crop);
 }
 
 /*
@@ -275,6 +301,7 @@ function fetchCrops() {
  */
 function valueCrops() {
 	for (var i = 0; i < cropList.length; i++) {
+		cropList[i].planted = planted(cropList[i]);
 		cropList[i].harvests = harvests(cropList[i].id);
 		cropList[i].seedLoss = seedLoss(cropList[i]);
 		cropList[i].fertLoss = fertLoss(cropList[i]);
@@ -325,7 +352,7 @@ function sortCrops() {
  */
 function updateScaleX() {
 	return d3.scale.ordinal()
-		.domain(d3.range(seasons[3].crops.length))
+		.domain(d3.range(seasons[4].crops.length))
 		.rangeRoundBands([0, width]);
 }
 
@@ -335,7 +362,7 @@ function updateScaleX() {
  */
 function updateScaleY() {
 	return d3.scale.linear()
-		.domain([0, d3.max(cropList, function(d) { 
+		.domain([0, d3.max(cropList, function(d) {
 			if (d.drawProfit >= 0) {
 				return (~~((d.drawProfit + 99) / 100) * 100);
 			}
@@ -362,7 +389,7 @@ function updateScaleY() {
 function updateScaleAxis() {
 	return d3.scale.linear()
 		.domain([
-			-d3.max(cropList, function(d) { 
+			-d3.max(cropList, function(d) {
 				if (d.drawProfit >= 0) {
 					return (~~((d.drawProfit + 99) / 100) * 100);
 				}
@@ -379,7 +406,7 @@ function updateScaleAxis() {
 					return (~~((-profit + 99) / 100) * 100);
 				}
 			}),
-			d3.max(cropList, function(d) { 
+			d3.max(cropList, function(d) {
 				if (d.drawProfit >= 0) {
 					return (~~((d.drawProfit + 99) / 100) * 100);
 				}
@@ -426,36 +453,36 @@ function renderGraph() {
 		.data(cropList)
 		.enter()
 		.append("rect")
-			.attr("x", function(d, i) { 
+			.attr("x", function(d, i) {
 				if (d.drawProfit < 0 && options.buySeed && options.buyFert)
 					return x(i) + barOffsetX + (barWidth / miniBar) * 2;
 				else if (d.drawProfit < 0 && !options.buySeed && options.buyFert)
 					return x(i) + barOffsetX + barWidth / miniBar;
 				else if (d.drawProfit < 0 && options.buySeed && !options.buyFert)
 					return x(i) + barOffsetX + barWidth / miniBar;
-				else 
-					return x(i) + barOffsetX;				
+				else
+					return x(i) + barOffsetX;
 			})
-			.attr("y", function(d) { 
+			.attr("y", function(d) {
 				if (d.drawProfit >= 0)
 					return y(d.drawProfit) + barOffsetY;
-				else 
+				else
 					return height + barOffsetY;
 			})
-			.attr("height", function(d) { 
+			.attr("height", function(d) {
 				if (d.drawProfit >= 0)
 					return height - y(d.drawProfit);
-				else 
+				else
 					return height - y(-d.drawProfit);
 			})
-			.attr("width", function(d) { 
+			.attr("width", function(d) {
 				if (d.drawProfit < 0 && options.buySeed && options.buyFert)
 					return barWidth - (barWidth / miniBar) * 2;
 				else if (d.drawProfit < 0 && !options.buySeed && options.buyFert)
 					return barWidth - barWidth / miniBar;
 				else if (d.drawProfit < 0 && options.buySeed && !options.buyFert)
 					return barWidth - barWidth / miniBar;
-				else 
+				else
 					return barWidth;
 			})
  			.attr("fill", function (d) {
@@ -471,9 +498,9 @@ function renderGraph() {
 		.append("rect")
 			.attr("x", function(d, i) { return x(i) + barOffsetX; })
 			.attr("y", height + barOffsetY)
-			.attr("height", function(d) { 
+			.attr("height", function(d) {
 				if (options.buySeed)
-					return height - y(-d.drawSeedLoss); 
+					return height - y(-d.drawSeedLoss);
 				else
 					return 0;
 			})
@@ -484,31 +511,31 @@ function renderGraph() {
 		.data(cropList)
 		.enter()
 		.append("rect")
-			.attr("x", function(d, i) { 
+			.attr("x", function(d, i) {
 				if (options.buySeed)
-					return x(i) + barOffsetX + barWidth / miniBar; 
+					return x(i) + barOffsetX + barWidth / miniBar;
 				else
-					return x(i) + barOffsetX; 
+					return x(i) + barOffsetX;
 			})
 			.attr("y", height + barOffsetY)
-			.attr("height", function(d) { 
+			.attr("height", function(d) {
 				if (options.buyFert)
-					return height - y(-d.drawFertLoss); 
+					return height - y(-d.drawFertLoss);
 				else
 					return 0;
 			})
 			.attr("width", barWidth / miniBar)
- 			.attr("fill", "brown");	
+ 			.attr("fill", "brown");
 
  	imgIcons = gIcons.selectAll("image")
 		.data(cropList)
 		.enter()
 		.append("svg:image")
 			.attr("x", function(d, i) { return x(i) + barOffsetX; })
-			.attr("y", function(d) { 
+			.attr("y", function(d) {
 				if (d.drawProfit >= 0)
 					return y(d.drawProfit) + barOffsetY - barWidth - barPadding;
-				else 
+				else
 					return height + barOffsetY - barWidth - barPadding;
 			})
 		    .attr('width', barWidth)
@@ -520,13 +547,13 @@ function renderGraph() {
 		.enter()
 		.append("rect")
 			.attr("x", function(d, i) { return x(i) + barOffsetX - barPadding/2; })
-			.attr("y", function(d) { 
+			.attr("y", function(d) {
 				if (d.drawProfit >= 0)
 					return y(d.drawProfit) + barOffsetY - barWidth - barPadding;
-				else 
+				else
 					return height + barOffsetY - barWidth - barPadding;
 			})
-			.attr("height", function(d) { 
+			.attr("height", function(d) {
 				var topHeight = 0;
 
 				if (d.drawProfit >= 0)
@@ -561,7 +588,7 @@ function renderGraph() {
 			.attr("width", barWidth + barPadding)
  			.attr("opacity", "0")
  			.attr("cursor", "pointer")
-			.on("mouseover", function(d) { 
+			.on("mouseover", function(d) {
 				tooltip.selectAll("*").remove();
 				tooltip.style("visibility", "visible");
 
@@ -571,7 +598,7 @@ function renderGraph() {
 					.attr("class", "tooltipTable")
 					.attr("cellspacing", 0);
 				var tooltipTr;
-				
+
 
 				tooltipTr = tooltipTable.append("tr");
 				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Total profit:");
@@ -616,26 +643,30 @@ function renderGraph() {
 				}
 
 
+				//Ineligible crops are sold raw.
 				tooltipTr = tooltipTable.append("tr");
 				tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Produce sold:");
 				switch (options.produce) {
 					case 0: tooltipTr.append("td").attr("class", "tooltipTdRight").text("Raw crops"); break;
-					case 1: 
+					case 1:
 						if (d.produce.jar > 0)
 							tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.jarType);
 						else
-							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("None");
+							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("Raw crops");
 						break;
 					case 2:
 						if (d.produce.keg > 0)
 							tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.kegType);
 						else
-							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("None");
+							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("Raw crops");
 						break;
 				}
 				tooltipTr = tooltipTable.append("tr");
 				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Duration:");
 				tooltipTr.append("td").attr("class", "tooltipTdRight").text(options.days + " days");
+				tooltipTr = tooltipTable.append("tr");
+				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Planted:");
+				tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.planted);
 				tooltipTr = tooltipTable.append("tr");
 				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Harvests:");
 				tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.harvests);
@@ -737,7 +768,7 @@ function renderGraph() {
 
 				}
 			})
-			.on("mousemove", function() { 
+			.on("mousemove", function() {
 				tooltip.style("top", (d3.event.pageY - 16) + "px").style("left",(d3.event.pageX + 20) + "px");
 			})
 			.on("mouseout", function() { tooltip.style("visibility", "hidden"); })
@@ -765,36 +796,36 @@ function updateGraph() {
 
 	barsProfit.data(cropList)
 		.transition()
-			.attr("x", function(d, i) { 
+			.attr("x", function(d, i) {
 				if (d.drawProfit < 0 && options.buySeed && options.buyFert)
 					return x(i) + barOffsetX + (barWidth / miniBar) * 2;
 				else if (d.drawProfit < 0 && !options.buySeed && options.buyFert)
 					return x(i) + barOffsetX + barWidth / miniBar;
 				else if (d.drawProfit < 0 && options.buySeed && !options.buyFert)
 					return x(i) + barOffsetX + barWidth / miniBar;
-				else 
-					return x(i) + barOffsetX;				
+				else
+					return x(i) + barOffsetX;
 			})
-			.attr("y", function(d) { 
+			.attr("y", function(d) {
 				if (d.drawProfit >= 0)
 					return y(d.drawProfit) + barOffsetY;
-				else 
+				else
 					return height + barOffsetY;
 			})
-			.attr("height", function(d) { 
+			.attr("height", function(d) {
 				if (d.drawProfit >= 0)
 					return height - y(d.drawProfit);
-				else 
+				else
 					return height - y(-d.drawProfit);
 			})
-			.attr("width", function(d) { 
+			.attr("width", function(d) {
 				if (d.drawProfit < 0 && options.buySeed && options.buyFert)
 					return barWidth - (barWidth / miniBar) * 2;
 				else if (d.drawProfit < 0 && !options.buySeed && options.buyFert)
 					return barWidth - barWidth / miniBar;
 				else if (d.drawProfit < 0 && options.buySeed && !options.buyFert)
 					return barWidth - barWidth / miniBar;
-				else 
+				else
 					return barWidth;
 			})
  			.attr("fill", function (d) {
@@ -808,9 +839,9 @@ function updateGraph() {
 		.transition()
 			.attr("x", function(d, i) { return x(i) + barOffsetX; })
 			.attr("y", height + barOffsetY)
-			.attr("height", function(d) { 
+			.attr("height", function(d) {
 				if (options.buySeed)
-					return height - y(-d.drawSeedLoss); 
+					return height - y(-d.drawSeedLoss);
 				else
 					return 0;
 			})
@@ -819,29 +850,29 @@ function updateGraph() {
 
 	barsFert.data(cropList)
 		.transition()
-			.attr("x", function(d, i) { 
+			.attr("x", function(d, i) {
 				if (options.buySeed)
-					return x(i) + barOffsetX + barWidth / miniBar; 
+					return x(i) + barOffsetX + barWidth / miniBar;
 				else
-					return x(i) + barOffsetX; 
+					return x(i) + barOffsetX;
 			})
 			.attr("y", height + barOffsetY)
-			.attr("height", function(d) { 
+			.attr("height", function(d) {
 				if (options.buyFert)
-					return height - y(-d.drawFertLoss); 
+					return height - y(-d.drawFertLoss);
 				else
 					return 0;
 			})
 			.attr("width", barWidth / miniBar)
- 			.attr("fill", "brown");	
+ 			.attr("fill", "brown");
 
  	imgIcons.data(cropList)
 		.transition()
 			.attr("x", function(d, i) { return x(i) + barOffsetX; })
-			.attr("y", function(d) { 
+			.attr("y", function(d) {
 				if (d.drawProfit >= 0)
 					return y(d.drawProfit) + barOffsetY - barWidth - barPadding;
-				else 
+				else
 					return height + barOffsetY - barWidth - barPadding;
 			})
 		    .attr('width', barWidth)
@@ -851,13 +882,13 @@ function updateGraph() {
 	barsTooltips.data(cropList)
 		.transition()
 			.attr("x", function(d, i) { return x(i) + barOffsetX - barPadding/2; })
-			.attr("y", function(d) { 
+			.attr("y", function(d) {
 				if (d.drawProfit >= 0)
 					return y(d.drawProfit) + barOffsetY - barWidth - barPadding;
-				else 
+				else
 					return height + barOffsetY - barWidth - barPadding;
 			})
-			.attr("height", function(d) { 
+			.attr("height", function(d) {
 				var topHeight = 0;
 
 				if (d.drawProfit >= 0)
@@ -900,14 +931,16 @@ function updateData() {
 
 	options.season = parseInt(document.getElementById('select_season').value);
 
-	if (options.season != 3) {
+	const isGreenhouse = options.season === 4;
+
+	if (!isGreenhouse) {
 		document.getElementById('current_day_row').style.display = 'table-row';
 		document.getElementById('number_days_row').style.display = 'none';
 		document.getElementById('cross_season_row').style.display = 'table-row';
 
 		if (document.getElementById('current_day').value <= 0)
 			document.getElementById('current_day').value = 1;
-		if (document.getElementById('current_day').value > 28 && options.season != 3)
+		if (document.getElementById('current_day').value > 28)
 			document.getElementById('current_day').value = 28;
 		options.days = 29 - document.getElementById('current_day').value;
 	} else {
@@ -915,7 +948,7 @@ function updateData() {
 		document.getElementById('number_days_row').style.display = 'table-row';
 		document.getElementById('cross_season_row').style.display = 'none';
 
-		if (document.getElementById('number_days').value > 100000 && options.season == 3)
+		if (document.getElementById('number_days').value > 100000)
 			document.getElementById('number_days').value = 100000;
 		options.days = document.getElementById('number_days').value;
 	}
@@ -925,6 +958,13 @@ function updateData() {
 	if (document.getElementById('number_planted').value <= 0)
 		document.getElementById('number_planted').value = 1;
 	options.planted = document.getElementById('number_planted').value;
+
+	if (document.getElementById('max_seed_money').value < 0)
+		document.getElementById('max_seed_money').value = '';
+	options.max_seed_money = parseInt(document.getElementById('max_seed_money').value);
+	if (isNaN(options.max_seed_money)) {
+		options.max_seed_money = -1;
+	}
 
 	options.average = document.getElementById('check_average').checked;
 
@@ -987,6 +1027,9 @@ function updateData() {
 
 	options.extra = document.getElementById('check_extra').checked;
 
+	// Persist the options object into the URL hash.
+	window.location.hash = encodeURIComponent(serialize(options));
+
 	fetchCrops();
 	valueCrops();
 	sortCrops();
@@ -996,6 +1039,7 @@ function updateData() {
  * Called once on startup to draw the UI.
  */
 function initial() {
+	optionsLoad();
 	updateData();
 	renderGraph();
 }
@@ -1006,6 +1050,106 @@ function initial() {
 function refresh() {
 	updateData();
 	updateGraph();
+}
+
+/*
+ * Parse out and validate the options from the URL hash.
+ */
+function optionsLoad() {
+	if (!window.location.hash) return;
+
+	options = deserialize(window.location.hash.slice(1));
+
+	function validBoolean(q) {
+
+		return q == 1;
+	}
+
+	function validIntRange(min, max, num) {
+
+		return num < min ? min : num > max ? max : parseInt(num, 10);
+	}
+
+	options.season = validIntRange(0, 3, options.season);
+	document.getElementById('select_season').value = options.season;
+
+  // ensure the number is between 1 - 28 inclusive; MAX_INT for greenhouse
+	const daysMax = options.season === 3 ? MAX_INT : 28;
+	options.days = validIntRange(1, daysMax, options.days);
+	if (options.season === 3) {
+		document.getElementById('number_days').value = options.days
+	} else {
+		document.getElementById('current_day').value = 29 - options.days;
+	}
+
+	options.produce = validIntRange(0, 2, options.produce);
+	document.getElementById('select_produce').value = options.produce;
+
+	options.planted = validIntRange(1, MAX_INT, options.planted);
+	document.getElementById('number_planted').value = options.planted;
+
+    options.max_seed_money = validIntRange(-1, MAX_INT, options.planted);
+    document.getElementById('max_seed_money').value = options.max_seed_money;
+
+	options.average = validBoolean(options.average);
+	document.getElementById('check_average').checked = options.average;
+
+	options.crossSeason = validBoolean(options.crossSeason);
+	document.getElementById('cross_season').checked = options.crossSeason;
+
+	options.seeds.pierre = validBoolean(options.seeds.pierre);
+	document.getElementById('check_seedsPierre').checked = options.seeds.pierre;
+
+	options.seeds.joja = validBoolean(options.seeds.joja);
+	document.getElementById('check_seedsJoja').checked = options.seeds.joja;
+
+	options.seeds.special = validBoolean(options.seeds.special);
+	document.getElementById('check_seedsSpecial').checked = options.seeds.special;
+
+	options.buySeed = validBoolean(options.buySeed);
+	document.getElementById('check_buySeed').checked = options.buySeed;
+
+	options.fertilizer = validIntRange(0, 4, options.fertilizer);
+	document.getElementById('select_fertilizer').value = options.fertilizer;
+
+	options.buyFert = validBoolean(options.buyFert);
+	document.getElementById('check_buyFert').checked = options.buyFert;
+
+	options.level = validIntRange(0, MAX_INT, options.level);
+	document.getElementById('number_level').value = options.level;
+
+	options.skills.till = validBoolean(options.skills.till);
+	document.getElementById('check_skillsTill').checked = options.skills.till;
+
+	options.skills.agri = validBoolean(options.skills.agri);
+	options.skills.arti = validBoolean(options.skills.arti);
+	const binaryFlags = options.skills.agri + options.skills.arti * 2;
+	document.getElementById('select_skills').value = binaryFlags;
+
+	options.extra = validBoolean(options.extra);
+	document.getElementById('check_extra').checked = options.extra;
+}
+
+function deserialize(str) {
+
+	return JSON.parse(`(${str})`
+		.replace(/_/g, ' ')
+		.replace(/-/g, ',')
+		.replace(/\(/g, '{')
+		.replace(/\)/g, '}')
+		.replace(/([a-z]+)/gi, '"$1":')
+		.replace(/"(true|false)":/gi, '$1'));
+}
+
+function serialize(obj) {
+
+	return Object.keys(obj)
+		.reduce((acc, key) => {
+			return /^(?:true|false|\d+)$/i.test('' + obj[key])
+				? `${acc}-${key}_${obj[key]}`
+				: `${acc}-${key}_(${serialize(obj[key])})`;
+		}, '')
+		.slice(1);
 }
 
 /*
@@ -1022,3 +1166,8 @@ function rebuild() {
 	updateData();
 	renderGraph();
 }
+
+document.addEventListener('DOMContentLoaded', initial);
+document.addEventListener('click', function (event) {
+	if (event.target.id === 'reset') window.location = 'index.html';
+});
