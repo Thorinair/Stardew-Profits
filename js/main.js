@@ -52,6 +52,8 @@ var barsSeed;
 var barsFert;
 var imgIcons;
 var barsTooltips;
+var options;
+var MAX_INT = Number.MAX_SAFE_INTEGER || Number.MAX_VALUE;
 
 /*
  * Formats a specified number, adding separators for thousands.
@@ -977,6 +979,9 @@ function updateData() {
 
 	options.extra = document.getElementById('check_extra').checked;
 
+	// Persist the options object into the URL hash.
+	window.location.hash = encodeURIComponent(serialize(options));
+
 	fetchCrops();
 	valueCrops();
 	sortCrops();
@@ -986,6 +991,7 @@ function updateData() {
  * Called once on startup to draw the UI.
  */
 function initial() {
+	optionsLoad();
 	updateData();
 	renderGraph();
 }
@@ -996,6 +1002,103 @@ function initial() {
 function refresh() {
 	updateData();
 	updateGraph();
+}
+
+/*
+ * Parse out and validate the options from the URL hash.
+ */
+function optionsLoad() {
+	if (!window.location.hash) return;
+
+	options = deserialize(window.location.hash.slice(1));
+
+	function validBoolean(q) {
+
+		return q == 1;
+	}
+
+	function validIntRange(min, max, num) {
+
+		return num < min ? min : num > max ? max : parseInt(num, 10);
+	}
+
+	options.season = validIntRange(0, 3, options.season);
+	document.getElementById('select_season').value = options.season;
+
+  // ensure the number is between 1 - 28 inclusive; MAX_INT for greenhouse
+	const daysMax = options.season === 3 ? MAX_INT : 28;
+	options.days = validIntRange(1, daysMax, options.days);
+	if (options.season === 3) {
+		document.getElementById('number_days').value = options.days
+	} else {
+		document.getElementById('current_day').value = 29 - options.days;
+	}
+
+	options.produce = validIntRange(0, 2, options.produce);
+	document.getElementById('select_produce').value = options.produce;
+
+	options.planted = validIntRange(1, MAX_INT, options.planted);
+	document.getElementById('number_planted').value = options.planted;
+
+	options.average = validBoolean(options.average);
+	document.getElementById('check_average').checked = options.average;
+
+	options.crossSeason = validBoolean(options.crossSeason);
+	document.getElementById('cross_season').checked = options.crossSeason;
+
+	options.seeds.pierre = validBoolean(options.seeds.pierre);
+	document.getElementById('check_seedsPierre').checked = options.seeds.pierre;
+
+	options.seeds.joja = validBoolean(options.seeds.joja);
+	document.getElementById('check_seedsJoja').checked = options.seeds.joja;
+
+	options.seeds.special = validBoolean(options.seeds.special);
+	document.getElementById('check_seedsSpecial').checked = options.seeds.special;
+
+	options.buySeed = validBoolean(options.buySeed);
+	document.getElementById('check_buySeed').checked = options.buySeed;
+
+	options.fertilizer = validIntRange(0, 4, options.fertilizer);
+	document.getElementById('select_fertilizer').value = options.fertilizer;
+
+	options.buyFert = validBoolean(options.buyFert);
+	document.getElementById('check_buyFert').checked = options.buyFert;
+
+	options.level = validIntRange(0, MAX_INT, options.level);
+	document.getElementById('number_level').value = options.level;
+
+	options.skills.till = validBoolean(options.skills.till);
+	document.getElementById('check_skillsTill').checked = options.skills.till;
+
+	options.skills.agri = validBoolean(options.skills.agri);
+	options.skills.arti = validBoolean(options.skills.arti);
+	const binaryFlags = options.skills.agri + options.skills.arti * 2;
+	document.getElementById('select_skills').value = binaryFlags;
+
+	options.extra = validBoolean(options.extra);
+	document.getElementById('check_extra').checked = options.extra;
+}
+
+function deserialize(str) {
+
+	return JSON.parse(`(${str})`
+		.replace(/_/g, ' ')
+		.replace(/-/g, ',')
+		.replace(/\(/g, '{')
+		.replace(/\)/g, '}')
+		.replace(/([a-z]+)/gi, '"$1":')
+		.replace(/"(true|false)":/gi, '$1'));
+}
+
+function serialize(obj) {
+
+	return Object.keys(obj)
+		.reduce((acc, key) => {
+			return /^(?:true|false|\d+)$/i.test('' + obj[key])
+				? `${acc}-${key}_${obj[key]}`
+				: `${acc}-${key}_(${serialize(obj[key])})`;
+		}, '')
+		.slice(1);
 }
 
 /*
@@ -1012,3 +1115,8 @@ function rebuild() {
 	updateData();
 	renderGraph();
 }
+
+document.addEventListener('DOMContentLoaded', initial);
+document.addEventListener('click', function (event) {
+	if (event.target.id === 'reset') window.location = 'index.html';
+});
