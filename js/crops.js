@@ -975,5 +975,117 @@ var crops = {
       "jarType": "Jelly",
       "kegType": "Wine"
     }
+  },
+  "springseeds": {
+    "name": "Spring Seeds",
+    "url": "http://stardewvalleywiki.com/Spring_Seeds",
+    "img": "springseeds.png",
+    "seeds": {
+      "pierre": 0,
+      "joja": 0,
+      "special": 1000,
+      "specialLoc": "Travelling Cart",
+      "specialUrl": "http://stardewvalleywiki.com/Travelling_Cart"
+    },
+    "growth": {
+      "initial": 7,
+      "regrow": 0
+    },
+    "produce": {
+      "extra": 0,
+      "extraPerc": 0,
+      // (Wild Horseradish + Daffodil + Leek + Dandelion) / 4
+      "rawN": (50 + 30 + 60 + 40) / 4,
+      "rawS": (62 + 37 + 75 + 50) / 4,
+      "rawG": (75 + 45 + 90 + 60) / 4,
+      "jar": 0,
+      "keg": 0,
+      "jarType": "",
+      "kegType": ""
+    }
+  },
+  "summerseeds": {
+    "name": "Summer Seeds",
+    "url": "http://stardewvalleywiki.com/Summer_Seeds",
+    "img": "summerseeds.png",
+    "seeds": {
+      "pierre": 0,
+      "joja": 0,
+      "special": 1000,
+      "specialLoc": "Travelling Cart",
+      "specialUrl": "http://stardewvalleywiki.com/Travelling_Cart"
+    },
+    "growth": {
+      "initial": 7,
+      "regrow": 0
+    },
+    "produce": {
+      "extra": 0,
+      "extraPerc": 0,
+      // (Spice Berry + Grape + Sweet Pea) / 3
+      "rawN": (80 + 80 + 50) / 3,
+      "rawS": (100 + 100 + 62) / 3,
+      "rawG": (120 + 120 + 75) / 3,
+      "jar": (210 + 210 + 0) / 3,
+      "keg": (240 + 240 + 0) / 3,
+      "jarType": "Jelly",
+      "kegType": "Wine"
+    }
+  },
+  "fallseeds": {
+    "name": "Fall Seeds",
+    "url": "http://stardewvalleywiki.com/Fall_Seeds",
+    "img": "fallseeds.png",
+    "seeds": {
+      "pierre": 0,
+      "joja": 0,
+      "special": 1000,
+      "specialLoc": "Travelling Cart",
+      "specialUrl": "http://stardewvalleywiki.com/Travelling_Cart"
+    },
+    "growth": {
+      "initial": 7,
+      "regrow": 0
+    },
+    "produce": {
+      "extra": 0,
+      "extraPerc": 0,
+      // (Blackberry + Common Mushroom + Hazelnut + Wild Plum) / 4
+      "rawN": (20 + 40 + 90 + 80) / 4,
+      "rawS": (25 + 50 + 112 + 100) / 4,
+      "rawG": (30 + 60 + 135 + 120) / 4,
+      "jar": (90 + 0 + 0 + 210) / 4,
+      "keg": (60 + 0 + 0 + 240) / 4,
+      "jarType": "Jelly",
+      "kegType": "Wine"
+    }
+  },
+  "winterseeds": {
+    "name": "Winter Seeds",
+    "url": "http://stardewvalleywiki.com/Winter_Seeds",
+    "img": "winterseeds.png",
+    "seeds": {
+      "pierre": 0,
+      "joja": 0,
+      "special": 1000,
+      "specialLoc": "Travelling Cart",
+      "specialUrl": "http://stardewvalleywiki.com/Travelling_Cart"
+    },
+    "growth": {
+      "initial": 7,
+      "regrow": 0
+    },
+    "produce": {
+      "extra": 0,
+      "extraPerc": 0,
+      // (Crocus + Crystal Fruit + Snow Yam + Winter Root) / 4
+      "rawN": (60 + 150 + 100 + 70) / 4,
+      "rawS": (75 + 187 + 125 + 87) / 4,
+      "rawG": (90 + 225 + 150 + 105) / 4,
+      "jar": (0 + 350 + 0 + 0) / 4,
+      "keg": (0 + 450 + 0 + 0) / 4,
+      "jarType": "Jelly",
+      "kegType": "Wine"
+    }
   }
 };

@@ -5,7 +5,7 @@ var options = {
 	"days": 28,
 	"fertilizer": 2,
 	"level": 0,
-	"season": 3,
+	"season": 4,
 	"buySeed": false,
 	"buyFert": false,
 	"average": false,
@@ -204,9 +204,9 @@ var fertilizers = [
 		"ratio": "none",
 		"growth": 1,
 		"cost": 0
-	},	
-	{	
-		"name": "Basic Fertilizer",	
+	},
+	{
+		"name": "Basic Fertilizer",
 		"ratio": "basic",
 		"growth": 1,
 		"cost": 100
@@ -248,7 +248,8 @@ var seasons = [
 			crops.parsnip,
 			crops.bluejazz,
 			crops.tulip,
-			crops.ancientfruit
+			crops.ancientfruit,
+			crops.springseeds
 		]
 	},
 	{
@@ -269,7 +270,8 @@ var seasons = [
 			crops.corn,
 			crops.coffeebean,
 			crops.sunflower,
-			crops.ancientfruit
+			crops.ancientfruit,
+			crops.summerseeds
 		]
 	},
 	{
@@ -290,7 +292,15 @@ var seasons = [
 			crops.sunflower,
 			crops.wheat,
 			crops.corn,
-			crops.ancientfruit
+			crops.ancientfruit,
+			crops.fallseeds
+		]
+	},
+	{
+		"name": "Winter",
+		"duration": 28,
+		"crops": [
+			crops.winterseeds
 		]
 	},
 	{
