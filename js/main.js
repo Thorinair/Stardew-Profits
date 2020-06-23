@@ -1142,7 +1142,7 @@ function deserialize(str) {
         .replace(/([a-z]+)/gi, '"$1":')
         .replace(/"(true|false)":/gi, '$1');
 
-    console.log(json);
+    //console.log(json);
 
 	return JSON.parse(json);
 }
