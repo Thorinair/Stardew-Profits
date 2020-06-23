@@ -156,7 +156,7 @@ function profit(crop) {
 			break;
 	}
 	
-	console.log("Calculating raw produce value for: " + crop.name);
+	//console.log("Calculating raw produce value for: " + crop.name);
 
 	if (produce == 0 || userawproduce) {
 		profit += crop.produce.rawN * ratioN * total_harvests;
