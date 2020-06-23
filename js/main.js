@@ -143,8 +143,24 @@ function profit(crop) {
 	var ratioG = ratios[fertilizer.ratio][options.level].ratioG;
 
 	var profit = 0;
+	
+	//Skip keg/jar calculations for ineligible crops (where corp.produce.jar or crop.produce.keg = 0)
+	
+	var userawproduce = false;
+	
+	switch(produce) {
+		case 0:	userawproduce = true; break; 
+		case 1: 
+			if(crop.produce.jar == 0) userawproduce = true;
+			break;
+		case 2:
+			if(crop.produce.keg == 0) userawproduce = true;
+			break;
+	}
+	
+	console.log("Calculating raw produce value for: " + crop.name);
 
-	if (produce == 0) {
+	if (produce == 0 || userawproduce) {
 		profit += crop.produce.rawN * ratioN * total_harvests;
 		profit += crop.produce.rawS * ratioS * total_harvests;
 		profit += crop.produce.rawG * ratioG * total_harvests;
@@ -614,6 +630,7 @@ function renderGraph() {
 				}
 
 
+				//Ineligible crops are sold raw.
 				tooltipTr = tooltipTable.append("tr");
 				tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Produce sold:");
 				switch (options.produce) {
@@ -622,13 +639,13 @@ function renderGraph() {
 						if (d.produce.jar > 0)
 							tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.jarType);
 						else
-							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("None");
+							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("Raw crops");
 						break;
 					case 2:
 						if (d.produce.keg > 0)
 							tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.kegType);
 						else
-							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("None");
+							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("Raw crops");
 						break;
 				}
 				tooltipTr = tooltipTable.append("tr");
