@@ -150,7 +150,7 @@ function minSeedCost(crop) {
  * @return The number of crops planted, taking the desired number planted and the max seed money into account.
  */
 function planted(crop) {
-	if (options.buySeed && options.max_seed_money !== null) {
+	if (options.buySeed && options.max_seed_money !== -1) {
 		return Math.min(options.planted, Math.floor(options.max_seed_money / minSeedCost(crop)));
 	} else {
 		return options.planted;
@@ -957,7 +957,7 @@ function updateData() {
 		document.getElementById('max_seed_money').value = '';
 	options.max_seed_money = parseInt(document.getElementById('max_seed_money').value);
 	if (isNaN(options.max_seed_money)) {
-		options.max_seed_money = null;
+		options.max_seed_money = -1;
 	}
 
 	options.average = document.getElementById('check_average').checked;
@@ -1075,6 +1075,9 @@ function optionsLoad() {
 
 	options.planted = validIntRange(1, MAX_INT, options.planted);
 	document.getElementById('number_planted').value = options.planted;
+
+    options.max_seed_money = validIntRange(-1, MAX_INT, options.planted);
+    document.getElementById('max_seed_money').value = options.max_seed_money;
 
 	options.average = validBoolean(options.average);
 	document.getElementById('check_average').checked = options.average;
