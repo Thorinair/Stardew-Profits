@@ -150,8 +150,8 @@ function minSeedCost(crop) {
  * @return The number of crops planted, taking the desired number planted and the max seed money into account.
  */
 function planted(crop) {
-	if (options.buySeed && options.max_seed_money !== -1) {
-		return Math.min(options.planted, Math.floor(options.max_seed_money / minSeedCost(crop)));
+	if (options.buySeed && options.maxSeedMoney !== 0) {
+		return Math.min(options.planted, Math.floor(options.maxSeedMoney / minSeedCost(crop)));
 	} else {
 		return options.planted;
 	}
@@ -262,7 +262,7 @@ function seedLoss(crop) {
  */
 function fertLoss(crop) {
 	var loss;
-	if(options.fertilizer == 4 && options.fertilizer_source == 1)
+	if(options.fertilizer == 4 && options.fertilizerSource == 1)
 		loss = -fertilizers[options.fertilizer].alternate_cost;
 	else
 		loss = -fertilizers[options.fertilizer].cost;
@@ -960,10 +960,10 @@ function updateData() {
 	options.planted = document.getElementById('number_planted').value;
 
 	if (document.getElementById('max_seed_money').value < 0)
-		document.getElementById('max_seed_money').value = '';
-	options.max_seed_money = parseInt(document.getElementById('max_seed_money').value);
-	if (isNaN(options.max_seed_money)) {
-		options.max_seed_money = -1;
+		document.getElementById('max_seed_money').value = '0';
+	options.maxSeedMoney = parseInt(document.getElementById('max_seed_money').value);
+	if (isNaN(options.maxSeedMoney)) {
+		options.maxSeedMoney = 0;
 	}
 
 	options.average = document.getElementById('check_average').checked;
@@ -980,7 +980,7 @@ function updateData() {
 
 	options.buyFert = document.getElementById('check_buyFert').checked;
 	
-	options.fertilizer_source = parseInt(document.getElementById('speed_gro_source').value);
+	options.fertilizerSource = parseInt(document.getElementById('speed_gro_source').value);
 
 	if (document.getElementById('number_level').value < 0)
 		document.getElementById('number_level').value = 0;
@@ -1074,9 +1074,9 @@ function optionsLoad() {
 	document.getElementById('select_season').value = options.season;
 
   // ensure the number is between 1 - 28 inclusive; MAX_INT for greenhouse
-	const daysMax = options.season === 3 ? MAX_INT : 28;
+	const daysMax = options.season === 4 ? MAX_INT : 28;
 	options.days = validIntRange(1, daysMax, options.days);
-	if (options.season === 3) {
+	if (options.season === 4) {
 		document.getElementById('number_days').value = options.days
 	} else {
 		document.getElementById('current_day').value = 29 - options.days;
@@ -1088,8 +1088,8 @@ function optionsLoad() {
 	options.planted = validIntRange(1, MAX_INT, options.planted);
 	document.getElementById('number_planted').value = options.planted;
 
-    options.max_seed_money = validIntRange(-1, MAX_INT, options.max_seed_money);
-    document.getElementById('max_seed_money').value = options.max_seed_money;
+    options.maxSeedMoney = validIntRange(0, MAX_INT, options.maxSeedMoney);
+    document.getElementById('max_seed_money').value = options.maxSeedMoney;
 
 	options.average = validBoolean(options.average);
 	document.getElementById('check_average').checked = options.average;
@@ -1112,8 +1112,8 @@ function optionsLoad() {
 	options.fertilizer = validIntRange(0, 4, options.fertilizer);
 	document.getElementById('select_fertilizer').value = options.fertilizer;
 
-    options.speed_gro_source = validIntRange(0, 1, options.speed_gro_source);
-    document.getElementById('speed_gro_source').value = options.speed_gro_source;
+    options.fertilizerSource = validIntRange(0, 1, options.fertilizerSource);
+    document.getElementById('speed_gro_source').value = options.fertilizerSource;
 
 	options.buyFert = validBoolean(options.buyFert);
 	document.getElementById('check_buyFert').checked = options.buyFert;
@@ -1134,14 +1134,17 @@ function optionsLoad() {
 }
 
 function deserialize(str) {
+    var json = `(${str})`
+        .replace(/_/g, ' ')
+        .replace(/-/g, ',')
+        .replace(/\(/g, '{')
+        .replace(/\)/g, '}')
+        .replace(/([a-z]+)/gi, '"$1":')
+        .replace(/"(true|false)":/gi, '$1');
 
-	return JSON.parse(`(${str})`
-		.replace(/_/g, ' ')
-		.replace(/-/g, ',')
-		.replace(/\(/g, '{')
-		.replace(/\)/g, '}')
-		.replace(/([a-z]+)/gi, '"$1":')
-		.replace(/"(true|false)":/gi, '$1'));
+    console.log(json);
+
+	return JSON.parse(json);
 }
 
 function serialize(obj) {

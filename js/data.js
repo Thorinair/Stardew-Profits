@@ -2,6 +2,7 @@
 var options = {
 	"produce" : 0,
 	"planted": 1,
+    "maxSeedMoney": 0,
 	"days": 28,
 	"fertilizer": 2,
 	"level": 0,
@@ -9,6 +10,8 @@ var options = {
 	"buySeed": false,
 	"buyFert": false,
 	"average": false,
+    "fertilizer": 2,
+    "fertilizerSource": 0,
 	"seeds": {
 		"pierre": true,
 		"joja": true,
