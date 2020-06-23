@@ -63,6 +63,11 @@
 			</tr>
 
 			<tr>
+				<td>Max seed money:</td>
+				<td><input type="number" id="max_seed_money" value="" onChange="refresh()"/></td>
+			</tr>
+
+			<tr>
 				<td>Average profits:</td>
 				<td><input type="checkbox" id="check_average" onChange="refresh()" /></td>
 			</tr>
@@ -141,7 +146,8 @@
 			</tr>
 
 			<tr>
-				<td id="tdhelp" colspan="2"><div id="divhelp"><a href="help.html">Help</a></div></td>
+				<td id="tdhelp"><div id="divhelp"><a href="help.html">Help</a></div></td>
+				<td id="tdhelp"><div id="divhelp"><a href="#" id="reset">Reset</a></div></td>
 			</tr>
 
 		</table>
@@ -152,6 +158,5 @@
 		</div>
 
 		<script src="js/time.js"> </script>
-		<script>initial();</script>
 	</body>
 </html>
