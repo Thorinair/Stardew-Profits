@@ -1088,7 +1088,7 @@ function optionsLoad() {
 	options.planted = validIntRange(1, MAX_INT, options.planted);
 	document.getElementById('number_planted').value = options.planted;
 
-    options.max_seed_money = validIntRange(-1, MAX_INT, options.planted);
+    options.max_seed_money = validIntRange(-1, MAX_INT, options.max_seed_money);
     document.getElementById('max_seed_money').value = options.max_seed_money;
 
 	options.average = validBoolean(options.average);
@@ -1111,6 +1111,9 @@ function optionsLoad() {
 
 	options.fertilizer = validIntRange(0, 4, options.fertilizer);
 	document.getElementById('select_fertilizer').value = options.fertilizer;
+
+    options.speed_gro_source = validIntRange(0, 1, options.speed_gro_source);
+    document.getElementById('speed_gro_source').value = options.speed_gro_source;
 
 	options.buyFert = validBoolean(options.buyFert);
 	document.getElementById('check_buyFert').checked = options.buyFert;
