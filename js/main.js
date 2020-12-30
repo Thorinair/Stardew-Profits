@@ -1109,7 +1109,7 @@ function optionsLoad() {
 	options.buySeed = validBoolean(options.buySeed);
 	document.getElementById('check_buySeed').checked = options.buySeed;
 
-	options.fertilizer = validIntRange(0, 4, options.fertilizer);
+	options.fertilizer = validIntRange(0, 6, options.fertilizer);
 	document.getElementById('select_fertilizer').value = options.fertilizer;
 
     options.fertilizerSource = validIntRange(0, 1, options.fertilizerSource);

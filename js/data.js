@@ -197,6 +197,63 @@ var ratios = {
 			"ratioS": 0.29,
 			"ratioG": 0.61
 		}
+	],
+	"deluxe": [
+		{
+			"ratioN": 0.69,
+			"ratioS": 0.2,
+			"ratioG": 0.11
+		},
+		{
+			"ratioN": 0.52,
+			"ratioS": 0.3,
+			"ratioG": 0.18
+		},
+		{
+			"ratioN": 0.38,
+			"ratioS": 0.37,
+			"ratioG": 0.25
+		},
+		{
+			"ratioN": 0.24,
+			"ratioS": 0.44,
+			"ratioG": 0.32
+		},
+		{
+			"ratioN": 0.15,
+			"ratioS": 0.46,
+			"ratioG": 0.39
+		},
+		{
+			"ratioN": 0.14,
+			"ratioS": 0.4,
+			"ratioG": 0.46
+		},
+		{
+			"ratioN": 0.12,
+			"ratioS": 0.35,
+			"ratioG": 0.53
+		},
+		{
+			"ratioN": 0.1,
+			"ratioS": 0.3,
+			"ratioG": 0.6
+		},
+		{
+			"ratioN": 0.08,
+			"ratioS": 0.25,
+			"ratioG": 0.67
+		},
+		{
+			"ratioN": 0.07,
+			"ratioS": 0.19,
+			"ratioG": 0.74
+		},
+		{
+			"ratioN": 0.05,
+			"ratioS": 0.14,
+			"ratioG": 0.81
+		}
 	]
 };
 
@@ -232,6 +289,18 @@ var fertilizers = [
 		"growth": 0.75,
 		"cost": 150,
 		"alternate_cost": 80
+	},
+	{
+		"name": "Deluxe Fertilizer",
+		"ratio": "deluxe",
+		"growth": 1,
+		"cost": 0
+	},
+	{
+		"name": "Hyper Speed-Gro",
+		"ratio": "none",
+		"growth": 0.67,
+		"cost": 0
 	}
 ];
 
