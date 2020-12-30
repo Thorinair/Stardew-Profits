@@ -72,17 +72,16 @@ function formatNumber(num) {
     return x1 + x2;
 }
 
-/*
- * Calculates the maximum number of harvests for a crop, specified days, season, etc.
+/* 
+ * Calculates the number of days a crop has available to grow.
  * @param cropID The ID of the crop to calculate. This corresponds to the crop number of the selected season.
- * @return Number of harvests for the specified crop.
+ * @return Number of days that the specified crop has available to grow.
  */
-function harvests(cropID) {
+function days(cropID) {
 	var crop = seasons[options.season].crops[cropID];
-	var fertilizer = fertilizers[options.fertilizer];
+	var remainingDays = options.days;
 
 	// if the crop is cross season, add 28 extra days for each extra season
-	var remainingDays = options.days;
 	if (options.crossSeason && options.season < 2) {
 		for (var i = options.season + 1; i < 3; i++) {
 			for (var j = 0; j < seasons[i].crops.length; j++) {
@@ -94,6 +93,21 @@ function harvests(cropID) {
 			}
 		}
 	}
+
+  return remainingDays;
+}
+
+
+/*
+ * Calculates the maximum number of harvests for a crop, specified days, season, etc.
+ * @param cropID The ID of the crop to calculate. This corresponds to the crop number of the selected season.
+ * @return Number of harvests for the specified crop.
+ */
+function harvests(cropID) {
+	var crop = seasons[options.season].crops[cropID];
+	var fertilizer = fertilizers[options.fertilizer];
+
+	var remainingDays = days(cropID);
 
 	// console.log("=== " + crop.name + " ===");
 
@@ -272,10 +286,11 @@ function fertLoss(crop) {
 /*
  * Converts any value to the average per day value.
  * @param value The value to convert.
+ * @param days The number of days available
  * @return Value per day.
  */
-function perDay(value) {
-	return value / options.days;
+function perDay(value,days) {
+	return value / days;
 }
 
 /*
@@ -306,9 +321,10 @@ function valueCrops() {
 		cropList[i].seedLoss = seedLoss(cropList[i]);
 		cropList[i].fertLoss = fertLoss(cropList[i]);
 		cropList[i].profit = profit(cropList[i]);
-		cropList[i].averageProfit = perDay(cropList[i].profit);
-		cropList[i].averageSeedLoss = perDay(cropList[i].seedLoss);
-		cropList[i].averageFertLoss = perDay(cropList[i].fertLoss);
+    var remainingDays = days(cropList[i].id);
+		cropList[i].averageProfit = perDay(cropList[i].profit, remainingDays);
+		cropList[i].averageSeedLoss = perDay(cropList[i].seedLoss, remainingDays);
+		cropList[i].averageFertLoss = perDay(cropList[i].fertLoss, remainingDays);
 		if (options.average) {
 			cropList[i].drawProfit = cropList[i].averageProfit;
 			cropList[i].drawSeedLoss = cropList[i].averageSeedLoss;
