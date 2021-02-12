@@ -115,9 +115,7 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "price": 3000,
-      "jarType": null,
-      "kegType": null
+      "price": 3000
     }
   },
   "tealeaves": {
@@ -162,9 +160,7 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "price": 290,
-      "jarType": null,
-      "kegType": null
+      "price": 290
     }
   },
   "tulip": {
@@ -185,9 +181,7 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "price": 30,
-      "jarType": null,
-      "kegType": null
+      "price": 30
     }
   },
   "bluejazz": {
@@ -208,9 +202,7 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "price": 50,
-      "jarType": null,
-      "kegType": null
+      "price": 50
     }
   },
   "sunflower": {
@@ -231,9 +223,7 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "price": 80,
-      "jarType": null,
-      "kegType": null
+      "price": 80
     }
   },
   "coffeebean": {
@@ -256,7 +246,6 @@ var crops = {
       "extraPerc": 1,
       "price": 15,
       "keg": 150 / 5,
-      "jarType": null,
       "kegType": "Coffee"
     }
   },
@@ -278,9 +267,7 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "price": 140,
-      "jarType": null,
-      "kegType": null
+      "price": 140
     }
   },
   "summerspangle": {
@@ -301,9 +288,7 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "price": 90,
-      "jarType": null,
-      "kegType": null
+      "price": 90
     }
   },
   "parsnip": {
@@ -970,9 +955,7 @@ var crops = {
       "extra": 0,
       "extraPerc": 0,
       // (Wild Horseradish + Daffodil + Leek + Dandelion) / 4
-      "price": (50 + 30 + 60 + 40) / 4,
-      "jarType": null,
-      "kegType": null
+      "price": (50 + 30 + 60 + 40) / 4
     }
   },
   "summerseeds": {
