@@ -4,7 +4,7 @@ var cropList;
 var svgWidth = 1080;
 var svgHeight = 480;
 
-var width = svgWidth - 64;
+var width = svgWidth - 48;
 var height = (svgHeight - 56) / 2;
 var barPadding = 4;
 var barWidth = width / seasons[options.season].crops.length - barPadding;
@@ -80,6 +80,8 @@ function formatNumber(num) {
 function harvests(cropID) {
 	var crop = seasons[options.season].crops[cropID];
 	var fertilizer = fertilizers[options.fertilizer];
+	// Tea blooms every day for the last 7 days of a season
+	var isTea = crop.name == "Tea Leaves";
 
 	// if the crop is cross season, add 28 extra days for each extra season
 	var remainingDays = options.days;
@@ -105,7 +107,7 @@ function harvests(cropID) {
 	else
 		day += Math.floor(crop.growth.initial * fertilizer.growth);
 
-	if (day <= remainingDays)
+	if (day <= remainingDays && (!isTea || ((day-1) % 28 + 1) > 21))
 		harvests++;
 
 	while (day <= remainingDays) {
@@ -118,7 +120,7 @@ function harvests(cropID) {
 			day += Math.floor(crop.growth.initial * fertilizer.growth);
 		}
 
-		if (day <= remainingDays)
+		if (day <= remainingDays && (!isTea || ((day-1) % 28 + 1) > 21))
 			harvests++;
 	}
 
@@ -158,6 +160,27 @@ function planted(crop) {
 }
 
 /*
+ * Calculates the ratios of different crop ratings based on fertilizer level and player farming level
+ * Math is from Crop.harvest(...) game logic
+ *
+ * @param fertilizer The level of the fertilizer (none:0, basic:1, quality:2, deluxe:3)
+ * @param level The total farming skill level of the player
+ * @return Object containing ratios of iridium, gold, silver, and unrated crops liklihood
+ */
+function levelRatio(fertilizer, level) {
+	var ratio = {};
+	// Iridium is available on deluxe fertilizer at 2x gold ratio
+	ratio.ratioI = fertilizer >= 3 ? (0.2*(level/10.0)+0.2*fertilizer*((level+2)/12.0)+0.01)/2 : 0;
+	// Calculate gold times probability of not iridium
+	ratio.ratioG = (0.2*(level/10.0)+0.2*fertilizer*((level+2)/12.0)+0.01)*(1.0-ratio.ratioI);
+	// Probability of silver capped at .75, times probability of not gold/iridium
+	ratio.ratioS = Math.max(0,Math.min(0.75,ratio.ratioG*2.0)*(1.0-ratio.ratioG-ratio.ratioI));
+	// Probability of not the other ratings
+	ratio.ratioN = Math.max(0, 1.0 - ratio.ratioS - ratio.ratioG - ratio.ratioI);	
+	return ratio;
+}
+
+/*
  * Calculates the profit for a specified crop.
  * @param crop The crop object, containing all the crop data.
  * @return The total profit.
@@ -168,10 +191,7 @@ function profit(crop) {
 	var fertilizer = fertilizers[options.fertilizer];
 	var produce = options.produce;
 
-	var ratioN = ratios[fertilizer.ratio][options.level].ratioN;
-	var ratioS = ratios[fertilizer.ratio][options.level].ratioS;
-	var ratioG = ratios[fertilizer.ratio][options.level].ratioG;
-
+	var {ratioN, ratioS, ratioG, ratioI} = levelRatio(fertilizer.ratio, options.level+options.foodLevel);
 	var profit = 0;
 	
 	//Skip keg/jar calculations for ineligible crops (where corp.produce.jar or crop.produce.keg = 0)
@@ -181,23 +201,24 @@ function profit(crop) {
 	switch(produce) {
 		case 0:	userawproduce = true; break; 
 		case 1: 
-			if(crop.produce.jar == 0) userawproduce = true;
+			if(crop.produce.jarType == null) userawproduce = true;
 			break;
 		case 2:
-			if(crop.produce.keg == 0) userawproduce = true;
+			if(crop.produce.kegType == null) userawproduce = true;
 			break;
 	}
 	
-	//console.log("Calculating raw produce value for: " + crop.name);
+	// console.log("Calculating raw produce value for: " + crop.name);
 
 	if (produce == 0 || userawproduce) {
-		profit += crop.produce.rawN * ratioN * total_harvests;
-		profit += crop.produce.rawS * ratioS * total_harvests;
-		profit += crop.produce.rawG * ratioG * total_harvests;
+		profit += crop.produce.price * ratioN * total_harvests;
+		profit += Math.trunc(crop.produce.price * 1.25) * ratioS * total_harvests;
+		profit += Math.trunc(crop.produce.price * 1.5) * ratioG * total_harvests;
+		profit += crop.produce.price * 2 * ratioI * total_harvests;
 		// console.log("Profit (After normal produce): " + profit);
 
 		if (crop.produce.extra > 0) {
-			profit += crop.produce.rawN * crop.produce.extraPerc * crop.produce.extra * total_harvests;
+			profit += crop.produce.price * crop.produce.extraPerc * crop.produce.extra * total_harvests;
 			// console.log("Profit (After extra produce): " + profit);
 		}
 
@@ -209,10 +230,11 @@ function profit(crop) {
 	else {
 		var items = total_harvests;
 		items += crop.produce.extraPerc * crop.produce.extra * total_harvests;
+		var kegModifier = crop.produce.kegType === "Wine" ? 3 : 2.25;
 
 		switch (produce) {
-			case 1: profit += items * crop.produce.jar; break;
-			case 2: profit += items * crop.produce.keg; break;
+			case 1: profit += items * (crop.produce.price * 2 + 50); break;
+			case 2: profit += items * (crop.produce.keg != null ? crop.produce.keg : crop.produce.price * kegModifier); break;
 		}
 
 		if (options.skills.arti) {
@@ -649,13 +671,13 @@ function renderGraph() {
 				switch (options.produce) {
 					case 0: tooltipTr.append("td").attr("class", "tooltipTdRight").text("Raw crops"); break;
 					case 1:
-						if (d.produce.jar > 0)
+						if (d.produce.jarType != null)
 							tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.jarType);
 						else
 							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("Raw crops");
 						break;
 					case 2:
-						if (d.produce.keg > 0)
+						if (d.produce.kegType != null)
 							tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.kegType);
 						else
 							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("Raw crops");
@@ -672,6 +694,8 @@ function renderGraph() {
 				tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.harvests);
 
 				if (options.extra) {
+					var kegModifier = d.produce.kegType === "Wine" ? 3 : 2.25;
+					var kegPrice = d.produce.keg != null ? d.produce.keg : d.produce.price * kegModifier;
 
 					tooltip.append("h3").attr("class", "tooltipTitleExtra").text("Crop info");
 					tooltipTable = tooltip.append("table")
@@ -680,20 +704,24 @@ function renderGraph() {
 
 					tooltipTr = tooltipTable.append("tr");
 					tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Normal):");
-					tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.rawN)
+					tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.price)
 						.append("div").attr("class", "gold");
 					tooltipTr = tooltipTable.append("tr");
 					tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Silver):");
-					tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.rawS)
+					tooltipTr.append("td").attr("class", "tooltipTdRight").text(Math.trunc(d.produce.price * 1.25))
 						.append("div").attr("class", "gold");
 					tooltipTr = tooltipTable.append("tr");
 					tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Gold):");
-					tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.rawG)
+					tooltipTr.append("td").attr("class", "tooltipTdRight").text(Math.trunc(d.produce.price * 1.5))
 						.append("div").attr("class", "gold");
 					tooltipTr = tooltipTable.append("tr");
-					if (d.produce.jar > 0) {
+					tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Iridium):");
+					tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.price * 2)
+						.append("div").attr("class", "gold");
+					tooltipTr = tooltipTable.append("tr");
+					if (d.produce.jarType != null) {
 						tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Value (" + d.produce.jarType + "):");
-						tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.jar)
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.price * 2 + 50)
 						.append("div").attr("class", "gold");
 					}
 					else {
@@ -703,7 +731,7 @@ function renderGraph() {
 					tooltipTr = tooltipTable.append("tr");
 					if (d.produce.keg > 0) {
 						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (" + d.produce.kegType + "):");
-						tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.keg)
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text(kegPrice)
 						.append("div").attr("class", "gold");
 					}
 					else {
@@ -986,7 +1014,7 @@ function updateData() {
 		document.getElementById('number_level').value = 0;
 	if (document.getElementById('number_level').value > 10)
 		document.getElementById('number_level').value = 10;
-	options.level = document.getElementById('number_level').value;
+	options.level = parseInt(document.getElementById('number_level').value);
 
 	if (options.level >= 5) {
 		document.getElementById('check_skillsTill').disabled = false;
@@ -1020,6 +1048,8 @@ function updateData() {
 		options.skills.agri = false;
 		options.skills.arti = false;
 	}
+	options.foodIndex = document.getElementById('select_food').value;
+	options.foodLevel = parseInt(document.getElementById('select_food').options[options.foodIndex].value);
 	if (options.buyFert && options.fertilizer == 4)
 		document.getElementById('speed_gro_source').disabled = false;
 	else
@@ -1070,7 +1100,7 @@ function optionsLoad() {
 		return num < min ? min : num > max ? max : parseInt(num, 10);
 	}
 
-	options.season = validIntRange(0, 3, options.season);
+	options.season = validIntRange(0, 4, options.season);
 	document.getElementById('select_season').value = options.season;
 
   // ensure the number is between 1 - 28 inclusive; MAX_INT for greenhouse
@@ -1128,6 +1158,9 @@ function optionsLoad() {
 	options.skills.arti = validBoolean(options.skills.arti);
 	const binaryFlags = options.skills.agri + options.skills.arti * 2;
 	document.getElementById('select_skills').value = binaryFlags;
+
+	options.foodIndex = validIntRange(0, 6, options.foodIndex);
+	document.getElementById('select_food').value = options.foodIndex;
 
 	options.extra = validBoolean(options.extra);
 	document.getElementById('check_extra').checked = options.extra;

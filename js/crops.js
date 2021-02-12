@@ -22,11 +22,7 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 150,
-      "rawS": 187,
-      "rawG": 225,
-      "jar": 350,
-      "keg": 337,
+      "price": 150,
       "jarType": "Pickles",
       "kegType": "Juice"
     }
@@ -49,11 +45,7 @@ var crops = {
     "produce": {
       "extra": 1,
       "extraPerc": 0,
-      "rawN": 80,
-      "rawS": 100,
-      "rawG": 120,
-      "jar": 210,
-      "keg": 240,
+      "price": 80,
       "jarType": "Jelly",
       "kegType": "Wine"
     }
@@ -76,13 +68,33 @@ var crops = {
     "produce": {
       "extra": 1,
       "extraPerc": 0,
-      "rawN": 25,
-      "rawS": 31,
-      "rawG": 37,
-      "jar": 100,
+      "price": 25,
       "keg": 300,
       "jarType": "Pickles",
       "kegType": "Pale Ale"
+    }
+  },
+  "pineapple": {
+    "name": "Pineapple",
+    "url": "http://stardewvalleywiki.com/Pineapple",
+    "img": "pineapple.png",
+    "seeds": {
+      "pierre": 0,
+      "joja": 0,
+      "special": 400,
+      "specialLoc": "Island Trader",
+      "specialUrl": "http://stardewvalleywiki.com/Island_Trader"
+    },
+    "growth": {
+      "initial": 14,
+      "regrow": 7
+    },
+    "produce": {
+      "extra": 0,
+      "extraPerc": 0,
+      "price": 300,
+      "jarType": "Jelly",
+      "kegType": "Wine"
     }
   },
   "sweetgemberry": {
@@ -103,13 +115,33 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 3000,
-      "rawS": 3750,
-      "rawG": 4500,
-      "jar": 0,
-      "keg": 0,
-      "jarType": "",
-      "kegType": ""
+      "price": 3000,
+      "jarType": null,
+      "kegType": null
+    }
+  },
+  "tealeaves": {
+    "name": "Tea Leaves",
+    "url": "http://stardewvalleywiki.com/Tea_Leaves",
+    "img": "tealeaves.png",
+    "seeds": {
+      "pierre": 0,
+      "joja": 0,
+      "special": 2500,
+      "specialLoc": "Travelling Cart",
+      "specialUrl": "http://stardewvalleywiki.com/Travelling_Cart"
+    },
+    "growth": {
+      "initial": 20,
+      "regrow": 1
+    },
+    "produce": {
+      "extra": 0,
+      "extraPerc": 0,
+      "price": 50,
+      "keg": 100,
+      "jarType": "Pickles",
+      "kegType": "Tea"
     }
   },
   "fairyrose": {
@@ -130,13 +162,9 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 290,
-      "rawS": 362,
-      "rawG": 435,
-      "jar": 0,
-      "keg": 0,
-      "jarType": "",
-      "kegType": ""
+      "price": 290,
+      "jarType": null,
+      "kegType": null
     }
   },
   "tulip": {
@@ -157,13 +185,9 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 30,
-      "rawS": 37,
-      "rawG": 45,
-      "jar": 0,
-      "keg": 0,
-      "jarType": "",
-      "kegType": ""
+      "price": 30,
+      "jarType": null,
+      "kegType": null
     }
   },
   "bluejazz": {
@@ -184,13 +208,9 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 50,
-      "rawS": 62,
-      "rawG": 75,
-      "jar": 0,
-      "keg": 0,
-      "jarType": "",
-      "kegType": ""
+      "price": 50,
+      "jarType": null,
+      "kegType": null
     }
   },
   "sunflower": {
@@ -211,13 +231,9 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 80,
-      "rawS": 100,
-      "rawG": 120,
-      "jar": 0,
-      "keg": 0,
-      "jarType": "",
-      "kegType": ""
+      "price": 80,
+      "jarType": null,
+      "kegType": null
     }
   },
   "coffeebean": {
@@ -238,12 +254,9 @@ var crops = {
     "produce": {
       "extra": 3,
       "extraPerc": 1,
-      "rawN": 15,
-      "rawS": 18,
-      "rawG": 22,
-      "jar": 0,
-      "keg": 30,
-      "jarType": "",
+      "price": 15,
+      "keg": 150 / 5,
+      "jarType": null,
       "kegType": "Coffee"
     }
   },
@@ -265,13 +278,9 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 140,
-      "rawS": 175,
-      "rawG": 210,
-      "jar": 0,
-      "keg": 0,
-      "jarType": "",
-      "kegType": ""
+      "price": 140,
+      "jarType": null,
+      "kegType": null
     }
   },
   "summerspangle": {
@@ -292,13 +301,9 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 90,
-      "rawS": 112,
-      "rawG": 135,
-      "jar": 0,
-      "keg": 0,
-      "jarType": "",
-      "kegType": ""
+      "price": 90,
+      "jarType": null,
+      "kegType": null
     }
   },
   "parsnip": {
@@ -319,11 +324,7 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 35,
-      "rawS": 43,
-      "rawG": 52,
-      "jar": 120,
-      "keg": 78,
+      "price": 35,
       "jarType": "Pickles",
       "kegType": "Juice"
     }
@@ -346,11 +347,7 @@ var crops = {
     "produce": {
       "extra": 1,
       "extraPerc": 0,
-      "rawN": 40,
-      "rawS": 50,
-      "rawG": 60,
-      "jar": 130,
-      "keg": 90,
+      "price": 40,
       "jarType": "Pickles",
       "kegType": "Juice"
     }
@@ -373,11 +370,7 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 175,
-      "rawS": 218,
-      "rawG": 262,
-      "jar": 400,
-      "keg": 393,
+      "price": 175,
       "jarType": "Pickles",
       "kegType": "Juice"
     }
@@ -400,11 +393,7 @@ var crops = {
     "produce": {
       "extra": 1,
       "extraPerc": 0.2,
-      "rawN": 80,
-      "rawS": 100,
-      "rawG": 120,
-      "jar": 210,
-      "keg": 180,
+      "price": 80,
       "jarType": "Pickles",
       "kegType": "Juice"
     }
@@ -427,11 +416,30 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 60,
-      "rawS": 75,
-      "rawG": 90,
-      "jar": 170,
-      "keg": 135,
+      "price": 60,
+      "jarType": "Pickles",
+      "kegType": "Juice"
+    }
+  },
+  "taroroot": {
+    "name": "Taro Root",
+    "url": "http://stardewvalleywiki.com/Taro_Root",
+    "img": "taroroot.png",
+    "seeds": {
+      "pierre": 0,
+      "joja": 0,
+      "special": 24,
+      "specialLoc": "Island Trader",
+      "specialUrl": "http://stardewvalleywiki.com/Island_Trader"
+    },
+    "growth": {
+      "initial": 10,
+      "regrow": 0
+    },
+    "produce": {
+      "extra": 0,
+      "extraPerc": 0,
+      "price": 100,
       "jarType": "Pickles",
       "kegType": "Juice"
     }
@@ -454,11 +462,30 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 110,
-      "rawS": 137,
-      "rawG": 165,
-      "jar": 270,
-      "keg": 247,
+      "price": 110,
+      "jarType": "Pickles",
+      "kegType": "Juice"
+    }
+  },
+  "unmilledrice" : {
+    "name": "Unmilled Rice",
+    "url": "http://stardewvalleywiki.com/Unmilled_Rice",
+    "img": "unmilledrice.png",
+    "seeds": {
+      "pierre": 40,
+      "joja": 0,
+      "special": 1000,
+      "specialLoc": "Travelling Cart",
+      "specialUrl": "http://stardewvalleywiki.com/Travelling_Cart"
+    },
+    "growth": {
+      "initial": 8,
+      "regrow": 0
+    },
+    "produce": {
+      "extra": 1,
+      "extraPerc": 0.11,
+      "price": 30,
       "jarType": "Pickles",
       "kegType": "Juice"
     }
@@ -481,11 +508,7 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 220,
-      "rawS": 275,
-      "rawG": 330,
-      "jar": 490,
-      "keg": 660,
+      "price": 220,
       "jarType": "Jelly",
       "kegType": "Wine"
     }
@@ -508,11 +531,7 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 250,
-      "rawS": 312,
-      "rawG": 375,
-      "jar": 550,
-      "keg": 750,
+      "price": 250,
       "jarType": "Jelly",
       "kegType": "Wine"
     }
@@ -535,11 +554,7 @@ var crops = {
     "produce": {
       "extra": 1,
       "extraPerc": 0.05,
-      "rawN": 60,
-      "rawS": 75,
-      "rawG": 90,
-      "jar": 170,
-      "keg": 135,
+      "price": 60,
       "jarType": "Pickles",
       "kegType": "Juice"
     }
@@ -562,11 +577,7 @@ var crops = {
     "produce": {
       "extra": 2,
       "extraPerc": 1,
-      "rawN": 50,
-      "rawS": 62,
-      "rawG": 75,
-      "jar": 150,
-      "keg": 150,
+      "price": 50,
       "jarType": "Jelly",
       "kegType": "Wine"
     }
@@ -589,11 +600,7 @@ var crops = {
     "produce": {
       "extra": 1,
       "extraPerc": 0.03,
-      "rawN": 40,
-      "rawS": 50,
-      "rawG": 60,
-      "jar": 130,
-      "keg": 120,
+      "price": 40,
       "jarType": "Jelly",
       "kegType": "Wine"
     }
@@ -616,10 +623,7 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 25,
-      "rawS": 31,
-      "rawG": 37,
-      "jar": 100,
+      "price": 25,
       "keg": 200,
       "jarType": "Pickles",
       "kegType": "Beer"
@@ -643,11 +647,7 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 90,
-      "rawS": 112,
-      "rawG": 135,
-      "jar": 230,
-      "keg": 202,
+      "price": 90,
       "jarType": "Pickles",
       "kegType": "Juice"
     }
@@ -670,11 +670,7 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 260,
-      "rawS": 325,
-      "rawG": 390,
-      "jar": 570,
-      "keg": 585,
+      "price": 260,
       "jarType": "Pickles",
       "kegType": "Juice"
     }
@@ -697,11 +693,7 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 750,
-      "rawS": 937,
-      "rawG": 1125,
-      "jar": 1550,
-      "keg": 2250,
+      "price": 750,
       "jarType": "Jelly",
       "kegType": "Wine"
     }
@@ -724,11 +716,7 @@ var crops = {
     "produce": {
       "extra": 1,
       "extraPerc": 0,
-      "rawN": 50,
-      "rawS": 62,
-      "rawG": 75,
-      "jar": 150,
-      "keg": 112,
+      "price": 50,
       "jarType": "Pickles",
       "kegType": "Juice"
     }
@@ -751,11 +739,7 @@ var crops = {
     "produce": {
       "extra": 1,
       "extraPerc": 0.002,
-      "rawN": 60,
-      "rawS": 75,
-      "rawG": 90,
-      "jar": 170,
-      "keg": 135,
+      "price": 60,
       "jarType": "Pickles",
       "kegType": "Juice"
     }
@@ -778,11 +762,7 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 160,
-      "rawS": 200,
-      "rawG": 240,
-      "jar": 370,
-      "keg": 360,
+      "price": 160,
       "jarType": "Pickles",
       "kegType": "Juice"
     }
@@ -805,11 +785,7 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 320,
-      "rawS": 400,
-      "rawG": 480,
-      "jar": 690,
-      "keg": 720,
+      "price": 320,
       "jarType": "Pickles",
       "kegType": "Juice"
     }
@@ -832,11 +808,7 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 80,
-      "rawS": 100,
-      "rawG": 120,
-      "jar": 210,
-      "keg": 180,
+      "price": 80,
       "jarType": "Pickles",
       "kegType": "Juice"
     }
@@ -859,11 +831,7 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 160,
-      "rawS": 200,
-      "rawG": 240,
-      "jar": 370,
-      "keg": 360,
+      "price": 160,
       "jarType": "Pickles",
       "kegType": "Juice"
     }
@@ -886,11 +854,7 @@ var crops = {
     "produce": {
       "extra": 1,
       "extraPerc": 1,
-      "rawN": 75,
-      "rawS": 93,
-      "rawG": 112,
-      "jar": 200,
-      "keg": 225,
+      "price": 75,
       "jarType": "Jelly",
       "kegType": "Wine"
     }
@@ -913,11 +877,7 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 100,
-      "rawS": 125,
-      "rawG": 150,
-      "jar": 250,
-      "keg": 225,
+      "price": 100,
       "jarType": "Pickles",
       "kegType": "Juice"
     }
@@ -940,11 +900,30 @@ var crops = {
     "produce": {
       "extra": 0,
       "extraPerc": 0,
-      "rawN": 550,
-      "rawS": 687,
-      "rawG": 825,
-      "jar": 1150,
-      "keg": 1650,
+      "price": 550,
+      "jarType": "Jelly",
+      "kegType": "Wine"
+    }
+  },
+  "cactusfruit": {
+    "name": "Cactus Fruit",
+    "url": "http://stardewvalleywiki.com/Cactus_Fruit",
+    "img": "cactusfruit.png",
+    "seeds": {
+      "pierre": 0,
+      "joja": 0,
+      "special": 150,
+      "specialLoc": "Oasis",
+      "specialUrl": "http://stardewvalleywiki.com/Oasis"
+    },
+    "growth": {
+      "initial": 12,
+      "regrow": 3
+    },
+    "produce": {
+      "extra": 0,
+      "extraPerc": 0,
+      "price": 75,
       "jarType": "Jelly",
       "kegType": "Wine"
     }
@@ -967,11 +946,7 @@ var crops = {
     "produce": {
       "extra": 1,
       "extraPerc": 0.02,
-      "rawN": 120,
-      "rawS": 150,
-      "rawG": 180,
-      "jar": 290,
-      "keg": 360,
+      "price": 120,
       "jarType": "Jelly",
       "kegType": "Wine"
     }
@@ -995,13 +970,9 @@ var crops = {
       "extra": 0,
       "extraPerc": 0,
       // (Wild Horseradish + Daffodil + Leek + Dandelion) / 4
-      "rawN": (50 + 30 + 60 + 40) / 4,
-      "rawS": (62 + 37 + 75 + 50) / 4,
-      "rawG": (75 + 45 + 90 + 60) / 4,
-      "jar": 0,
-      "keg": 0,
-      "jarType": "",
-      "kegType": ""
+      "price": (50 + 30 + 60 + 40) / 4,
+      "jarType": null,
+      "kegType": null
     }
   },
   "summerseeds": {
@@ -1023,11 +994,7 @@ var crops = {
       "extra": 0,
       "extraPerc": 0,
       // (Spice Berry + Grape + Sweet Pea) / 3
-      "rawN": (80 + 80 + 50) / 3,
-      "rawS": (100 + 100 + 62) / 3,
-      "rawG": (120 + 120 + 75) / 3,
-      "jar": (210 + 210 + 0) / 3,
-      "keg": (240 + 240 + 0) / 3,
+      "price": (80 + 80 + 50) / 3,
       "jarType": "Jelly",
       "kegType": "Wine"
     }
@@ -1051,11 +1018,7 @@ var crops = {
       "extra": 0,
       "extraPerc": 0,
       // (Blackberry + Common Mushroom + Hazelnut + Wild Plum) / 4
-      "rawN": (20 + 40 + 90 + 80) / 4,
-      "rawS": (25 + 50 + 112 + 100) / 4,
-      "rawG": (30 + 60 + 135 + 120) / 4,
-      "jar": (90 + 0 + 0 + 210) / 4,
-      "keg": (60 + 0 + 0 + 240) / 4,
+      "price": (20 + 40 + 90 + 80) / 4,
       "jarType": "Jelly",
       "kegType": "Wine"
     }
@@ -1079,11 +1042,7 @@ var crops = {
       "extra": 0,
       "extraPerc": 0,
       // (Crocus + Crystal Fruit + Snow Yam + Winter Root) / 4
-      "rawN": (60 + 150 + 100 + 70) / 4,
-      "rawS": (75 + 187 + 125 + 87) / 4,
-      "rawG": (90 + 225 + 150 + 105) / 4,
-      "jar": (0 + 350 + 0 + 0) / 4,
-      "keg": (0 + 450 + 0 + 0) / 4,
+      "price": (60 + 150 + 100 + 70) / 4,
       "jarType": "Jelly",
       "kegType": "Wine"
     }
