@@ -109,7 +109,7 @@ input[type=number]::-webkit-outer-spin-button {
     -moz-appearance: none;
     appearance: none;
     cursor: pointer;
-}    
+}
 
 input[type=number]:hover::-webkit-inner-spin-button { 
     background: url("../img/arrows.png") no-repeat 50% 50%;  
@@ -118,6 +118,9 @@ input[type=number]:hover::-webkit-inner-spin-button {
     padding: 4px;
     position: relative;
     right: -4px;
+}
+input:disabled {
+    color: #888888;
 }
 
 select {

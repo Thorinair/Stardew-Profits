@@ -27,23 +27,23 @@
 				<td>Season:</td>
 				<td>
 					<select id="select_season" onChange="rebuild()">
-						<option value="0" selected="true">Spring (28 days)</option>
-						<option value="1">Summer (28 days)</option>
-						<option value="2">Fall (28 days)</option>
-						<option value="3">Winter (28 days)</option>
-						<option value="4">Greenhouse</option>
+						<option value="0" id="season_0" selected="true">Spring</option>
+						<option value="1" id="season_1">Summer</option>
+						<option value="2" id="season_2">Fall</option>
+						<option value="3" id="season_3">Winter</option>
+						<option value="4" id="season_4">Greenhouse</option>
 					</select>
 				</td>
 			</tr>
 
+            <tr id="number_days_row">
+                <td>Number of days:</td>
+                <td><input type="number" id="number_days" value="28" onChange="refresh()"/></td>
+            </tr>
+
 			<tr id="current_day_row">
 				<td>Current day:</td>
 				<td><input type="number" id="current_day" value="1" onChange="refresh()"/></td>
-			</tr>
-
-			<tr id="number_days_row">
-				<td>Number of days:</td>
-				<td><input type="number" id="number_days" value="28" onChange="refresh()"/></td>
 			</tr>
 
 			<tr>
@@ -64,7 +64,7 @@
 
 			<tr>
 				<td>Max seed money:</td>
-				<td><input type="number" id="max_seed_money" value="" onChange="refresh()"/></td>
+				<td><input type="number" id="max_seed_money" value="0" onChange="refresh()"/></td>
 			</tr>
 
 			<tr>
@@ -178,7 +178,7 @@
 		</div>
 
 		<div class="footer">
-			<p><a href="http://stardewvalley.net/" target="_blank">Stardew Valley v1.5.4</a> &copy; <a href="https://twitter.com/ConcernedApe" target="_blank">ConcernedApe</a> | Website designed by <a href="https://twitter.com/thorinair_music" target="_blank">Thorinair</a> | v1.4.0</p>
+			<p><a href="http://stardewvalley.net/" target="_blank">Stardew Valley v1.5.4</a> &copy; <a href="https://twitter.com/ConcernedApe" target="_blank">ConcernedApe</a> | Website designed by <a href="https://twitter.com/thorinair_music" target="_blank">Thorinair</a> | v1.4.1</p>
 		</div>
 
 		<script src="js/time.js"> </script>

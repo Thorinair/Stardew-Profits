@@ -83,19 +83,23 @@ function harvests(cropID) {
 	// Tea blooms every day for the last 7 days of a season
 	var isTea = crop.name == "Tea Leaves";
 
-	// if the crop is cross season, add 28 extra days for each extra season
-	var remainingDays = options.days;
-	if (options.crossSeason && options.season < 2) {
-		for (var i = options.season + 1; i < 3; i++) {
-			for (var j = 0; j < seasons[i].crops.length; j++) {
-				var seasonCrop = seasons[i].crops[j];
-				if (crop.name == seasonCrop.name) {
-					remainingDays += 28;
-					break;
-				}
+	// if the crop is NOT cross season, remove 28 extra days for each extra season
+	var remainingDays = options.days - 28;
+	if (options.crossSeason && options.season != 4) {
+        var i = options.season + 1;
+        if (i >= 4)
+            i = 0;
+		for (var j = 0; j < seasons[i].crops.length; j++) {
+			var seasonCrop = seasons[i].crops[j];
+			if (crop.name == seasonCrop.name) {
+				remainingDays += 28;
+				break;
 			}
 		}
 	}
+    else {
+        remainingDays = options.days;
+    }
 
 	// console.log("=== " + crop.name + " ===");
 
@@ -954,35 +958,29 @@ function updateGraph() {
 			.attr("width", barWidth + barPadding);
 }
 
+function updateSeasonNames() {
+    if (options.crossSeason) {
+        document.getElementById('season_0').innerHTML = "Spring & Summer";
+        document.getElementById('season_1').innerHTML = "Summer & Fall";
+        document.getElementById('season_2').innerHTML = "Fall & Winter";
+        document.getElementById('season_3').innerHTML = "Winter & Spring";
+    }
+    else {
+        document.getElementById('season_0').innerHTML = "Spring";
+        document.getElementById('season_1').innerHTML = "Summer";
+        document.getElementById('season_2').innerHTML = "Fall";
+        document.getElementById('season_3').innerHTML = "Winter";
+    }
+}
+
 /*
  * Updates all options and data, based on the options set in the HTML.
  * After that, filters, values and sorts all the crops again.
  */
 function updateData() {
 
-	options.season = parseInt(document.getElementById('select_season').value);
-
-	const isGreenhouse = options.season === 4;
-
-	if (!isGreenhouse) {
-		document.getElementById('current_day_row').style.display = 'table-row';
-		document.getElementById('number_days_row').style.display = 'none';
-		document.getElementById('cross_season_row').style.display = 'table-row';
-
-		if (document.getElementById('current_day').value <= 0)
-			document.getElementById('current_day').value = 1;
-		if (document.getElementById('current_day').value > 28)
-			document.getElementById('current_day').value = 28;
-		options.days = 29 - document.getElementById('current_day').value;
-	} else {
-		document.getElementById('current_day_row').style.display = 'none';
-		document.getElementById('number_days_row').style.display = 'table-row';
-		document.getElementById('cross_season_row').style.display = 'none';
-
-		if (document.getElementById('number_days').value > 100000)
-			document.getElementById('number_days').value = 100000;
-		options.days = document.getElementById('number_days').value;
-	}
+    options.season = parseInt(document.getElementById('select_season').value);
+    const isGreenhouse = options.season === 4;
 
 	options.produce = parseInt(document.getElementById('select_produce').value);
 
@@ -998,8 +996,37 @@ function updateData() {
 	}
 
 	options.average = document.getElementById('check_average').checked;
+    
+    options.crossSeason = document.getElementById('cross_season').checked;
 
-	options.crossSeason = document.getElementById('cross_season').checked;
+    if (!isGreenhouse) {
+        document.getElementById('current_day_row').style.display = 'table-row';
+        document.getElementById('number_days').disabled = true;
+        document.getElementById('cross_season_row').style.display = 'table-row';
+
+        if (document.getElementById('current_day').value <= 0)
+            document.getElementById('current_day').value = 1;
+        if (options.crossSeason) {
+            document.getElementById('number_days').value = 56;
+            if (document.getElementById('current_day').value > 56)
+                document.getElementById('current_day').value = 56;
+            options.days = 57 - document.getElementById('current_day').value;
+        }
+        else {
+            document.getElementById('number_days').value = 28;
+            if (document.getElementById('current_day').value > 28)
+                  document.getElementById('current_day').value = 28;
+            options.days = 29 - document.getElementById('current_day').value;
+        }
+    } else {
+        document.getElementById('current_day_row').style.display = 'none';
+        document.getElementById('number_days').disabled = false;
+        document.getElementById('cross_season_row').style.display = 'none';
+
+        if (document.getElementById('number_days').value > 100000)
+            document.getElementById('number_days').value = 100000;
+        options.days = document.getElementById('number_days').value;
+    }
 
 	options.seeds.pierre = document.getElementById('check_seedsPierre').checked;
 	options.seeds.joja = document.getElementById('check_seedsJoja').checked;
@@ -1060,6 +1087,8 @@ function updateData() {
 
 	options.extra = document.getElementById('check_extra').checked;
 
+    updateSeasonNames();
+
 	// Persist the options object into the URL hash.
 	window.location.hash = encodeURIComponent(serialize(options));
 
@@ -1106,15 +1135,6 @@ function optionsLoad() {
 	options.season = validIntRange(0, 4, options.season);
 	document.getElementById('select_season').value = options.season;
 
-  // ensure the number is between 1 - 28 inclusive; MAX_INT for greenhouse
-	const daysMax = options.season === 4 ? MAX_INT : 28;
-	options.days = validIntRange(1, daysMax, options.days);
-	if (options.season === 4) {
-		document.getElementById('number_days').value = options.days
-	} else {
-		document.getElementById('current_day').value = 29 - options.days;
-	}
-
 	options.produce = validIntRange(0, 2, options.produce);
 	document.getElementById('select_produce').value = options.produce;
 
@@ -1127,8 +1147,29 @@ function optionsLoad() {
 	options.average = validBoolean(options.average);
 	document.getElementById('check_average').checked = options.average;
 
-	options.crossSeason = validBoolean(options.crossSeason);
-	document.getElementById('cross_season').checked = options.crossSeason;
+    options.crossSeason = validBoolean(options.crossSeason);
+    document.getElementById('cross_season').checked = options.crossSeason;
+
+    var daysMax = 0;
+    if (options.crossSeason)
+        daysMax = options.season === 4 ? MAX_INT : 56;
+    else
+        daysMax = options.season === 4 ? MAX_INT : 28;
+
+    options.days = validIntRange(1, daysMax, options.days);
+    if (options.season === 4) {
+        document.getElementById('number_days').value = options.days;
+    } 
+    else {
+        if (options.crossSeason) {
+            document.getElementById('number_days').value = 56;
+            document.getElementById('current_day').value = 57 - options.days;
+        }
+        else {
+            document.getElementById('number_days').value = 28;
+            document.getElementById('current_day').value = 29 - options.days;
+        }
+    }
 
 	options.seeds.pierre = validBoolean(options.seeds.pierre);
 	document.getElementById('check_seedsPierre').checked = options.seeds.pierre;
@@ -1167,6 +1208,8 @@ function optionsLoad() {
 
 	options.extra = validBoolean(options.extra);
 	document.getElementById('check_extra').checked = options.extra;
+
+    updateSeasonNames();
 }
 
 function deserialize(str) {
