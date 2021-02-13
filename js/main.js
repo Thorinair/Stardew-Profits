@@ -192,6 +192,7 @@ function profit(crop) {
 	var produce = options.produce;
 
 	var {ratioN, ratioS, ratioG, ratioI} = levelRatio(fertilizer.ratio, options.level+options.foodLevel);
+	if (crop.name == "Tea Leaves") ratioN = 1 && (ratioS = RatioG = ratioI = 0);
 	var profit = 0;
 	
 	//Skip keg/jar calculations for ineligible crops (where corp.produce.jar or crop.produce.keg = 0)
@@ -706,18 +707,20 @@ function renderGraph() {
 					tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Normal):");
 					tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.price)
 						.append("div").attr("class", "gold");
-					tooltipTr = tooltipTable.append("tr");
-					tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Silver):");
-					tooltipTr.append("td").attr("class", "tooltipTdRight").text(Math.trunc(d.produce.price * 1.25))
-						.append("div").attr("class", "gold");
-					tooltipTr = tooltipTable.append("tr");
-					tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Gold):");
-					tooltipTr.append("td").attr("class", "tooltipTdRight").text(Math.trunc(d.produce.price * 1.5))
-						.append("div").attr("class", "gold");
-					tooltipTr = tooltipTable.append("tr");
-					tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Iridium):");
-					tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.price * 2)
-						.append("div").attr("class", "gold");
+					if (d.name != "Tea Leaves") {
+						tooltipTr = tooltipTable.append("tr");
+						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Silver):");
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text(Math.trunc(d.produce.price * 1.25))
+							.append("div").attr("class", "gold");
+						tooltipTr = tooltipTable.append("tr");
+						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Gold):");
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text(Math.trunc(d.produce.price * 1.5))
+							.append("div").attr("class", "gold");
+						tooltipTr = tooltipTable.append("tr");
+						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Iridium):");
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.price * 2)
+							.append("div").attr("class", "gold");
+					}
 					tooltipTr = tooltipTable.append("tr");
 					if (d.produce.jarType != null) {
 						tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Value (" + d.produce.jarType + "):");
