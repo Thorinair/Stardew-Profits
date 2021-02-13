@@ -47,7 +47,7 @@ body {
 	background-color: #333333;
 	border-radius: 8px;
 	padding: 8px;
-	width: 825px;
+	width: 900px;
     -webkit-filter: drop-shadow(0px 2px 8px rgba(0,0,0,0.75));
     -ms-filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=2, Color='#000')";
     filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=2, Color='#000')";
@@ -63,6 +63,25 @@ body {
 	padding: 4px;
 	background-color: #222222;
 	border-radius: 4px;
+}
+
+.options table tr .sub {
+    background-color: transparent;
+    padding: 0px;
+}
+
+.options table tr td .subt {
+    background-color: transparent;
+    margin: 0 auto;
+    margin-left: 16px;
+    margin-top: -2px;
+    margin-bottom: -2px;
+    width: -webkit-fill-available;
+}
+
+.options table tr td .subt td {
+    background-color: #181818;
+    margin: 0px;
 }
 
 #tdhelp {

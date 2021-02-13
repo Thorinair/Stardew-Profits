@@ -128,26 +128,56 @@
 
 			<tr>
 				<td>Farming level:</td>
-				<td><input type="number" id="number_level" value="0" onChange="refresh()"/></td>
+				<td><input type="number" id="farming_level" value="0" onChange="refresh()"/></td>
 			</tr>
 
 			<tr>
-				<td>Level 5 skills:</td>
-				<td>
-					<input type="checkbox" id="check_skillsTill" onChange="refresh()" /> Tiller<br />
+				<td colspan="2" class="sub">
+                    <table cellspacing="2" class="subt">
+                        <tr>
+                            <td>Level 5 skill:</td>
+                            <td><input type="checkbox" id="check_skillsTill" onChange="refresh()" /> Tiller<br /></td>
+                        </tr>
+                        <tr>
+                            <td>Level 10 skill:</td>
+                            <td >
+                                <select id="select_skills" onChange="refresh()">
+                                    <option value="0" selected="true">None</option>
+                                    <option value="1">Agriculturist</option>
+                                    <option value="2">Artisan</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
 				</td>
 			</tr>
 
-			<tr>
-				<td>Level 10 skills:</td>
-				<td>
-					<select id="select_skills" onChange="refresh()">
-						<option value="0" selected="true">None</option>
-						<option value="1">Agriculturist</option>
-						<option value="2">Artisan</option>
-					</select>
-				</td>
-			</tr>
+            <tr>
+                <td colspan="2" class="sub">
+                    <table class="subt">
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Foraging level:</td>
+                <td ><input type="number" id="foraging_level" value="0" onChange="refresh()"/></td>
+            </tr>
+
+            <tr>
+                <td colspan="2" class="sub">
+                    <table cellspacing="2" class="subt">
+                        <tr>
+                            <td>Level 5 skill:</td>
+                            <td><input type="checkbox" id="check_skillsGatherer" onChange="refresh()" /> Gatherer<br /></td>
+                        </tr>
+                        <tr>
+                            <td>Level 10 skill:</td>
+                            <td><input type="checkbox" id="check_skillsBotanist" onChange="refresh()" /> Botanist<br /></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
 
 			<tr>
 				<td>Farming buff food:</td>
@@ -178,7 +208,7 @@
 		</div>
 
 		<div class="footer">
-			<p><a href="http://stardewvalley.net/" target="_blank">Stardew Valley v1.5.4</a> &copy; <a href="https://twitter.com/ConcernedApe" target="_blank">ConcernedApe</a> | Website designed by <a href="https://twitter.com/thorinair_music" target="_blank">Thorinair</a> | v1.4.1</p>
+			<p><a href="http://stardewvalley.net/" target="_blank">Stardew Valley v1.5.4</a> &copy; <a href="https://twitter.com/ConcernedApe" target="_blank">ConcernedApe</a> | Website designed by <a href="https://twitter.com/thorinair_music" target="_blank">Thorinair</a> | v1.4.2</p>
 		</div>
 
 		<script src="js/time.js"> </script>

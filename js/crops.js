@@ -956,7 +956,8 @@ var crops = {
       "extraPerc": 0,
       // (Wild Horseradish + Daffodil + Leek + Dandelion) / 4
       "price": (50 + 30 + 60 + 40) / 4
-    }
+    },
+    "isWildseed": true
   },
   "summerseeds": {
     "name": "Summer Seeds",
@@ -980,7 +981,8 @@ var crops = {
       "price": (80 + 80 + 50) / 3,
       "jarType": "Jelly",
       "kegType": "Wine"
-    }
+    },
+    "isWildseed": true
   },
   "fallseeds": {
     "name": "Fall Seeds",
@@ -1004,7 +1006,8 @@ var crops = {
       "price": (20 + 40 + 90 + 80) / 4,
       "jarType": "Jelly",
       "kegType": "Wine"
-    }
+    },
+    "isWildseed": true
   },
   "winterseeds": {
     "name": "Winter Seeds",
@@ -1028,6 +1031,7 @@ var crops = {
       "price": (60 + 150 + 100 + 70) / 4,
       "jarType": "Jelly",
       "kegType": "Wine"
-    }
+    },
+    "isWildseed": true
   }
 };

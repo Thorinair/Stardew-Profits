@@ -171,14 +171,18 @@ function planted(crop) {
  * @param level The total farming skill level of the player
  * @return Object containing ratios of iridium, gold, silver, and unrated crops liklihood
  */
-function levelRatio(fertilizer, level) {
+function levelRatio(fertilizer, level, isWildseed) {
 	var ratio = {};
-	// Iridium is available on deluxe fertilizer at 2x gold ratio
-	ratio.ratioI = fertilizer >= 3 ? (0.2*(level/10.0)+0.2*fertilizer*((level+2)/12.0)+0.01)/2 : 0;
-	// Calculate gold times probability of not iridium
-	ratio.ratioG = (0.2*(level/10.0)+0.2*fertilizer*((level+2)/12.0)+0.01)*(1.0-ratio.ratioI);
-	// Probability of silver capped at .75, times probability of not gold/iridium
-	ratio.ratioS = Math.max(0,Math.min(0.75,ratio.ratioG*2.0)*(1.0-ratio.ratioG-ratio.ratioI));
+
+    // Iridium is available on deluxe fertilizer at 2x gold ratio, or set to 1 if Botanist is selected on Wildseeds.
+    if (isWildseed && options.skills.botanist)
+        ratio.ratioI = 1;
+    else
+    	ratio.ratioI = fertilizer >= 3 ? (0.2*(level/10.0)+0.2*fertilizer*((level+2)/12.0)+0.01)/2 : 0;
+    // Calculate gold times probability of not iridium
+    ratio.ratioG = (0.2*(level/10.0)+0.2*fertilizer*((level+2)/12.0)+0.01)*(1.0-ratio.ratioI);
+    // Probability of silver capped at .75, times probability of not gold/iridium
+    ratio.ratioS = Math.max(0,Math.min(0.75,ratio.ratioG*2.0)*(1.0-ratio.ratioG-ratio.ratioI));
 	// Probability of not the other ratings
 	ratio.ratioN = Math.max(0, 1.0 - ratio.ratioS - ratio.ratioG - ratio.ratioI);	
 	return ratio;
@@ -195,7 +199,12 @@ function profit(crop) {
 	var fertilizer = fertilizers[options.fertilizer];
 	var produce = options.produce;
 
-	var {ratioN, ratioS, ratioG, ratioI} = levelRatio(fertilizer.ratio, options.level+options.foodLevel);
+    var useLevel = options.level;
+    if (crop.isWildseed)
+        useLevel = options.foragingLevel;
+
+	var {ratioN, ratioS, ratioG, ratioI} = levelRatio(fertilizer.ratio, useLevel+options.foodLevel, crop.isWildseed);
+        
 	if (crop.name == "Tea Leaves") ratioN = 1 && (ratioS = RatioG = ratioI = 0);
 	var profit = 0;
 	
@@ -258,8 +267,15 @@ function profit(crop) {
 		// console.log("Profit (After fertilizer): " + profit);
 	}
 
+    profitData = {}
+    profitData.profit = profit;
+    profitData.ratioN = ratioN;
+    profitData.ratioS = ratioS;
+    profitData.ratioG = ratioG;
+    profitData.ratioI = ratioI;
+
 	// console.log("Profit: " + profit);
-	return profit;
+	return profitData;
 }
 
 /*
@@ -328,11 +344,20 @@ function fetchCrops() {
  */
 function valueCrops() {
 	for (var i = 0; i < cropList.length; i++) {
+        if (cropList[i].isWildseed && options.skills.gatherer) {
+            cropList[i].produce.extra = 1;
+            cropList[i].produce.extraPerc = 0.2;
+        }
+        else {
+            cropList[i].produce.extra = 0;
+            cropList[i].produce.extraPerc = 0;
+        }
 		cropList[i].planted = planted(cropList[i]);
 		cropList[i].harvests = harvests(cropList[i].id);
 		cropList[i].seedLoss = seedLoss(cropList[i]);
 		cropList[i].fertLoss = fertLoss(cropList[i]);
-		cropList[i].profit = profit(cropList[i]);
+		cropList[i].profitData = profit(cropList[i]);
+        cropList[i].profit = cropList[i].profitData.profit;
 		cropList[i].averageProfit = perDay(cropList[i].profit);
 		cropList[i].averageSeedLoss = perDay(cropList[i].seedLoss);
 		cropList[i].averageFertLoss = perDay(cropList[i].fertLoss);
@@ -707,23 +732,33 @@ function renderGraph() {
 						.attr("class", "tooltipTable")
 						.attr("cellspacing", 0);
 
-					tooltipTr = tooltipTable.append("tr");
-					tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Normal):");
-					tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.price)
-						.append("div").attr("class", "gold");
+                    if (!(d.isWildseed && options.skills.botanist)) {
+    					tooltipTr = tooltipTable.append("tr");
+    					tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Normal):");
+    					tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.price)
+    						.append("div").attr("class", "gold");
+                        tooltipTr.append("td").attr("class", "tooltipTdRight").text("(" + (d.profitData.ratioN*100).toFixed(0) + "%)");
+                    }
 					if (d.name != "Tea Leaves") {
-						tooltipTr = tooltipTable.append("tr");
-						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Silver):");
-						tooltipTr.append("td").attr("class", "tooltipTdRight").text(Math.trunc(d.produce.price * 1.25))
-							.append("div").attr("class", "gold");
-						tooltipTr = tooltipTable.append("tr");
-						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Gold):");
-						tooltipTr.append("td").attr("class", "tooltipTdRight").text(Math.trunc(d.produce.price * 1.5))
-							.append("div").attr("class", "gold");
-						tooltipTr = tooltipTable.append("tr");
-						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Iridium):");
-						tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.price * 2)
-							.append("div").attr("class", "gold");
+                        if (!(d.isWildseed && options.skills.botanist)) {
+    						tooltipTr = tooltipTable.append("tr");
+    						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Silver):");
+    						tooltipTr.append("td").attr("class", "tooltipTdRight").text(Math.trunc(d.produce.price * 1.25))
+    							.append("div").attr("class", "gold");
+                            tooltipTr.append("td").attr("class", "tooltipTdRight").text("(" + (d.profitData.ratioS*100).toFixed(0) + "%)");
+    						tooltipTr = tooltipTable.append("tr");
+    						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Gold):");
+    						tooltipTr.append("td").attr("class", "tooltipTdRight").text(Math.trunc(d.produce.price * 1.5))
+    							.append("div").attr("class", "gold");
+                            tooltipTr.append("td").attr("class", "tooltipTdRight").text("(" + (d.profitData.ratioG*100).toFixed(0) + "%)");
+                        }
+                        if ((!d.isWildseed && fertilizers[options.fertilizer].ratio >= 3) || (d.isWildseed && options.skills.botanist)) {
+    						tooltipTr = tooltipTable.append("tr");
+    						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Iridium):");
+    						tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.price * 2)
+    							.append("div").attr("class", "gold");
+                            tooltipTr.append("td").attr("class", "tooltipTdRight").text("(" + (d.profitData.ratioI*100).toFixed(0) + "%)");
+                        }
 					}
 					tooltipTr = tooltipTable.append("tr");
 					if (d.produce.jarType != null) {
@@ -973,6 +1008,10 @@ function updateSeasonNames() {
     }
 }
 
+function updateSeedChance() {
+
+}
+
 /*
  * Updates all options and data, based on the options set in the HTML.
  * After that, filters, values and sorts all the crops again.
@@ -1040,11 +1079,11 @@ function updateData() {
 	
 	options.fertilizerSource = parseInt(document.getElementById('speed_gro_source').value);
 
-	if (document.getElementById('number_level').value < 0)
-		document.getElementById('number_level').value = 0;
-	if (document.getElementById('number_level').value > 10)
-		document.getElementById('number_level').value = 10;
-	options.level = parseInt(document.getElementById('number_level').value);
+	if (document.getElementById('farming_level').value < 0)
+		document.getElementById('farming_level').value = 0;
+	if (document.getElementById('farming_level').value > 13)
+		document.getElementById('farming_level').value = 13;
+	options.level = parseInt(document.getElementById('farming_level').value);
 
 	if (options.level >= 5) {
 		document.getElementById('check_skillsTill').disabled = false;
@@ -1057,7 +1096,7 @@ function updateData() {
 		document.getElementById('check_skillsTill').checked = false;
 	}
 
-	if (options.level == 10 && options.skills.till) {
+	if (options.level >= 10 && options.skills.till) {
 		document.getElementById('select_skills').disabled = false;
 		document.getElementById('select_skills').style.cursor = "pointer";
 	}
@@ -1078,6 +1117,35 @@ function updateData() {
 		options.skills.agri = false;
 		options.skills.arti = false;
 	}
+
+    if (document.getElementById('foraging_level').value < 0)
+        document.getElementById('foraging_level').value = 0;
+    if (document.getElementById('foraging_level').value > 13)
+        document.getElementById('foraging_level').value = 13;
+    options.foragingLevel = parseInt(document.getElementById('foraging_level').value);
+
+    if (options.foragingLevel >= 5) {
+        document.getElementById('check_skillsGatherer').disabled = false;
+        document.getElementById('check_skillsGatherer').style.cursor = "pointer";
+        options.skills.gatherer = document.getElementById('check_skillsGatherer').checked;
+    }
+    else {
+        document.getElementById('check_skillsGatherer').disabled = true;
+        document.getElementById('check_skillsGatherer').style.cursor = "default";
+        document.getElementById('check_skillsGatherer').checked = false;
+    }
+
+    if (options.foragingLevel >= 10 && options.skills.gatherer) {
+        document.getElementById('check_skillsBotanist').disabled = false;
+        document.getElementById('check_skillsBotanist').style.cursor = "pointer";
+        options.skills.botanist = document.getElementById('check_skillsBotanist').checked;
+    }
+    else {
+        document.getElementById('check_skillsBotanist').disabled = true;
+        document.getElementById('check_skillsBotanist').style.cursor = "default";
+        document.getElementById('check_skillsBotanist').checked = false;
+    }
+
 	options.foodIndex = document.getElementById('select_food').value;
 	options.foodLevel = parseInt(document.getElementById('select_food').options[options.foodIndex].value);
 	if (options.buyFert && options.fertilizer == 4)
@@ -1192,8 +1260,8 @@ function optionsLoad() {
 	options.buyFert = validBoolean(options.buyFert);
 	document.getElementById('check_buyFert').checked = options.buyFert;
 
-	options.level = validIntRange(0, MAX_INT, options.level);
-	document.getElementById('number_level').value = options.level;
+	options.level = validIntRange(0, 13, options.level);
+	document.getElementById('farming_level').value = options.level;
 
 	options.skills.till = validBoolean(options.skills.till);
 	document.getElementById('check_skillsTill').checked = options.skills.till;
@@ -1202,6 +1270,15 @@ function optionsLoad() {
 	options.skills.arti = validBoolean(options.skills.arti);
 	const binaryFlags = options.skills.agri + options.skills.arti * 2;
 	document.getElementById('select_skills').value = binaryFlags;
+
+    options.foragingLevel = validIntRange(0, 13, options.foragingLevel);
+    document.getElementById('foraging_level').value = options.foragingLevel;
+
+    options.skills.gatherer = validBoolean(options.skills.gatherer);
+    document.getElementById('check_skillsGatherer').checked = options.skills.gatherer;
+
+    options.skills.botanist = validBoolean(options.skills.botanist);
+    document.getElementById('check_skillsBotanist').checked = options.skills.botanist;
 
 	options.foodIndex = validIntRange(0, 6, options.foodIndex);
 	document.getElementById('select_food').value = options.foodIndex;
