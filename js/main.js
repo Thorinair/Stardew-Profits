@@ -333,7 +333,7 @@ function fetchCrops() {
 	    if ((options.seeds.pierre && season.crops[i].seeds.pierre != 0) ||
 	    	(options.seeds.joja && season.crops[i].seeds.joja != 0) ||
 	    	(options.seeds.special && season.crops[i].seeds.special != 0)) {
-	    	cropList.push(season.crops[i]);
+	    	cropList.push(JSON.parse(JSON.stringify(season.crops[i])));
 	    	cropList[cropList.length - 1].id = i;
 		}
 	}
@@ -345,12 +345,8 @@ function fetchCrops() {
 function valueCrops() {
 	for (var i = 0; i < cropList.length; i++) {
         if (cropList[i].isWildseed && options.skills.gatherer) {
-            cropList[i].produce.extra = 1;
-            cropList[i].produce.extraPerc = 0.2;
-        }
-        else {
-            cropList[i].produce.extra = 0;
-            cropList[i].produce.extraPerc = 0;
+            cropList[i].produce.extra += 1;
+            cropList[i].produce.extraPerc += 0.2;
         }
 		cropList[i].planted = planted(cropList[i]);
 		cropList[i].harvests = harvests(cropList[i].id);
