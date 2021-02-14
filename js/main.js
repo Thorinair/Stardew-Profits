@@ -174,17 +174,30 @@ function planted(crop) {
 function levelRatio(fertilizer, level, isWildseed) {
 	var ratio = {};
 
-    // Iridium is available on deluxe fertilizer at 2x gold ratio, or set to 1 if Botanist is selected on Wildseeds.
-    if (isWildseed && options.skills.botanist)
-        ratio.ratioI = 1;
+    if (isWildseed) {
+		// All wild crops are iridium if botanist is selected
+		if  (options.skills.botanist)
+        	ratio.ratioI = 1;
+		else
+			ratio.ratioI = 0;
+		// Gold foraging is at a rate of foraging level/30 (and not iridium)
+		ratio.ratioG = level/30.0*(1-ratio.ratioI);
+		// Silver is at a rate of foraging level/15 (and not gold or iridium)
+		ratio.ratioS = level/15.0*(1-ratio.ratioG-ratio.ratioI);
+		// Normal is the remaining rate
+		ratio.ratioN = 1-ratio.ratioS-ratio.ratioG-ratio.ratioI;
+	}
     else
+	{
+		// Iridium is available on deluxe fertilizer at 1/2 gold ratio
     	ratio.ratioI = fertilizer >= 3 ? (0.2*(level/10.0)+0.2*fertilizer*((level+2)/12.0)+0.01)/2 : 0;
-    // Calculate gold times probability of not iridium
-    ratio.ratioG = (0.2*(level/10.0)+0.2*fertilizer*((level+2)/12.0)+0.01)*(1.0-ratio.ratioI);
-    // Probability of silver capped at .75, times probability of not gold/iridium
-    ratio.ratioS = Math.max(0,Math.min(0.75,ratio.ratioG*2.0)*(1.0-ratio.ratioG-ratio.ratioI));
-	// Probability of not the other ratings
-	ratio.ratioN = Math.max(0, 1.0 - ratio.ratioS - ratio.ratioG - ratio.ratioI);	
+		// Calculate gold times probability of not iridium
+		ratio.ratioG = (0.2*(level/10.0)+0.2*fertilizer*((level+2)/12.0)+0.01)*(1.0-ratio.ratioI);
+		// Probability of silver capped at .75, times probability of not gold/iridium
+		ratio.ratioS = Math.max(0,Math.min(0.75,ratio.ratioG*2.0)*(1.0-ratio.ratioG-ratio.ratioI));
+		// Probability of not the other ratings
+		ratio.ratioN = Math.max(0, 1.0 - ratio.ratioS - ratio.ratioG - ratio.ratioI);
+	}
 	return ratio;
 }
 
