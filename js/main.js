@@ -218,7 +218,7 @@ function profit(crop) {
 
 	var {ratioN, ratioS, ratioG, ratioI} = levelRatio(fertilizer.ratio, useLevel+options.foodLevel, crop.isWildseed);
         
-	if (crop.name == "Tea Leaves") ratioN = 1 && (ratioS = RatioG = ratioI = 0);
+	if (crop.name == "Tea Leaves") ratioN = 1, ratioS = ratioG = ratioI = 0;
 	var profit = 0;
 	
 	//Skip keg/jar calculations for ineligible crops (where corp.produce.jar or crop.produce.keg = 0)
