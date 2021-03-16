@@ -121,7 +121,10 @@ function harvests(cropID) {
 		}
 		else {
 			// console.log("Harvest on day: " + day);
-			day += Math.floor(crop.growth.initial * fertilizer.growth);
+			if (options.skills.agri)
+				day += Math.floor(crop.growth.initial * (fertilizer.growth - 0.1));
+			else
+				day += Math.floor(crop.growth.initial * fertilizer.growth);
 		}
 
 		if (day <= remainingDays && (!isTea || ((day-1) % 28 + 1) > 21))
