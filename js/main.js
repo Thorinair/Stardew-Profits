@@ -783,7 +783,7 @@ function renderGraph() {
 						tooltipTr.append("td").attr("class", "tooltipTdRight").text("None");
 					}
 					tooltipTr = tooltipTable.append("tr");
-					if (d.produce.keg > 0) {
+					if (d.produce.kegType != null) {
 						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (" + d.produce.kegType + "):");
 						tooltipTr.append("td").attr("class", "tooltipTdRight").text(kegPrice)
 						.append("div").attr("class", "gold");
