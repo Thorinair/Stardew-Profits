@@ -1091,8 +1091,8 @@ function updateData() {
 	
 	options.fertilizerSource = parseInt(document.getElementById('speed_gro_source').value);
 
-	if (document.getElementById('farming_level').value < 0)
-		document.getElementById('farming_level').value = 0;
+	if (document.getElementById('farming_level').value <= 0)
+		document.getElementById('farming_level').value = 1;
 	if (document.getElementById('farming_level').value > 13)
 		document.getElementById('farming_level').value = 13;
 	options.level = parseInt(document.getElementById('farming_level').value);
@@ -1130,8 +1130,8 @@ function updateData() {
 		options.skills.arti = false;
 	}
 
-    if (document.getElementById('foraging_level').value < 0)
-        document.getElementById('foraging_level').value = 0;
+    if (document.getElementById('foraging_level').value <= 0)
+        document.getElementById('foraging_level').value = 1;
     if (document.getElementById('foraging_level').value > 13)
         document.getElementById('foraging_level').value = 13;
     options.foragingLevel = parseInt(document.getElementById('foraging_level').value);
