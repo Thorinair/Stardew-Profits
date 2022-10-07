@@ -325,7 +325,7 @@ function fertLoss(crop) {
 		loss = -fertilizers[options.fertilizer].alternate_cost;
 	else
 		loss = -fertilizers[options.fertilizer].cost;
-	return loss * options.planted;
+	return loss * planted(crop);
 }
 
 /*
