@@ -222,7 +222,11 @@ function profit(crop) {
 	var {ratioN, ratioS, ratioG, ratioI} = levelRatio(fertilizer.ratio, useLevel+options.foodLevel, crop.isWildseed);
         
 	if (crop.name == "Tea Leaves") ratioN = 1, ratioS = ratioG = ratioI = 0;
-	var profit = 0;
+	var netIncome = 0;
+	var netExpenses = 0;
+	var totalProfit = 0;
+	var totalReturnOnInvestment = 0;
+	var averageReturnOnInvestment = 0;
 	
 	//Skip keg/jar calculations for ineligible crops (where corp.produce.jar or crop.produce.keg = 0)
 	
@@ -239,21 +243,21 @@ function profit(crop) {
 	}
 	
 	// console.log("Calculating raw produce value for: " + crop.name);
-
+	// Determine income
 	if (produce == 0 || userawproduce) {
-		profit += crop.produce.price * ratioN * total_harvests;
-		profit += Math.trunc(crop.produce.price * 1.25) * ratioS * total_harvests;
-		profit += Math.trunc(crop.produce.price * 1.5) * ratioG * total_harvests;
-		profit += crop.produce.price * 2 * ratioI * total_harvests;
+		netIncome += crop.produce.price * ratioN * total_harvests;
+		netIncome += Math.trunc(crop.produce.price * 1.25) * ratioS * total_harvests;
+		netIncome += Math.trunc(crop.produce.price * 1.5) * ratioG * total_harvests;
+		netIncome += crop.produce.price * 2 * ratioI * total_harvests;
 		// console.log("Profit (After normal produce): " + profit);
 
 		if (crop.produce.extra > 0) {
-			profit += crop.produce.price * crop.produce.extraPerc * crop.produce.extra * total_harvests;
+			netIncome += crop.produce.price * crop.produce.extraPerc * crop.produce.extra * total_harvests;
 			// console.log("Profit (After extra produce): " + profit);
 		}
 
 		if (options.skills.till) {
-			profit *= 1.1;
+			netIncome *= 1.1;
 			// console.log("Profit (After skills): " + profit);
 		}
 	}
@@ -263,28 +267,51 @@ function profit(crop) {
 		var kegModifier = crop.produce.kegType === "Wine" ? 3 : 2.25;
 
 		switch (produce) {
-			case 1: profit += items * (crop.produce.price * 2 + 50); break;
-			case 2: profit += items * (crop.produce.keg != null ? crop.produce.keg : crop.produce.price * kegModifier); break;
+			case 1: netIncome += items * (crop.produce.price * 2 + 50); break;
+			case 2: netIncome += items * (crop.produce.keg != null ? crop.produce.keg : crop.produce.price * kegModifier); break;
 		}
 
 		if (options.skills.arti) {
-			profit *= 1.4;
+			netIncome *= 1.4;
 		}
 	}
 
-
+	// Determine expenses
 	if (options.buySeed) {
-		profit += crop.seedLoss;
+		netExpenses += crop.seedLoss;
 		// console.log("Profit (After seeds): " + profit);
 	}
 
 	if (options.buyFert) {
-		profit += crop.fertLoss;
+		netExpenses += crop.fertLoss;
 		// console.log("Profit (After fertilizer): " + profit);
 	}
 
+	// Determine total profit
+	totalProfit = netIncome + netExpenses;
+	if (0 != netExpenses)
+	{
+		totalReturnOnInvestment = 100 * ((totalProfit) / -netExpenses); // Calculate the return on investment and scale it to a % increase
+		if (0 == crop.growth.regrow)
+		{
+			averageReturnOnInvestment = (totalReturnOnInvestment / crop.growth.initial);
+		}
+		else
+		{
+			averageReturnOnInvestment = (totalReturnOnInvestment / options.days);
+		}
+	}
+	else
+	{
+		totalReturnOnInvestment = 0;
+		averageReturnOnInvestment = 0;
+	}
+
     profitData = {}
-    profitData.profit = profit;
+	profitData.totalReturnOnInvestment = totalReturnOnInvestment;
+	profitData.averageReturnOnInvestment = averageReturnOnInvestment;
+	profitData.netExpenses = netExpenses;
+    profitData.profit = totalProfit;
     profitData.ratioN = ratioN;
     profitData.ratioS = ratioS;
     profitData.ratioG = ratioG;
@@ -370,15 +397,30 @@ function valueCrops() {
 		cropList[i].fertLoss = fertLoss(cropList[i]);
 		cropList[i].profitData = profit(cropList[i]);
         cropList[i].profit = cropList[i].profitData.profit;
+		cropList[i].totalReturnOnInvestment = cropList[i].profitData.totalReturnOnInvestment;
+		cropList[i].averageReturnOnInvestment = cropList[i].profitData.averageReturnOnInvestment;
+		cropList[i].netExpenses = cropList[i].profitData.netExpenses;
 		cropList[i].averageProfit = perDay(cropList[i].profit);
 		cropList[i].averageSeedLoss = perDay(cropList[i].seedLoss);
 		cropList[i].averageFertLoss = perDay(cropList[i].fertLoss);
-		if (options.average) {
+
+		if (1 == options.average) {
 			cropList[i].drawProfit = cropList[i].averageProfit;
 			cropList[i].drawSeedLoss = cropList[i].averageSeedLoss;
 			cropList[i].drawFertLoss = cropList[i].averageFertLoss;
 		}
-		else {
+		else if ((2 == options.average) && (0 != cropList[i].netExpenses)){
+			cropList[i].drawProfit = cropList[i].totalReturnOnInvestment;
+			cropList[i].drawSeedLoss = cropList[i].seedLoss;
+			cropList[i].drawFertLoss = cropList[i].fertLoss;
+		}
+		else if ((3 == options.average) && (0 != cropList[i].netExpenses)){
+			cropList[i].drawProfit = cropList[i].averageReturnOnInvestment;
+			cropList[i].drawSeedLoss = cropList[i].averageSeedLoss;
+			cropList[i].drawFertLoss = cropList[i].averageFertLoss;
+		}
+		else
+		{
 			cropList[i].drawProfit = cropList[i].profit;
 			cropList[i].drawSeedLoss = cropList[i].seedLoss;
 			cropList[i].drawFertLoss = cropList[i].fertLoss;
@@ -681,6 +723,22 @@ function renderGraph() {
 				else
 					tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text(formatNumber(d.averageProfit))
 						.append("div").attr("class", "gold");
+
+				if (options.buySeed || options.buyFert) {
+				tooltipTr = tooltipTable.append("tr");
+				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Return on investment:");
+				if (d.totalReturnOnInvestment > 0)
+					tooltipTr.append("td").attr("class", "tooltipTdRightPos").text("+" + formatNumber(d.totalReturnOnInvestment) + "%");
+				else
+					tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text(formatNumber(d.totalReturnOnInvestment) + "%");
+
+				tooltipTr = tooltipTable.append("tr");
+				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Return on investment per day:");
+				if (d.averageReturnOnInvestment > 0)
+					tooltipTr.append("td").attr("class", "tooltipTdRightPos").text("+" + formatNumber(d.averageReturnOnInvestment) + "%");
+				else
+					tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text(formatNumber(d.averageReturnOnInvestment) + "%");
+				}
 
 				if (options.buySeed) {
 					tooltipTr = tooltipTable.append("tr");
@@ -1046,7 +1104,7 @@ function updateData() {
 		options.maxSeedMoney = 0;
 	}
 
-	options.average = document.getElementById('check_average').checked;
+	options.average = parseInt(document.getElementById('select_profit_display').value);;
     
     options.crossSeason = document.getElementById('cross_season').checked;
 
@@ -1224,8 +1282,8 @@ function optionsLoad() {
     options.maxSeedMoney = validIntRange(0, MAX_INT, options.maxSeedMoney);
     document.getElementById('max_seed_money').value = options.maxSeedMoney;
 
-	options.average = validBoolean(options.average);
-	document.getElementById('check_average').checked = options.average;
+	options.average = validIntRange(0,3,options.average);
+	document.getElementById('select_profit_display').checked = options.average;
 
     options.crossSeason = validBoolean(options.crossSeason);
     document.getElementById('cross_season').checked = options.crossSeason;
