@@ -11,6 +11,7 @@ var barWidth = width / seasons[options.season].crops.length - barPadding;
 var miniBar = 8;
 var barOffsetX = 56;
 var barOffsetY = 40;
+var graphDescription = "Profit";
 
 // Prepare web elements.
 var svg = d3.select("div.graph")
@@ -19,14 +20,6 @@ var svg = d3.select("div.graph")
 	.attr("height", svgHeight)
 	.style("background-color", "#333333")
 	.style("border-radius", "8px");
-
-svg.append("g")
-	.append("text")
-		.attr("class", "axis")
-		.attr("x", 48)
-		.attr("y", 24)
- 		.style("text-anchor", "end")
-		.text("Profit");
 
 var tooltip = d3.select("body")
 	.append("div")
@@ -40,6 +33,7 @@ var tooltip = d3.select("body")
 	.style("border", "2px solid black");
 
 var gAxis = svg.append("g");
+var gTitle = svg.append("g");
 var gProfit = svg.append("g");
 var gSeedLoss = svg.append("g");
 var gFertLoss = svg.append("g");
@@ -408,22 +402,40 @@ function valueCrops() {
 			cropList[i].drawProfit = cropList[i].averageProfit;
 			cropList[i].drawSeedLoss = cropList[i].averageSeedLoss;
 			cropList[i].drawFertLoss = cropList[i].averageFertLoss;
+			graphDescription = "Daily Profit"
 		}
-		else if ((2 == options.average) && (0 != cropList[i].netExpenses)){
-			cropList[i].drawProfit = cropList[i].totalReturnOnInvestment;
+		else if ((2 == options.average) ){
+			if (0 != cropList[i].netExpenses)
+			{
+				cropList[i].drawProfit = cropList[i].totalReturnOnInvestment;
+				graphDescription = "Total Return On Investment";
+			}
+			else{
+				cropList[i].drawProfit = cropList[i].profit;
+				graphDescription = "Total Profit (Choose an expense for ROI)";
+			}
 			cropList[i].drawSeedLoss = cropList[i].seedLoss;
 			cropList[i].drawFertLoss = cropList[i].fertLoss;
 		}
-		else if ((3 == options.average) && (0 != cropList[i].netExpenses)){
-			cropList[i].drawProfit = cropList[i].averageReturnOnInvestment;
+		else if (3 == options.average){
 			cropList[i].drawSeedLoss = cropList[i].averageSeedLoss;
 			cropList[i].drawFertLoss = cropList[i].averageFertLoss;
+			if (0 != cropList[i].netExpenses)
+			{
+				cropList[i].drawProfit = cropList[i].averageReturnOnInvestment;
+				graphDescription = "Daily Return On Investment";
+			}
+			else{
+				cropList[i].drawProfit = cropList[i].profit;
+				graphDescription = "Daily Profit (Choose an expense for ROI)";
+			}
 		}
 		else
 		{
 			cropList[i].drawProfit = cropList[i].profit;
 			cropList[i].drawSeedLoss = cropList[i].seedLoss;
 			cropList[i].drawFertLoss = cropList[i].fertLoss;
+			graphDescription = "Total Profit";
 		}
 	}
 }
@@ -554,6 +566,14 @@ function renderGraph() {
 	axisY = gAxis.attr("class", "axis")
 		.call(yAxis)
 		.attr("transform", "translate(48, " + barOffsetY + ")");
+
+	title = gTitle.attr("class", "Title")
+		.append("text")
+		.attr("class", "axis")
+		.attr("x", 24)
+		.attr("y", 24)
+	 	.style("text-anchor", "start")
+		.text(graphDescription);
 
 	barsProfit = gProfit.selectAll("rect")
 		.data(cropList)
@@ -934,6 +954,14 @@ function updateGraph() {
 	axisY.transition()
 		.call(yAxis);
 
+	title = gTitle.attr("class", "Title")
+	.append("text")
+	.attr("class", "axis")
+	.attr("x", 24)
+	.attr("y", 24)
+	 .style("text-anchor", "start")
+	.text(graphDescription);
+
 	barsProfit.data(cropList)
 		.transition()
 			.attr("x", function(d, i) {
@@ -1249,6 +1277,7 @@ function initial() {
  */
 function refresh() {
 	updateData();
+	gTitle.selectAll("*").remove();
 	updateGraph();
 }
 
@@ -1394,6 +1423,7 @@ function rebuild() {
 	gFertLoss.selectAll("*").remove();
 	gIcons.selectAll("*").remove();
 	gTooltips.selectAll("*").remove();
+	gTitle.selectAll("*").remove();
 
 	updateData();
 	renderGraph();
