@@ -47,7 +47,8 @@ var crops = {
       "extraPerc": 0,
       "price": 80,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     }
   },
   "hops": {
@@ -94,7 +95,8 @@ var crops = {
       "extraPerc": 0,
       "price": 300,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     }
   },
   "sweetgemberry": {
@@ -452,7 +454,7 @@ var crops = {
       "kegType": "Juice"
     }
   },
-  "unmilledrice" : {
+  "unmilledrice": {
     "name": "Unmilled Rice",
     "url": "http://stardewvalleywiki.com/Unmilled_Rice",
     "img": "unmilledrice.png",
@@ -495,7 +497,8 @@ var crops = {
       "extraPerc": 0,
       "price": 220,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     }
   },
   "melon": {
@@ -518,7 +521,8 @@ var crops = {
       "extraPerc": 0,
       "price": 250,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     }
   },
   "tomato": {
@@ -564,7 +568,8 @@ var crops = {
       "extraPerc": 1,
       "price": 50,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     }
   },
   "hotpepper": {
@@ -587,7 +592,8 @@ var crops = {
       "extraPerc": 0.03,
       "price": 40,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     }
   },
   "wheat": {
@@ -680,7 +686,8 @@ var crops = {
       "extraPerc": 0,
       "price": 750,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     }
   },
   "corn": {
@@ -841,7 +848,8 @@ var crops = {
       "extraPerc": 1,
       "price": 75,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     }
   },
   "beet": {
@@ -887,7 +895,8 @@ var crops = {
       "extraPerc": 0,
       "price": 550,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     }
   },
   "cactusfruit": {
@@ -910,7 +919,8 @@ var crops = {
       "extraPerc": 0,
       "price": 75,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     }
   },
   "strawberry": {
@@ -933,7 +943,8 @@ var crops = {
       "extraPerc": 0.02,
       "price": 120,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     }
   },
   "springseeds": {
@@ -980,7 +991,8 @@ var crops = {
       // (Spice Berry + Grape + Sweet Pea) / 3
       "price": (80 + 80 + 50) / 3,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     },
     "isWildseed": true
   },
@@ -1005,7 +1017,8 @@ var crops = {
       // (Blackberry + Common Mushroom + Hazelnut + Wild Plum) / 4
       "price": (20 + 40 + 90 + 80) / 4,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     },
     "isWildseed": true
   },
@@ -1030,7 +1043,8 @@ var crops = {
       // (Crocus + Crystal Fruit + Snow Yam + Winter Root) / 4
       "price": (60 + 150 + 100 + 70) / 4,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     },
     "isWildseed": true
   }
