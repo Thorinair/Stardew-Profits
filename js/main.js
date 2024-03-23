@@ -236,6 +236,9 @@ function profit(crop) {
 		case 2:
 			if(crop.produce.kegType == null) userawproduce = true;
 			break;
+		case 3:
+			if(crop.produce.dehydratorType == null) userawproduce = true;
+			break;
 	}
 	
 	// console.log("Calculating raw produce value for: " + crop.name);
@@ -265,6 +268,7 @@ function profit(crop) {
 		switch (produce) {
 			case 1: profit += items * (crop.produce.price * 2 + 50); break;
 			case 2: profit += items * (crop.produce.keg != null ? crop.produce.keg : crop.produce.price * kegModifier); break;
+			case 3: profit += items / 5 * (crop.name === "Grape" ? 600 : (crop.produce.price * 7.5 + 25)); break;
 		}
 
 		if (options.skills.arti) {
@@ -738,6 +742,7 @@ function renderGraph() {
 				if (options.extra) {
 					var kegModifier = d.produce.kegType === "Wine" ? 3 : 2.25;
 					var kegPrice = d.produce.keg != null ? d.produce.keg : d.produce.price * kegModifier;
+					var dehydratorPrice = d.produce.name === "Grape" ? 600 : (d.produce.price * 7.5 + 25)
 
 					tooltip.append("h3").attr("class", "tooltipTitleExtra").text("Crop info");
 					tooltipTable = tooltip.append("table")
@@ -773,7 +778,7 @@ function renderGraph() {
                         }
 					}
 					tooltipTr = tooltipTable.append("tr");
-					if (d.produce.jarType != null) {
+					if (d.produce.jarType) {
 						tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Value (" + d.produce.jarType + "):");
 						tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.price * 2 + 50)
 						.append("div").attr("class", "gold");
@@ -790,6 +795,16 @@ function renderGraph() {
 					}
 					else {
 						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Keg):");
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text("None");
+					}
+					tooltipTr = tooltipTable.append("tr");
+					if (d.produce.dehydratorType) {
+						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (" + d.produce.dehydratorType + "):");
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text(dehydratorPrice)
+						.append("div").attr("class", "gold");
+					}
+					else {
+						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Dehydrator):");
 						tooltipTr.append("td").attr("class", "tooltipTdRight").text("None");
 					}
 
