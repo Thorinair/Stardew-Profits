@@ -94,7 +94,8 @@ var seasons = [
 			crops.bluejazz,
 			crops.tulip,
 			crops.ancientfruit,
-			crops.springseeds
+			crops.springseeds,
+			crops.carrot
 		]
 	},
 	{
@@ -119,7 +120,8 @@ var seasons = [
 			crops.sunflower,
 			crops.ancientfruit,
 			crops.taroroot,
-			crops.summerseeds
+			crops.summerseeds,
+			crops.summersquash
 		]
 	},
 	{
@@ -142,14 +144,16 @@ var seasons = [
 			crops.wheat,
 			crops.corn,
 			crops.ancientfruit,
-			crops.fallseeds
+			crops.fallseeds,
+			crops.broccoli
 		]
 	},
 	{
 		"name": "Winter",
 		"duration": 28,
 		"crops": [
-			crops.winterseeds
+			crops.winterseeds,
+			crops.powdermelon
 		]
 	},
 	{
@@ -196,7 +200,11 @@ var seasons = [
 			crops.sunflower,
 			crops.ancientfruit,
 			crops.cactusfruit,
-			crops.taroroot
+			crops.taroroot,
+			crops.carrot,
+			crops.summersquash,
+			crops.broccoli,
+			crops.powdermelon
 		]
 	}
 ];
