@@ -844,10 +844,16 @@ function renderGraph() {
 				tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.harvests);
 
 				if (options.extra) {
+                    var fertilizer = fertilizers[options.fertilizer];
                     var kegModifier = getKegModifier(d);
                     var caskModifier = getCaskModifier();
 					var kegPrice = d.produce.keg != null ? d.produce.keg * caskModifier : d.produce.price * kegModifier * caskModifier;
                     var seedPrice = d.seeds.sell;
+                    var initialGrow = 0;
+                    if (options.skills.agri)
+                        initialGrow += Math.floor(d.growth.initial * (fertilizer.growth - 0.1));
+                    else
+                        initialGrow += Math.floor(d.growth.initial * fertilizer.growth);
 
 					tooltip.append("h3").attr("class", "tooltipTitleExtra").text("Crop info");
 					tooltipTable = tooltip.append("table")
@@ -944,7 +950,7 @@ function renderGraph() {
 
 					tooltipTr = tooltipTable.append("tr");
 					tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Time to grow:");
-					tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.growth.initial + " days");
+					tooltipTr.append("td").attr("class", "tooltipTdRight").text(initialGrow + " days");
 					tooltipTr = tooltipTable.append("tr");
 					tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Time to regrow:");
 					if (d.growth.regrow > 0)
