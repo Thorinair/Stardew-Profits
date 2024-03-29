@@ -280,6 +280,12 @@ function profit(crop) {
 			// console.log("Profit (After skills): " + profit);
 		}
 	}
+    else if (produce == 3) {
+        var items = total_harvests;
+        items += crop.produce.extraPerc * crop.produce.extra * total_harvests;
+
+        netIncome += 2 * items * crop.seeds.sell;
+    }
 	else {
 		var items = total_harvests;
 		items += crop.produce.extraPerc * crop.produce.extra * total_harvests;
@@ -840,6 +846,7 @@ function renderGraph() {
                     var kegModifier = getKegModifier(d);
                     var caskModifier = getCaskModifier();
 					var kegPrice = d.produce.keg != null ? d.produce.keg * caskModifier : d.produce.price * kegModifier * caskModifier;
+                    var seedPrice = d.seeds.sell;
 
 					tooltip.append("h3").attr("class", "tooltipTitleExtra").text("Crop info");
 					tooltipTable = tooltip.append("table")
@@ -894,6 +901,10 @@ function renderGraph() {
 						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Keg):");
 						tooltipTr.append("td").attr("class", "tooltipTdRight").text("None");
 					}
+                    tooltipTr = tooltipTable.append("tr");
+                    tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Seeds):");
+                    tooltipTr.append("td").attr("class", "tooltipTdRight").text(seedPrice)
+                    .append("div").attr("class", "gold");
 
 
 					var first = true;
@@ -1333,7 +1344,7 @@ function optionsLoad() {
 	options.season = validIntRange(0, 4, options.season);
 	document.getElementById('select_season').value = options.season;
 
-	options.produce = validIntRange(0, 2, options.produce);
+	options.produce = validIntRange(0, 3, options.produce);
 	document.getElementById('select_produce').value = options.produce;
 
     options.aging = validIntRange(0, 3, options.aging);

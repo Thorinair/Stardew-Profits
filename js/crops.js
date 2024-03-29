@@ -9,6 +9,7 @@ var crops = {
     "url": "https://stardewvalleywiki.com/Carrot",
     "img": "carrot.png",
     "seeds": {
+      "sell": 0,
       "pierre": 0,
       "joja": 0,
       "special": 0,
@@ -32,6 +33,7 @@ var crops = {
     "url": "https://stardewvalleywiki.com/Summer_Squash",
     "img": "summersquash.png",
     "seeds": {
+      "sell": 0,
       "pierre": 0,
       "joja": 0,
       "special": 0.001,
@@ -55,6 +57,7 @@ var crops = {
     "url": "https://stardewvalleywiki.com/Broccoli",
     "img": "broccoli.png",
     "seeds": {
+      "sell": 0,
       "pierre": 0,
       "joja": 0,
       "special": 0.001,
@@ -78,6 +81,7 @@ var crops = {
     "url": "https://stardewvalleywiki.com/Powdermelon",
     "img": "powdermelon.png",
     "seeds": {
+      "sell": 0,
       "pierre": 0,
       "joja": 0,
       "special": 0.001,
@@ -101,6 +105,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Amaranth",
     "img": "amaranth.png",
     "seeds": {
+      "sell": 35,
       "pierre": 70,
       "joja": 87,
       "special": 0,
@@ -124,6 +129,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Grape",
     "img": "grape.png",
     "seeds": {
+      "sell": 30,
       "pierre": 60,
       "joja": 75,
       "special": 0,
@@ -147,6 +153,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Hops",
     "img": "hops.png",
     "seeds": {
+      "sell": 30,
       "pierre": 60,
       "joja": 75,
       "special": 0,
@@ -171,6 +178,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Pineapple",
     "img": "pineapple.png",
     "seeds": {
+      "sell": 240,
       "pierre": 0,
       "joja": 0,
       "special": 400,
@@ -194,6 +202,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Sweet_Gem_Berry",
     "img": "sweetgemberry.png",
     "seeds": {
+      "sell": 200,
       "pierre": 0,
       "joja": 0,
       "special": 1000,
@@ -215,6 +224,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Tea_Leaves",
     "img": "tealeaves.png",
     "seeds": {
+      "sell": 0,
       "pierre": 0,
       "joja": 0,
       "special": 2500,
@@ -239,6 +249,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Fairy_Rose",
     "img": "fairyrose.png",
     "seeds": {
+      "sell": 100,
       "pierre": 200,
       "joja": 250,
       "special": 0,
@@ -260,6 +271,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Tulip",
     "img": "tulip.png",
     "seeds": {
+      "sell": 10,
       "pierre": 20,
       "joja": 25,
       "special": 0,
@@ -281,6 +293,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Blue_Jazz",
     "img": "bluejazz.png",
     "seeds": {
+      "sell": 15,
       "pierre": 30,
       "joja": 37,
       "special": 0,
@@ -302,6 +315,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Sunflower",
     "img": "sunflower.png",
     "seeds": {
+      "sell": 20,
       "pierre": 200,
       "joja": 125,
       "special": 0,
@@ -323,6 +337,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Coffee_Bean",
     "img": "coffeebean.png",
     "seeds": {
+      "sell": 0,
       "pierre": 0,
       "joja": 0,
       "special": 2500,
@@ -346,6 +361,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Poppy",
     "img": "poppy.png",
     "seeds": {
+      "sell": 50,
       "pierre": 100,
       "joja": 125,
       "special": 0,
@@ -367,6 +383,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Summer_Spangle",
     "img": "summerspangle.png",
     "seeds": {
+      "sell": 25,
       "pierre": 50,
       "joja": 62,
       "special": 0,
@@ -388,6 +405,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Parsnip",
     "img": "parsnip.png",
     "seeds": {
+      "sell": 10,
       "pierre": 20,
       "joja": 25,
       "special": 0,
@@ -411,6 +429,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Green_Bean",
     "img": "greenbean.png",
     "seeds": {
+      "sell": 30,
       "pierre": 60,
       "joja": 75,
       "special": 0,
@@ -434,6 +453,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Cauliflower",
     "img": "cauliflower.png",
     "seeds": {
+      "sell": 40,
       "pierre": 80,
       "joja": 100,
       "special": 0,
@@ -457,6 +477,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Potato",
     "img": "potato.png",
     "seeds": {
+      "sell": 25,
       "pierre": 50,
       "joja": 62,
       "special": 0,
@@ -480,6 +501,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Garlic",
     "img": "garlic.png",
     "seeds": {
+      "sell": 20,
       "pierre": 40,
       "joja": 0,
       "special": 0,
@@ -503,6 +525,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Taro_Root",
     "img": "taroroot.png",
     "seeds": {
+      "sell": 20,
       "pierre": 0,
       "joja": 0,
       "special": 24,
@@ -526,6 +549,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Kale",
     "img": "kale.png",
     "seeds": {
+      "sell": 35,
       "pierre": 70,
       "joja": 87,
       "special": 0,
@@ -549,6 +573,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Unmilled_Rice",
     "img": "unmilledrice.png",
     "seeds": {
+      "sell": 20,
       "pierre": 40,
       "joja": 0,
       "special": 1000,
@@ -572,6 +597,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Rhubarb",
     "img": "rhubarb.png",
     "seeds": {
+      "sell": 50,
       "pierre": 0,
       "joja": 0,
       "special": 100,
@@ -595,6 +621,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Melon",
     "img": "melon.png",
     "seeds": {
+      "sell": 40,
       "pierre": 80,
       "joja": 100,
       "special": 0,
@@ -618,6 +645,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Tomato",
     "img": "tomato.png",
     "seeds": {
+      "sell": 25,
       "pierre": 50,
       "joja": 62,
       "special": 0,
@@ -641,6 +669,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Blueberry",
     "img": "blueberry.png",
     "seeds": {
+      "sell": 40,
       "pierre": 80,
       "joja": 0,
       "special": 0,
@@ -664,6 +693,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Hot_Pepper",
     "img": "hotpepper.png",
     "seeds": {
+      "sell": 20,
       "pierre": 40,
       "joja": 50,
       "special": 0,
@@ -687,6 +717,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Wheat",
     "img": "wheat.png",
     "seeds": {
+      "sell": 5,
       "pierre": 10,
       "joja": 12,
       "special": 0,
@@ -711,6 +742,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Radish",
     "img": "radish.png",
     "seeds": {
+      "sell": 20,
       "pierre": 40,
       "joja": 50,
       "special": 0,
@@ -734,6 +766,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Red_Cabbage",
     "img": "redcabbage.png",
     "seeds": {
+      "sell": 50,
       "pierre": 100,
       "joja": 0,
       "special": 0,
@@ -757,6 +790,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Starfruit",
     "img": "starfruit.png",
     "seeds": {
+      "sell": 200,
       "pierre": 0,
       "joja": 0,
       "special": 400,
@@ -780,6 +814,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Corn",
     "img": "corn.png",
     "seeds": {
+      "sell": 75,
       "pierre": 150,
       "joja": 187,
       "special": 0,
@@ -803,6 +838,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Eggplant",
     "img": "eggplant.png",
     "seeds": {
+      "sell": 10,
       "pierre": 20,
       "joja": 25,
       "special": 0,
@@ -826,6 +862,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Artichoke",
     "img": "artichoke.png",
     "seeds": {
+      "sell": 15,
       "pierre": 30,
       "joja": 0,
       "special": 0,
@@ -849,6 +886,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Pumpkin",
     "img": "pumpkin.png",
     "seeds": {
+      "sell": 50,
       "pierre": 100,
       "joja": 125,
       "special": 0,
@@ -872,6 +910,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Bok_Choy",
     "img": "bokchoy.png",
     "seeds": {
+      "sell": 25,
       "pierre": 50,
       "joja": 62,
       "special": 0,
@@ -895,6 +934,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Yam",
     "img": "yam.png",
     "seeds": {
+      "sell": 30,
       "pierre": 60,
       "joja": 75,
       "special": 0,
@@ -918,6 +958,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Cranberries",
     "img": "cranberries.png",
     "seeds": {
+      "sell": 60,
       "pierre": 240,
       "joja": 300,
       "special": 0,
@@ -941,6 +982,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Beet",
     "img": "beet.png",
     "seeds": {
+      "sell": 10,
       "pierre": 0,
       "joja": 0,
       "special": 20,
@@ -964,6 +1006,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Ancient_Fruit",
     "img": "ancientfruit.png",
     "seeds": {
+      "sell": 30,
       "pierre": 0,
       "joja": 0,
       "special": 0,
@@ -987,6 +1030,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Cactus_Fruit",
     "img": "cactusfruit.png",
     "seeds": {
+      "sell": 0,
       "pierre": 0,
       "joja": 0,
       "special": 150,
@@ -1010,6 +1054,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Strawberry",
     "img": "strawberry.png",
     "seeds": {
+      "sell": 0,
       "pierre": 0,
       "joja": 0,
       "special": 100,
@@ -1033,6 +1078,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Spring_Seeds",
     "img": "springseeds.png",
     "seeds": {
+      "sell": 0,
       "pierre": 0,
       "joja": 0,
       "special": 1000,
@@ -1056,6 +1102,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Summer_Seeds",
     "img": "summerseeds.png",
     "seeds": {
+      "sell": 0,
       "pierre": 0,
       "joja": 0,
       "special": 1000,
@@ -1081,6 +1128,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Fall_Seeds",
     "img": "fallseeds.png",
     "seeds": {
+      "sell": 0,
       "pierre": 0,
       "joja": 0,
       "special": 1000,
@@ -1106,6 +1154,7 @@ var crops = {
     "url": "http://stardewvalleywiki.com/Winter_Seeds",
     "img": "winterseeds.png",
     "seeds": {
+      "sell": 0,
       "pierre": 0,
       "joja": 0,
       "special": 1000,
