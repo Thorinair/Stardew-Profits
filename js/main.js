@@ -400,40 +400,37 @@ function valueCrops() {
 		cropList[i].averageSeedLoss = perDay(cropList[i].seedLoss);
 		cropList[i].averageFertLoss = perDay(cropList[i].fertLoss);
 
-		if ( options.average == 1) {
+		if (options.average == 1) {
 			cropList[i].drawProfit = cropList[i].averageProfit;
 			cropList[i].drawSeedLoss = cropList[i].averageSeedLoss;
 			cropList[i].drawFertLoss = cropList[i].averageFertLoss;
 			graphDescription = "Daily Profit"
 		}
 		else if ((options.average == 2) ){
-			if (options.buySeed || options.buyFert)
-			{
+			if (options.buySeed || (options.buyFert && fertilizers[options.fertilizer].cost > 0)) {
 				cropList[i].drawProfit = cropList[i].totalReturnOnInvestment;
 				graphDescription = "Total Return On Investment";
 			}
-			else{
+			else {
 				cropList[i].drawProfit = 0;
 				graphDescription = "Total Profit (Choose an expense for ROI)";
 			}
 			cropList[i].drawSeedLoss = cropList[i].seedLoss;
 			cropList[i].drawFertLoss = cropList[i].fertLoss;
 		}
-		else if (options.average == 3){
+		else if (options.average == 3) {
 			cropList[i].drawSeedLoss = cropList[i].averageSeedLoss;
 			cropList[i].drawFertLoss = cropList[i].averageFertLoss;
-			if (options.buySeed || options.buyFert)
-			{
+			if (options.buySeed || (options.buyFert && fertilizers[options.fertilizer].cost > 0)) {
 				cropList[i].drawProfit = cropList[i].averageReturnOnInvestment;
 				graphDescription = "Daily Return On Investment";
 			}
-			else{
+			else {
 				cropList[i].drawProfit = 0;
 				graphDescription = "Daily Profit (Choose an expense for ROI)";
 			}
 		}
-		else
-		{
+		else {
 			cropList[i].drawProfit = cropList[i].profit;
 			cropList[i].drawSeedLoss = cropList[i].seedLoss;
 			cropList[i].drawFertLoss = cropList[i].fertLoss;
