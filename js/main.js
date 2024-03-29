@@ -1168,7 +1168,7 @@ function updateSeasonNames() {
 function updateData() {
 
     options.season = parseInt(document.getElementById('select_season').value);
-    const isGreenhouse = options.season === 4;
+    const isGreenhouse = options.season == 4;
 
 	options.produce = parseInt(document.getElementById('select_produce').value);
 
@@ -1221,9 +1221,11 @@ function updateData() {
     options.crossSeason = document.getElementById('cross_season').checked;
 
     if (!isGreenhouse) {
-        document.getElementById('current_day_row').style.display = 'table-row';
         document.getElementById('number_days').disabled = true;
-        document.getElementById('cross_season_row').style.display = 'table-row';
+        document.getElementById('cross_season').disabled = false;
+        document.getElementById('cross_season').style.cursor = "pointer";
+        document.getElementById('current_day').disabled = false;
+        document.getElementById('current_day').style.cursor = "text";
 
         if (document.getElementById('current_day').value <= 0)
             document.getElementById('current_day').value = 1;
@@ -1240,9 +1242,13 @@ function updateData() {
             options.days = 29 - document.getElementById('current_day').value;
         }
     } else {
-        document.getElementById('current_day_row').style.display = 'none';
         document.getElementById('number_days').disabled = false;
-        document.getElementById('cross_season_row').style.display = 'none';
+        document.getElementById('cross_season').disabled = true;
+        document.getElementById('cross_season').style.cursor = "default";
+        document.getElementById('current_day').disabled = true;
+        document.getElementById('current_day').style.cursor = "default";
+        
+        document.getElementById('current_day').value = 1;
 
         if (document.getElementById('number_days').value > 100000)
             document.getElementById('number_days').value = 100000;
