@@ -96,6 +96,8 @@ body {
 
 #divhelp a {
 	padding: 8px 12px 8px 12px;
+    margin-left: 8px;
+    margin-right: 8px;
 	background-color: #111111;
 	border: 1px #000000 solid;
 	border-radius: 8px;
@@ -320,4 +322,49 @@ input[type=checkbox] {
 
 .help a:visited {
 	color: #eeeeee;
+}
+
+.changes {
+    margin: auto;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    font: 0.875em sans-serif;
+    text-align: justify;
+    color: #eeeeee;
+    background-color: #333333;
+    border-radius: 8px;
+    padding: 16px;
+    width: 768px;
+    -webkit-filter: drop-shadow(0px 2px 8px rgba(0,0,0,0.75));
+    -ms-filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=2, Color='#000')";
+    filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=2, Color='#000')";
+}
+
+.changes h1 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.changes h2 {
+    margin-top: 16px;
+    margin-bottom: 0px;
+}
+
+.changes h2 .date {
+    display: inline;
+    color: #aaaaaa;
+    font-weight: normal;
+    font-size: 0.8em;
+}
+
+.changes a {
+    color: #aaaaaa;
+}
+
+.changes a:hover {
+    color: #aaaaaa;
+}
+
+.changes a:visited {
+    color: #aaaaaa;
 }
