@@ -2,6 +2,7 @@
 var options = {
 	"produce": 0,
     "equipment": 0,
+    "sellRaw": false,
     "aging": 0,
 	"planted": 1,
     "maxSeedMoney": 0,

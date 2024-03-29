@@ -37,22 +37,27 @@
 			</tr>
 
             <tr id="cross_season_row">
-                <td>Cross season:</td>
+                <td>Cross-Season:</td>
                 <td><input type="checkbox" id="cross_season" onChange="refresh()" /></td>
             </tr>
 
             <tr id="number_days_row">
-                <td>Number of days:</td>
+                <td>Number of Days:</td>
                 <td><input type="number" id="number_days" value="28" onChange="refresh()"/></td>
             </tr>
 
 			<tr id="current_day_row">
-				<td>Current day:</td>
+				<td>Current Day:</td>
 				<td><input type="number" id="current_day" value="1" onChange="refresh()"/></td>
 			</tr>
 
+            <tr>
+                <td>Number of Crops:</td>
+                <td><input type="number" id="number_planted" value="1" onChange="refresh()"/></td>
+            </tr>
+
 			<tr>
-				<td>Produce type:</td>
+				<td>Produce Type:</td>
 				<td>
 					<select id="select_produce" onChange="refresh()">
 						<option value="0" selected="true">Raw</option>
@@ -67,10 +72,14 @@
                 <td colspan="2" class="sub">
                     <table cellspacing="2" class="subt">
                         <tr>
-                            <tr>
-                                <td>Equipment:</td>
-                                <td><input type="number" id="equipment" value="0" onChange="refresh()"/></td>
-                            </tr>
+                            <td>Equipment:</td>
+                            <td><input type="number" id="equipment" value="0" onChange="refresh()"/></td>
+                        </tr>
+                        <tr>
+                            <td>Non-existent:</td>
+                            <td><input type="checkbox" id="check_sellRaw" onChange="refresh()"/> Sell Raw<br /></td>
+                        </tr>
+                        <tr>
                             <td>Aging:</td>
                             <td >
                                 <select id="select_aging" onChange="refresh()">
@@ -85,34 +94,29 @@
                 </td>
             </tr>
 
-			<tr>
-				<td>Number of crops:</td>
-				<td><input type="number" id="number_planted" value="1" onChange="refresh()"/></td>
-			</tr>
-
-			<tr>
-				<td>Max seed money:</td>
-				<td><input type="number" id="max_seed_money" value="0" onChange="refresh()"/></td>
-			</tr>
-
-			<tr>
-				<td>Profit Display:</td>
-				<td>
-					<select id="select_profit_display" onChange="refresh()">
-						<option value="0" id="display_0" selected="true">Total Profit</option>
-						<option value="1" id="display_1">Daily Profit</option>
-						<option value="2" id="display_2">Total ROI</option>
-						<option value="3" id="display_3">Daily ROI</option>
-					</select>
-				</td>
-			</tr>
-
 		</table>
 
 		<table cellspacing="2">
 
+            <tr>
+                <td>Profit Display:</td>
+                <td>
+                    <select id="select_profit_display" onChange="refresh()">
+                        <option value="0" id="display_0" selected="true">Total Profit</option>
+                        <option value="1" id="display_1">Daily Profit</option>
+                        <option value="2" id="display_2">Total ROI</option>
+                        <option value="3" id="display_3">Daily ROI</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Max Seed Money:</td>
+                <td><input type="number" id="max_seed_money" value="0" onChange="refresh()"/></td>
+            </tr>
+
 			<tr>
-				<td>Seed sources:</td>
+				<td>Seed Sources:</td>
 				<td>
 					<input type="checkbox" id="check_seedsPierre" onChange="rebuild()" checked="true" /> <label for="check_seedsPierre">Pierre</label><br />
 					<input type="checkbox" id="check_seedsJoja" onChange="rebuild()" checked="true" /> <label for="check_seedsJoja">Joja</label><br />
@@ -121,7 +125,7 @@
 			</tr>
 
 			<tr>
-				<td>Pay for seeds:</td>
+				<td>Pay For Seeds:</td>
 				<td><input type="checkbox" id="check_buySeed" onChange="refresh()" /></td>
 			</tr>
 
@@ -141,7 +145,7 @@
 			</tr>
 
 			<tr>
-				<td>Pay for fertilizer:</td>
+				<td>Pay For Fertilizer:</td>
 				<td><input type="checkbox" id="check_buyFert" onChange="refresh()" /></td>
 			</tr>
 			<tr id = "deluxe_speed_input">
@@ -157,7 +161,7 @@
 		<table cellspacing="2">
 
 			<tr>
-				<td>Farming level:</td>
+				<td>Farming Level:</td>
 				<td><input type="number" id="farming_level" value="0" onChange="refresh()"/></td>
 			</tr>
 
@@ -165,11 +169,11 @@
 				<td colspan="2" class="sub">
                     <table cellspacing="2" class="subt">
                         <tr>
-                            <td>Level 5 skill:</td>
+                            <td>Level 5 Skill:</td>
                             <td><input type="checkbox" id="check_skillsTill" onChange="refresh()" /> Tiller<br /></td>
                         </tr>
                         <tr>
-                            <td>Level 10 skill:</td>
+                            <td>Level 10 Skill:</td>
                             <td >
                                 <select id="select_skills" onChange="refresh()">
                                     <option value="0" selected="true">None</option>
@@ -190,7 +194,7 @@
             </tr>
 
             <tr>
-                <td>Foraging level:</td>
+                <td>Foraging Level:</td>
                 <td ><input type="number" id="foraging_level" value="0" onChange="refresh()"/></td>
             </tr>
 
@@ -210,7 +214,7 @@
             </tr>
 
 			<tr>
-				<td>Farming buff food:</td>
+				<td>Farming Food Buff:</td>
 				<td>
 					<select id="select_food" onChange="refresh()">
 						<option value="0" selected="true">None</option>
@@ -237,7 +241,7 @@
 		</div>
 
 		<div class="footer">
-			<p><a href="http://stardewvalley.net/" target="_blank">Stardew Valley v1.6.3</a> &copy; <a href="https://twitter.com/ConcernedApe" target="_blank">ConcernedApe</a> | Website designed by <a href="https://twitter.com/thorinair_music" target="_blank">Thorinair</a> | <a href="https://github.com/Thorinair/Stardew-Profits" target="_blank">Stardew Profits v1.6.0</a></p>
+			<p><a href="http://stardewvalley.net/" target="_blank">Stardew Valley v1.6.3</a> &copy; <a href="https://twitter.com/ConcernedApe" target="_blank">ConcernedApe</a> | Website designed by <a href="https://twitter.com/thorinair_music" target="_blank">Thorinair</a> | <a href="https://github.com/Thorinair/Stardew-Profits" target="_blank">Stardew Profits v1.6.1</a></p>
 		</div>
 
 		<script src="js/time.js"> </script>

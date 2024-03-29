@@ -2,14 +2,16 @@
 var cropList;
 
 var svgWidth = 1080;
+var svgMinWidth = 300;
 var svgHeight = 480;
 
 var width = svgWidth - 48;
 var height = (svgHeight - 56) / 2;
 var barPadding = 4;
+var paddingLeft = 8;
 var barWidth = width / seasons[options.season].crops.length - barPadding;
 var miniBar = 8;
-var barOffsetX = 56;
+var barOffsetX = 29;
 var barOffsetY = 40;
 var graphDescription = "Profit";
 
@@ -250,9 +252,8 @@ function profit(crop) {
 	//Skip keg/jar calculations for ineligible crops (where corp.produce.jar or crop.produce.keg = 0)
 	
 	var userawproduce = false;
-	
+
 	switch(produce) {
-		case 0:	userawproduce = true; break; 
 		case 1: 
 			if(crop.produce.jarType == null) userawproduce = true;
 			break;
@@ -264,21 +265,26 @@ function profit(crop) {
 	// console.log("Calculating raw produce value for: " + crop.name);
 	// Determine income
 	if (produce == 0 || userawproduce) {
-		netIncome += crop.produce.price * ratioN * total_harvests;
-		netIncome += Math.trunc(crop.produce.price * 1.25) * ratioS * total_harvests;
-		netIncome += Math.trunc(crop.produce.price * 1.5) * ratioG * total_harvests;
-		netIncome += crop.produce.price * 2 * ratioI * total_harvests;
-		// console.log("Profit (After normal produce): " + profit);
+        if (userawproduce && !options.sellRaw) {
+            netIncome = 0;
+        }
+        else {
+            netIncome += crop.produce.price * ratioN * total_harvests;
+            netIncome += Math.trunc(crop.produce.price * 1.25) * ratioS * total_harvests;
+            netIncome += Math.trunc(crop.produce.price * 1.5) * ratioG * total_harvests;
+            netIncome += crop.produce.price * 2 * ratioI * total_harvests;
+            // console.log("Profit (After normal produce): " + profit);
 
-		if (crop.produce.extra > 0) {
-			netIncome += crop.produce.price * crop.produce.extraPerc * crop.produce.extra * total_harvests;
-			// console.log("Profit (After extra produce): " + profit);
-		}
+            if (crop.produce.extra > 0) {
+                netIncome += crop.produce.price * crop.produce.extraPerc * crop.produce.extra * total_harvests;
+                // console.log("Profit (After extra produce): " + profit);
+            }
 
-		if (options.skills.till) {
-			netIncome *= 1.1;
-			// console.log("Profit (After skills): " + profit);
-		}
+            if (options.skills.till) {
+                netIncome *= 1.1;
+                // console.log("Profit (After skills): " + profit);
+            }
+        }
 	}
     else if (produce == 3) {
         var items = total_harvests;
@@ -584,8 +590,11 @@ function renderGraph() {
 	var y = updateScaleY();
 	var ax = updateScaleAxis();
 
-	svg.attr("width", barOffsetX + barPadding * 2 + (barWidth + barPadding) * cropList.length).style("padding-top", "12px");
-	d3.select(".graph").attr("width", barOffsetX + barPadding * 2 + (barWidth + barPadding) * cropList.length);
+    var width = barOffsetX + barPadding * 2 + (barWidth + barPadding) * cropList.length + paddingLeft;
+    if (width < svgMinWidth)
+        width = svgMinWidth;
+	svg.attr("width", width).style("padding-top", "12px");
+	d3.select(".graph").attr("width", width);
 
 	var yAxis = d3.svg.axis()
 		.scale(ax)
@@ -823,14 +832,18 @@ function renderGraph() {
 					case 1:
 						if (d.produce.jarType != null)
 							tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.jarType);
-						else
-							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("Raw crops");
+						else if (options.sellRaw)
+                            tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("Raw crops");
+                        else
+							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("None");
 						break;
 					case 2:
 						if (d.produce.kegType != null)
 							tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.kegType);
+                        else if (options.sellRaw)
+                            tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("Raw crops");
 						else
-							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("Raw crops");
+							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("None");
 						break;
 				}
 				tooltipTr = tooltipTable.append("tr");
@@ -1158,6 +1171,17 @@ function updateData() {
     const isGreenhouse = options.season === 4;
 
 	options.produce = parseInt(document.getElementById('select_produce').value);
+
+    if (options.produce == 0 || options.produce == 3) {
+        document.getElementById('check_sellRaw').disabled = true;
+        document.getElementById('check_sellRaw').style.cursor = "default";
+    }
+    else {
+        document.getElementById('check_sellRaw').disabled = false;
+        document.getElementById('check_sellRaw').style.cursor = "pointer";
+    }
+    options.sellRaw = document.getElementById('check_sellRaw').checked;
+
     if (options.produce == 0 || options.produce == 3) {
         document.getElementById('equipment').disabled = true;
         document.getElementById('equipment').style.cursor = "default";
@@ -1367,6 +1391,9 @@ function optionsLoad() {
 
     options.equipment = validIntRange(0, MAX_INT, options.equipment);
     document.getElementById('equipment').value = options.equipment;
+
+    options.sellRaw = validBoolean(options.sellRaw);
+    document.getElementById('check_sellRaw').checked = options.sellRaw;
 
     options.aging = validIntRange(0, 3, options.aging);
     document.getElementById('select_aging').value = options.aging;
