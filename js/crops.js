@@ -11,9 +11,9 @@ var crops = {
     "seeds": {
       "pierre": 0,
       "joja": 0,
-      "special": 0.001,
-      "specialLoc": "",
-      "specialUrl": ""
+      "special": 0,
+      "specialLoc": "Unpurchasable",
+      "specialUrl": "https://stardewvalleywiki.com/Carrot_Seeds"
     },
     "growth": {
       "initial": 3,
@@ -966,9 +966,9 @@ var crops = {
     "seeds": {
       "pierre": 0,
       "joja": 0,
-      "special": 450,
-      "specialLoc": "Travelling Cart",
-      "specialUrl": "http://stardewvalleywiki.com/Travelling_Cart"
+      "special": 0,
+      "specialLoc": "Unpurchasable",
+      "specialUrl": "https://stardewvalleywiki.com/Ancient_Seeds"
     },
     "growth": {
       "initial": 28,

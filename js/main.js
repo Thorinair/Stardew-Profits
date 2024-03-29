@@ -143,6 +143,8 @@ function minSeedCost(crop) {
 		minSeedCost = crop.seeds.joja;
 	if (crop.seeds.special != 0 && options.seeds.special && crop.seeds.special < minSeedCost)
 		minSeedCost = crop.seeds.special;
+    if (minSeedCost == Infinity)
+        minSeedCost = 0;
 	
 	return minSeedCost;
 }
@@ -369,7 +371,7 @@ function fetchCrops() {
 	for (var i = 0; i < season.crops.length; i++) {
 	    if ((options.seeds.pierre && season.crops[i].seeds.pierre != 0) ||
 	    	(options.seeds.joja && season.crops[i].seeds.joja != 0) ||
-	    	(options.seeds.special && season.crops[i].seeds.special != 0)) {
+    	    (options.seeds.special && season.crops[i].seeds.specialLoc != "")) {
 	    	cropList.push(JSON.parse(JSON.stringify(season.crops[i])));
 	    	cropList[cropList.length - 1].id = i;
 		}
@@ -398,35 +400,35 @@ function valueCrops() {
 		cropList[i].averageSeedLoss = perDay(cropList[i].seedLoss);
 		cropList[i].averageFertLoss = perDay(cropList[i].fertLoss);
 
-		if (1 == options.average) {
+		if ( options.average == 1) {
 			cropList[i].drawProfit = cropList[i].averageProfit;
 			cropList[i].drawSeedLoss = cropList[i].averageSeedLoss;
 			cropList[i].drawFertLoss = cropList[i].averageFertLoss;
 			graphDescription = "Daily Profit"
 		}
-		else if ((2 == options.average) ){
-			if (0 != cropList[i].netExpenses)
+		else if ((options.average == 2) ){
+			if (options.buySeed || options.buyFert)
 			{
 				cropList[i].drawProfit = cropList[i].totalReturnOnInvestment;
 				graphDescription = "Total Return On Investment";
 			}
 			else{
-				cropList[i].drawProfit = cropList[i].profit;
+				cropList[i].drawProfit = 0;
 				graphDescription = "Total Profit (Choose an expense for ROI)";
 			}
 			cropList[i].drawSeedLoss = cropList[i].seedLoss;
 			cropList[i].drawFertLoss = cropList[i].fertLoss;
 		}
-		else if (3 == options.average){
+		else if (options.average == 3){
 			cropList[i].drawSeedLoss = cropList[i].averageSeedLoss;
 			cropList[i].drawFertLoss = cropList[i].averageFertLoss;
-			if (0 != cropList[i].netExpenses)
+			if (options.buySeed || options.buyFert)
 			{
 				cropList[i].drawProfit = cropList[i].averageReturnOnInvestment;
 				graphDescription = "Daily Return On Investment";
 			}
 			else{
-				cropList[i].drawProfit = cropList[i].profit;
+				cropList[i].drawProfit = 0;
 				graphDescription = "Daily Profit (Choose an expense for ROI)";
 			}
 		}
@@ -1132,7 +1134,7 @@ function updateData() {
 		options.maxSeedMoney = 0;
 	}
 
-	options.average = parseInt(document.getElementById('select_profit_display').value);;
+	options.average = parseInt(document.getElementById('select_profit_display').value);
     
     options.crossSeason = document.getElementById('cross_season').checked;
 
