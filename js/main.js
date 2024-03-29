@@ -287,15 +287,16 @@ function profit(crop) {
         netIncome += 2 * items * crop.seeds.sell;
     }
 	else {
-		var items = total_harvests;
-		items += crop.produce.extraPerc * crop.produce.extra * total_harvests;
+		var items = 0;
+        if (options.equipment > 0 && (options.produce == 1 || options.produce == 2))
+            items = Math.min(options.equipment, (1 + crop.produce.extraPerc * crop.produce.extra) * num_planted);
+        else
+            items = total_harvests + crop.produce.extraPerc * crop.produce.extra * total_harvests;
+
 		var kegModifier = getKegModifier(crop);
         var caskModifier = getCaskModifier();
 
-		switch (produce) {
-			case 1: netIncome += items * (crop.produce.price * 2 + 50); break;
-			case 2: netIncome += items * (crop.produce.keg != null ? crop.produce.keg * caskModifier : crop.produce.price * kegModifier * caskModifier); break;
-		}
+		netIncome += items * (crop.produce.keg != null ? crop.produce.keg * caskModifier : crop.produce.price * kegModifier * caskModifier);
 
 		if (options.skills.arti) {
 			netIncome *= 1.4;
@@ -993,8 +994,8 @@ function updateGraph() {
 	.append("text")
 	.attr("class", "axis")
 	.attr("x", 24)
-	.attr("y", 24)
-	 .style("text-anchor", "start")
+    .attr("y", 12)
+	.style("text-anchor", "start")
 	.text(graphDescription);
 
 	barsProfit.data(cropList)
@@ -1151,6 +1152,18 @@ function updateData() {
     const isGreenhouse = options.season === 4;
 
 	options.produce = parseInt(document.getElementById('select_produce').value);
+    if (options.produce == 0 || options.produce == 3) {
+        document.getElementById('equipment').disabled = true;
+        document.getElementById('equipment').style.cursor = "default";
+    }
+    else {
+        document.getElementById('equipment').disabled = false;
+        document.getElementById('equipment').style.cursor = "text";
+    }
+    if (document.getElementById('equipment').value < 0)
+        document.getElementById('equipment').value = 0;
+    options.equipment = parseInt(document.getElementById('equipment').value);
+
     if (options.produce == 2) {
         document.getElementById('select_aging').disabled = false;
         document.getElementById('select_aging').style.cursor = "pointer";
@@ -1160,7 +1173,6 @@ function updateData() {
         document.getElementById('select_aging').style.cursor = "default";
         document.getElementById('select_aging').value = 0;
     }
-
     options.aging = parseInt(document.getElementById('select_aging').value);
 
 	if (document.getElementById('number_planted').value <= 0)
@@ -1346,6 +1358,9 @@ function optionsLoad() {
 
 	options.produce = validIntRange(0, 3, options.produce);
 	document.getElementById('select_produce').value = options.produce;
+
+    options.equipment = validIntRange(0, MAX_INT, options.equipment);
+    document.getElementById('equipment').value = options.equipment;
 
     options.aging = validIntRange(0, 3, options.aging);
     document.getElementById('select_aging').value = options.aging;
