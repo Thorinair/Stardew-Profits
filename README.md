@@ -19,7 +19,7 @@ Cross season | If this is checked, the calculations will take into account the c
 Produce type | Designates the type of produce to be sold after harvesting. By default, all crops are harvested and sold as raw. This option accounts for Normal/Silver/Gold ratios, *Farming* skill level, and some additional skills. Other options let you select the two different artisan goods.
 Number of crops | This controls the number of crops that the player has planted.
 Max seed money | The maximum amount of money available in player's savings. This will limit how many crops can be planted when buying seeds.
-Average profits | Checking this, only average profits per day will be calculated. The average is calculated through the number of days set earlier.
+Profit Display | Changes how the graph is organized. ROI is calculated by dividing the profit by the expenses.  Daily is calculated through the number of days set earlier..
 Seed sources | Seeds can be obtained at different locations and different locations always have different costs too. This option lets you check which sources the graph should be looking for. Note that the cheapest option will always be shown on the graph. Unselecting certain locations might hide no longer obtainable crops.
 Pay for seeds | Selecting this means that the player is buying the seeds from one of the sources, instead of producing the seeds themselves (like using the *Seed Maker*). An orange bar will be shown for every crop, showing the seed loss if selected.
 Fertilizer | Different fertilizers can either speed up growth or increase the Normal/Silver/Gold ratios. The type of fertilizer can be selected here.
