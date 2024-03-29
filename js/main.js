@@ -201,6 +201,29 @@ function levelRatio(fertilizer, level, isWildseed) {
 }
 
 /*
+ * Calculates the keg modifier for the crop.
+ * @param crop The crop object, containing all the crop data.
+ * @return The keg modifier.
+ */
+function getKegModifier(crop) {
+    return crop.produce.kegType == "Wine" ? 3 : 2.25;
+}
+
+/*
+ * Calculates the cask modifier for the crop.
+ * @param crop The crop object, containing all the crop data.
+ * @return The cask modifier.
+ */
+function getCaskModifier() {
+    switch (options.aging) {
+        case 1: return 1.25;
+        case 2: return 1.5;
+        case 3: return 2;
+        default: return 1;
+    }
+}
+
+/*
  * Calculates the profit for a specified crop.
  * @param crop The crop object, containing all the crop data.
  * @return The total profit.
@@ -260,11 +283,12 @@ function profit(crop) {
 	else {
 		var items = total_harvests;
 		items += crop.produce.extraPerc * crop.produce.extra * total_harvests;
-		var kegModifier = crop.produce.kegType === "Wine" ? 3 : 2.25;
+		var kegModifier = getKegModifier(crop);
+        var caskModifier = getCaskModifier();
 
 		switch (produce) {
 			case 1: netIncome += items * (crop.produce.price * 2 + 50); break;
-			case 2: netIncome += items * (crop.produce.keg != null ? crop.produce.keg : crop.produce.price * kegModifier); break;
+			case 2: netIncome += items * (crop.produce.keg != null ? crop.produce.keg * caskModifier : crop.produce.price * kegModifier * caskModifier); break;
 		}
 
 		if (options.skills.arti) {
@@ -553,7 +577,7 @@ function renderGraph() {
 	var y = updateScaleY();
 	var ax = updateScaleAxis();
 
-	svg.attr("width", barOffsetX + barPadding * 2 + (barWidth + barPadding) * cropList.length);
+	svg.attr("width", barOffsetX + barPadding * 2 + (barWidth + barPadding) * cropList.length).style("padding-top", "12px");
 	d3.select(".graph").attr("width", barOffsetX + barPadding * 2 + (barWidth + barPadding) * cropList.length);
 
 	var yAxis = d3.svg.axis()
@@ -570,7 +594,7 @@ function renderGraph() {
 		.append("text")
 		.attr("class", "axis")
 		.attr("x", 24)
-		.attr("y", 24)
+		.attr("y", 12)
 	 	.style("text-anchor", "start")
 		.text(graphDescription);
 
@@ -813,8 +837,9 @@ function renderGraph() {
 				tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.harvests);
 
 				if (options.extra) {
-					var kegModifier = d.produce.kegType === "Wine" ? 3 : 2.25;
-					var kegPrice = d.produce.keg != null ? d.produce.keg : d.produce.price * kegModifier;
+                    var kegModifier = getKegModifier(d);
+                    var caskModifier = getCaskModifier();
+					var kegPrice = d.produce.keg != null ? d.produce.keg * caskModifier : d.produce.price * kegModifier * caskModifier;
 
 					tooltip.append("h3").attr("class", "tooltipTitleExtra").text("Crop info");
 					tooltipTable = tooltip.append("table")
@@ -1105,10 +1130,6 @@ function updateSeasonNames() {
     }
 }
 
-function updateSeedChance() {
-
-}
-
 /*
  * Updates all options and data, based on the options set in the HTML.
  * After that, filters, values and sorts all the crops again.
@@ -1119,6 +1140,17 @@ function updateData() {
     const isGreenhouse = options.season === 4;
 
 	options.produce = parseInt(document.getElementById('select_produce').value);
+    if (options.produce == 2) {
+        document.getElementById('select_aging').disabled = false;
+        document.getElementById('select_aging').style.cursor = "pointer";
+    }
+    else {
+        document.getElementById('select_aging').disabled = true;
+        document.getElementById('select_aging').style.cursor = "default";
+        document.getElementById('select_aging').value = 0;
+    }
+
+    options.aging = parseInt(document.getElementById('select_aging').value);
 
 	if (document.getElementById('number_planted').value <= 0)
 		document.getElementById('number_planted').value = 1;
@@ -1303,6 +1335,9 @@ function optionsLoad() {
 
 	options.produce = validIntRange(0, 2, options.produce);
 	document.getElementById('select_produce').value = options.produce;
+
+    options.aging = validIntRange(0, 3, options.aging);
+    document.getElementById('select_aging').value = options.aging;
 
 	options.planted = validIntRange(1, MAX_INT, options.planted);
 	document.getElementById('number_planted').value = options.planted;

@@ -1,6 +1,7 @@
 // Options used to draw the graph.
 var options = {
-	"produce" : 0,
+	"produce": 0,
+    "aging": 0,
 	"planted": 1,
     "maxSeedMoney": 0,
 	"days": 28,

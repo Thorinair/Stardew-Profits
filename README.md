@@ -17,6 +17,7 @@ Number of days | Designates the number of days to be used in the calculation. Th
 Current day | The current date within the selected season. This is almost the same as "Number of days", but instead of specifying how many days are left, as a convenience you can just input the current in-game date.
 Cross season | If this is checked, the calculations will take into account the crops that don't die when there's a season change.
 Produce type | Designates the type of produce to be sold after harvesting. By default, all crops are harvested and sold as raw. This option accounts for Normal/Silver/Gold ratios, *Farming* skill level, and some additional skills. Other options let you select the two different artisan goods.
+Aging | Can only be changed if Keg produce type is selected. Specifies the level of aging in a Cask for the final produce. Does not take in account how long it takes to age. This means that Hops might not necessarily be the best option as they would require a new additional Cask each day.
 Number of crops | This controls the number of crops that the player has planted.
 Max seed money | The maximum amount of money available in player's savings. This will limit how many crops can be planted when buying seeds.
 Profit Display | Changes how the graph is organized. ROI is calculated by dividing the profit by the expenses.  Daily is calculated through the number of days set earlier..
