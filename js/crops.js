@@ -4,6 +4,98 @@
 
 // Crop List
 var crops = {
+  "carrot": {
+    "name": "Carrot",
+    "url": "https://stardewvalleywiki.com/Carrot",
+    "img": "carrot.png",
+    "seeds": {
+      "pierre": 0,
+      "joja": 0,
+      "special": 0.001,
+      "specialLoc": "",
+      "specialUrl": ""
+    },
+    "growth": {
+      "initial": 3,
+      "regrow": 0
+    },
+    "produce": {
+      "extra": 0,
+      "extraPerc": 0,
+      "price": 35,
+      "jarType": "Pickles",
+      "kegType": "Juice"
+    }
+  },
+  "summersquash": {
+    "name": "Summer Squash",
+    "url": "https://stardewvalleywiki.com/Summer_Squash",
+    "img": "summersquash.png",
+    "seeds": {
+      "pierre": 0,
+      "joja": 0,
+      "special": 0.001,
+      "specialLoc": "",
+      "specialUrl": ""
+    },
+    "growth": {
+      "initial": 6,
+      "regrow": 3
+    },
+    "produce": {
+      "extra": 0,
+      "extraPerc": 0,
+      "price": 45,
+      "jarType": "Pickles",
+      "kegType": "Juice"
+    }
+  },
+  "broccoli": {
+    "name": "Broccoli",
+    "url": "https://stardewvalleywiki.com/Broccoli",
+    "img": "broccoli.png",
+    "seeds": {
+      "pierre": 0,
+      "joja": 0,
+      "special": 0.001,
+      "specialLoc": "",
+      "specialUrl": ""
+    },
+    "growth": {
+      "initial": 8,
+      "regrow": 3
+    },
+    "produce": {
+      "extra": 0,
+      "extraPerc": 0,
+      "price": 70,
+      "jarType": "Pickles",
+      "kegType": "Juice"
+    }
+  },
+  "powdermelon": {
+    "name": "Powdermelon",
+    "url": "https://stardewvalleywiki.com/Powdermelon",
+    "img": "powdermelon.png",
+    "seeds": {
+      "pierre": 0,
+      "joja": 0,
+      "special": 0.001,
+      "specialLoc": "",
+      "specialUrl": ""
+    },
+    "growth": {
+      "initial": 7,
+      "regrow": 0
+    },
+    "produce": {
+      "extra": 0,
+      "extraPerc": 0,
+      "price": 70,
+      "jarType": "Jelly",
+      "kegType": "Wine",
+    }
+  },
   "amaranth": {
     "name": "Amaranth",
     "url": "http://stardewvalleywiki.com/Amaranth",
@@ -452,7 +544,7 @@ var crops = {
       "kegType": "Juice"
     }
   },
-  "unmilledrice" : {
+  "unmilledrice": {
     "name": "Unmilled Rice",
     "url": "http://stardewvalleywiki.com/Unmilled_Rice",
     "img": "unmilledrice.png",
