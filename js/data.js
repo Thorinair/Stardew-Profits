@@ -11,6 +11,7 @@ var options = {
 	"level": 0,
 	"season": 4,
 	"buySeed": false,
+    "replant": false,
 	"buyFert": false,
 	"average": false,
     "fertilizer": 2,
@@ -23,7 +24,9 @@ var options = {
 	"skills": {
 		"till": false,
 		"agri": false,
-		"arti": false
+		"arti": false,
+        "gatherer": false,
+        "botanist": false
 	},
 	"foodIndex": 0,
 	"foodLevel": 0,

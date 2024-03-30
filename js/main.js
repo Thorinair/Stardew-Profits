@@ -232,7 +232,7 @@ function getCaskModifier() {
  */
 function profit(crop) {
 	var num_planted = planted(crop);
-	var total_harvests = crop.harvests * num_planted;
+	//var total_harvests = crop.harvests * num_planted;
 	var fertilizer = fertilizers[options.fertilizer];
 	var produce = options.produce;
 
@@ -269,6 +269,53 @@ function profit(crop) {
             netIncome = 0;
         }
         else {
+            var total_crops = num_planted * 1.0 + num_planted * crop.produce.extraPerc * crop.produce.extra;
+            var countN = total_crops * ratioN;
+            var countS = total_crops * ratioS;
+            var countG = total_crops * ratioG;
+            var countI = total_crops * ratioI;
+            if (options.replant && crop.growth.regrow == 0) {
+                var forSeeds = total_crops * 0.5;
+                if (countN - forSeeds < 0) {
+                    forSeeds -= countN;
+                    countN = 0;
+                }
+                else {
+                    countN -= forSeeds;
+                    forSeeds = 0;
+                }
+                if (countS - forSeeds < 0) {
+                    forSeeds -= countS;
+                    countS = 0;
+                }
+                else {
+                    countS -= forSeeds;
+                    forSeeds = 0;
+                }
+                if (countG - forSeeds < 0) {
+                    forSeeds -= countG;
+                    countG = 0;
+                }
+                else {
+                    countG -= forSeeds;
+                    forSeeds = 0;
+                }
+                if (countI - forSeeds < 0) {
+                    forSeeds -= countI;
+                    countI = 0;
+                }
+                else {
+                    countI -= forSeeds;
+                    forSeeds = 0;
+                }
+            }
+            netIncome += crop.produce.price * countN;
+            netIncome += Math.trunc(crop.produce.price * 1.25) * countS;
+            netIncome += Math.trunc(crop.produce.price * 1.5) * countG;
+            netIncome += crop.produce.price * 2 * countI;
+            netIncome *= crop.harvests;
+
+            /*
             netIncome += crop.produce.price * ratioN * total_harvests;
             netIncome += Math.trunc(crop.produce.price * 1.25) * ratioS * total_harvests;
             netIncome += Math.trunc(crop.produce.price * 1.5) * ratioG * total_harvests;
@@ -279,6 +326,7 @@ function profit(crop) {
                 netIncome += crop.produce.price * crop.produce.extraPerc * crop.produce.extra * total_harvests;
                 // console.log("Profit (After extra produce): " + profit);
             }
+            */
 
             if (options.skills.till) {
                 netIncome *= 1.1;
@@ -287,22 +335,27 @@ function profit(crop) {
         }
 	}
     else if (produce == 3) {
-        var items = total_harvests;
-        items += crop.produce.extraPerc * crop.produce.extra * total_harvests;
+        var total_crops = num_planted * 1.0 + num_planted * crop.produce.extraPerc * crop.produce.extra;
+        if (options.replant && crop.growth.regrow == 0)
+            total_crops *= 0.5;
 
-        netIncome += 2 * items * crop.seeds.sell;
+        netIncome += 2 * total_crops * crop.harvests * crop.seeds.sell;
     }
 	else {
-		var items = 0;
-        if (options.equipment > 0 && (options.produce == 1 || options.produce == 2))
-            items = Math.min(options.equipment, (1 + crop.produce.extraPerc * crop.produce.extra) * num_planted);
-        else
-            items = total_harvests + crop.produce.extraPerc * crop.produce.extra * total_harvests;
+        var total_crops = num_planted * 1.0 + num_planted * crop.produce.extraPerc * crop.produce.extra;
+        if (options.replant && crop.growth.regrow == 0)
+            total_crops *= 0.5;
 
-		var kegModifier = getKegModifier(crop);
+        var kegModifier = getKegModifier(crop);
         var caskModifier = getCaskModifier();
 
-		netIncome += items * (crop.produce.keg != null ? crop.produce.keg * caskModifier : crop.produce.price * kegModifier * caskModifier);
+        if (options.equipment > 0 && (options.produce == 1 || options.produce == 2)) {            
+            var items = Math.min(options.equipment, total_crops);
+            netIncome += items * crop.harvests * (crop.produce.keg != null ? crop.produce.keg * caskModifier : crop.produce.price * kegModifier * caskModifier);
+        }
+        else {
+            netIncome += total_crops * crop.harvests * (crop.produce.keg != null ? crop.produce.keg * caskModifier : crop.produce.price * kegModifier * caskModifier);
+        }
 
 		if (options.skills.arti) {
 			netIncome *= 1.4;
@@ -322,20 +375,16 @@ function profit(crop) {
 
 	// Determine total profit
 	totalProfit = netIncome + netExpenses;
-	if (0 != netExpenses)
-	{
+	if (netExpenses != 0) {
 		totalReturnOnInvestment = 100 * ((totalProfit) / -netExpenses); // Calculate the return on investment and scale it to a % increase
-		if (0 == crop.growth.regrow)
-		{
+		if (crop.growth.regrow == 0) {
 			averageReturnOnInvestment = (totalReturnOnInvestment / crop.growth.initial);
 		}
-		else
-		{
+		else {
 			averageReturnOnInvestment = (totalReturnOnInvestment / options.days);
 		}
 	}
-	else
-	{
+	else {
 		totalReturnOnInvestment = 0;
 		averageReturnOnInvestment = 0;
 	}
@@ -1205,10 +1254,6 @@ function updateData() {
     }
     options.aging = parseInt(document.getElementById('select_aging').value);
 
-	if (document.getElementById('number_planted').value <= 0)
-		document.getElementById('number_planted').value = 1;
-	options.planted = document.getElementById('number_planted').value;
-
 	if (document.getElementById('max_seed_money').value < 0)
 		document.getElementById('max_seed_money').value = '0';
 	options.maxSeedMoney = parseInt(document.getElementById('max_seed_money').value);
@@ -1260,6 +1305,14 @@ function updateData() {
 	options.seeds.special = document.getElementById('check_seedsSpecial').checked;
 
 	options.buySeed = document.getElementById('check_buySeed').checked;
+
+    options.replant = document.getElementById('check_replant').checked;
+
+    if (document.getElementById('number_planted').value <= 0)
+        document.getElementById('number_planted').value = 1;
+    if (options.replant && parseInt(document.getElementById('number_planted').value) % 2 == 1)
+        document.getElementById('number_planted').value = parseInt(document.getElementById('number_planted').value) + 1;
+    options.planted = document.getElementById('number_planted').value;
 
 	options.fertilizer = parseInt(document.getElementById('select_fertilizer').value);
 
@@ -1315,24 +1368,24 @@ function updateData() {
     if (options.foragingLevel >= 5) {
         document.getElementById('check_skillsGatherer').disabled = false;
         document.getElementById('check_skillsGatherer').style.cursor = "pointer";
-        options.skills.gatherer = document.getElementById('check_skillsGatherer').checked;
     }
     else {
         document.getElementById('check_skillsGatherer').disabled = true;
         document.getElementById('check_skillsGatherer').style.cursor = "default";
         document.getElementById('check_skillsGatherer').checked = false;
     }
+    options.skills.gatherer = document.getElementById('check_skillsGatherer').checked;
 
     if (options.foragingLevel >= 10 && options.skills.gatherer) {
         document.getElementById('check_skillsBotanist').disabled = false;
         document.getElementById('check_skillsBotanist').style.cursor = "pointer";
-        options.skills.botanist = document.getElementById('check_skillsBotanist').checked;
     }
     else {
         document.getElementById('check_skillsBotanist').disabled = true;
         document.getElementById('check_skillsBotanist').style.cursor = "default";
         document.getElementById('check_skillsBotanist').checked = false;
     }
+    options.skills.botanist = document.getElementById('check_skillsBotanist').checked;
 
 	options.foodIndex = document.getElementById('select_food').value;
 	options.foodLevel = parseInt(document.getElementById('select_food').options[options.foodIndex].value);
@@ -1448,6 +1501,9 @@ function optionsLoad() {
 
 	options.buySeed = validBoolean(options.buySeed);
 	document.getElementById('check_buySeed').checked = options.buySeed;
+
+    options.replant = validBoolean(options.replant);
+    document.getElementById('check_replant').checked = options.replant;
 
 	options.fertilizer = validIntRange(0, 6, options.fertilizer);
 	document.getElementById('select_fertilizer').value = options.fertilizer;
