@@ -141,7 +141,7 @@ var crops = {
       "regrow": 3
     },
     "produce": {
-      "extra": 1,
+      "extra": 0,
       "extraPerc": 0,
       "price": 80,
       "jarType": "Jelly",
@@ -165,7 +165,7 @@ var crops = {
       "regrow": 1
     },
     "produce": {
-      "extra": 1,
+      "extra": 0,
       "extraPerc": 0,
       "price": 25,
       "keg": 300,
@@ -441,7 +441,7 @@ var crops = {
       "regrow": 3
     },
     "produce": {
-      "extra": 1,
+      "extra": 0,
       "extraPerc": 0,
       "price": 40,
       "jarType": "Pickles",
@@ -826,7 +826,7 @@ var crops = {
       "regrow": 4
     },
     "produce": {
-      "extra": 1,
+      "extra": 0,
       "extraPerc": 0,
       "price": 50,
       "jarType": "Pickles",
