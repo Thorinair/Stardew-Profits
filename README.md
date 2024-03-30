@@ -36,7 +36,7 @@ Foraging Level | The level of the player's *Foraging* skill. This has direct imp
 Foraging Level 5 Skill | The *Gatherer* skill is available once the player reaches level 5 in *Foraging*. This option is disabled unless the correct level is set.
 Foraging Level 10 Skill | The *Botanist* skill is available once the player reaches level 10 in *Foraging*. This option is disabled unless the correct level is set and unless *Gatherer* is enabled under Level 5 skills.
 Farming Food Buff | The consumable buff active on the player.
-Show extra info | Selecting this will show additional detailed info about every crop on the tooltip.
+Show Extra Info | Selecting this will show additional detailed info about every crop on the tooltip.
 
 # Contact
 You may contact me on the following locations: [Twitter](https://twitter.com/thorinair_music) | [Reddit](https://www.reddit.com/user/Thorinair/) | [YouTube](https://www.youtube.com/user/Thorinair) | [deviantArt](http://thorinair.deviantart.com/)
