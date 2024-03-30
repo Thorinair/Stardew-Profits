@@ -413,7 +413,7 @@ function seedLoss(crop) {
 
     var loss = -minSeedCost(crop);
 
-	if (crop.growth.regrow == 0 && harvests > 0)
+	if (crop.growth.regrow == 0 && harvests > 0 && !options.replant)
 		loss = loss * harvests;
 
 	return loss * planted(crop);
