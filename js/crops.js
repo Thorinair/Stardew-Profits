@@ -9,7 +9,7 @@ var crops = {
     "url": "https://stardewvalleywiki.com/Carrot",
     "img": "carrot.png",
     "seeds": {
-      "sell": 0,
+      "sell": 15,
       "pierre": 0,
       "joja": 0,
       "special": 0,
@@ -57,7 +57,7 @@ var crops = {
     "url": "https://stardewvalleywiki.com/Broccoli",
     "img": "broccoli.png",
     "seeds": {
-      "sell": 0,
+      "sell": 40,
       "pierre": 0,
       "joja": 0,
       "special": 0,
