@@ -33,12 +33,12 @@ var crops = {
     "url": "https://stardewvalleywiki.com/Summer_Squash",
     "img": "summersquash.png",
     "seeds": {
-      "sell": 0,
+      "sell": 20,
       "pierre": 0,
       "joja": 0,
-      "special": 0.001,
-      "specialLoc": "",
-      "specialUrl": ""
+      "special": 0,
+      "specialLoc": "Unpurchasable",
+      "specialUrl": "https://stardewvalleywiki.com/Summer_Squash_Seeds"
     },
     "growth": {
       "initial": 6,
@@ -60,9 +60,9 @@ var crops = {
       "sell": 0,
       "pierre": 0,
       "joja": 0,
-      "special": 0.001,
-      "specialLoc": "",
-      "specialUrl": ""
+      "special": 0,
+      "specialLoc": "Unpurchasable",
+      "specialUrl": "https://stardewvalleywiki.com/Broccoli_Seeds"
     },
     "growth": {
       "initial": 8,
@@ -81,12 +81,12 @@ var crops = {
     "url": "https://stardewvalleywiki.com/Powdermelon",
     "img": "powdermelon.png",
     "seeds": {
-      "sell": 0,
+      "sell": 20,
       "pierre": 0,
       "joja": 0,
-      "special": 0.001,
-      "specialLoc": "",
-      "specialUrl": ""
+      "special": 0,
+      "specialLoc": "Unpurchasable",
+      "specialUrl": "https://stardewvalleywiki.com/Powdermelon_Seeds"
     },
     "growth": {
       "initial": 7,
