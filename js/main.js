@@ -334,6 +334,17 @@ function profit(crop) {
             }
         }
 	}
+    else if (produce == 1) { // Preserves Jar
+        var total_crops = num_planted * 1.0 + num_planted * crop.produce.extraPerc * crop.produce.extra;
+        if (options.replant && crop.growth.regrow == 0)
+            total_crops *= 0.5;
+
+        netIncome += total_crops * crop.harvests * (2 * crop.produce.price + 50);
+
+        if (options.skills.arti) {
+            netIncome *= 1.4;
+        }
+    }
     else if (produce == 3) {
         var total_crops = num_planted * 1.0 + num_planted * crop.produce.extraPerc * crop.produce.extra;
         if (options.replant && crop.growth.regrow == 0)
