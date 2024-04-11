@@ -349,13 +349,15 @@ function profit(crop) {
         var kegModifier = getKegModifier(crop);
         var caskModifier = getCaskModifier();
 
-        if (options.equipment > 0 && (options.produce == 1 || options.produce == 2)) {            
-            var items = Math.min(options.equipment, total_crops);
-            netIncome += items * crop.harvests * (crop.produce.keg != null ? crop.produce.keg * caskModifier : crop.produce.price * kegModifier * caskModifier);
+        var items = total_crops;
+        if (options.equipment > 0 && (options.produce == 1 || options.produce == 2)) {
+            items = Math.min(options.equipment, total_crops);
         }
-        else {
-            netIncome += total_crops * crop.harvests * (crop.produce.keg != null ? crop.produce.keg * caskModifier : crop.produce.price * kegModifier * caskModifier);
-        }
+
+        if (options.produce == 1)
+        	netIncome += items * crop.harvests * (crop.produce.jarType != null ? crop.produce.price * 2 + 50 : crop.produce.price);
+        else if (options.produce == 2)
+        	netIncome += items * crop.harvests * (crop.produce.kegType != null ? crop.produce.price * kegModifier * caskModifier : crop.produce.price);
 
 		if (options.skills.arti) {
 			netIncome *= 1.4;
@@ -909,7 +911,7 @@ function renderGraph() {
                     var fertilizer = fertilizers[options.fertilizer];
                     var kegModifier = getKegModifier(d);
                     var caskModifier = getCaskModifier();
-					var kegPrice = d.produce.keg != null ? d.produce.keg * caskModifier : d.produce.price * kegModifier * caskModifier;
+					var kegPrice = d.produce.kegType != null ? d.produce.price * kegModifier * caskModifier : d.produce.price;
                     var seedPrice = d.seeds.sell;
                     var initialGrow = 0;
                     if (options.skills.agri)
