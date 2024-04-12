@@ -236,6 +236,7 @@ function profit(crop) {
 	var fertilizer = fertilizers[options.fertilizer];
 	var produce = options.produce;
 	var isTea = crop.name == "Tea Leaves";
+	var isCoffee = crop.name == "Coffee Bean";
 
     var useLevel = options.level;
     if (crop.isWildseed)
@@ -265,8 +266,16 @@ function profit(crop) {
 	
     var total_harvest = num_planted * 1.0 + num_planted * crop.produce.extraPerc * crop.produce.extra;
 	var forSeeds = 0;
-	if (options.replant && !isTea)
-		forSeeds = (crop.growth.regrow == 0) ? num_planted * crop.harvests * 0.5 : num_planted * 0.5;
+	if (options.replant && !isTea) {
+		if(isCoffee) {
+			forSeeds = num_planted;
+		} else if(crop.growth.regrow == 0) {
+			forSeeds = num_planted * crop.harvests * 0.5;
+		} else {
+			forSeeds = num_planted * 0.5;
+		}
+	}
+	
 	var total_crops = total_harvest * crop.harvests;
 	
 	// console.log("Calculating raw produce value for: " + crop.name);
@@ -345,12 +354,20 @@ function profit(crop) {
         var kegModifier = getKegModifier(crop);
         var caskModifier = getCaskModifier();
 
-        var items = total_harvest - forSeeds;
+        var items = total_harvest;
         if (options.equipment > 0 && (options.produce == 1 || options.produce == 2)) {
             items = Math.min(options.equipment, total_harvest);
         }
 		
-		var items = items * crop.harvests
+		var excesseProduce = (total_harvest - items) * crop.harvests;
+		if(excesseProduce < 0) 
+			excesseProduce = 0;
+		
+		items = items * crop.harvests;
+		
+		if(excesseProduce < forSeeds)
+			items -= forSeeds + excesseProduce; //use unused produce for seeds
+		
 		if(items < 0) 
 			items = 0; //because ancient fruit may not yield any produce resulting in negativ profit
 		
