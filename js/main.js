@@ -355,9 +355,9 @@ function profit(crop) {
         }
 
         if (options.produce == 1)
-        	netIncome += items * crop.harvests * (crop.produce.jarType != null ? crop.produce.price * 2 + 50 : crop.produce.price);
+            netIncome += items * crop.harvests * (crop.produce.jar != null ? crop.produce.jar : crop.produce.price * 2 + 50);
         else if (options.produce == 2)
-        	netIncome += items * crop.harvests * (crop.produce.kegType != null ? crop.produce.price * kegModifier * caskModifier : crop.produce.price);
+            netIncome += items * crop.harvests * (crop.produce.keg != null ? crop.produce.keg * caskModifier : crop.produce.price * kegModifier * caskModifier);
 
 		if (options.skills.arti) {
 			netIncome *= 1.4;
