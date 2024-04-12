@@ -1317,6 +1317,17 @@ function updateData() {
 
     options.replant = document.getElementById('check_replant').checked;
 
+    if (!options.replant || isGreenhouse) {
+        document.getElementById('check_nextyear').disabled = true;
+        document.getElementById('check_nextyear').style.cursor = "default";
+        document.getElementById('check_nextyear').checked = false;
+    }
+    else {
+        document.getElementById('check_nextyear').disabled = false;
+        document.getElementById('check_nextyear').style.cursor = "pointer";
+    }
+    options.nextyear = document.getElementById('check_nextyear').checked;
+
     if (document.getElementById('number_planted').value <= 0)
         document.getElementById('number_planted').value = 1;
     if (options.replant && parseInt(document.getElementById('number_planted').value) % 2 == 1)
@@ -1513,6 +1524,9 @@ function optionsLoad() {
 
     options.replant = validBoolean(options.replant);
     document.getElementById('check_replant').checked = options.replant;
+
+    options.nextyear = validBoolean(options.nextyear);
+    document.getElementById('check_nextyear').checked = options.nextyear;
 
 	options.fertilizer = validIntRange(0, 6, options.fertilizer);
 	document.getElementById('select_fertilizer').value = options.fertilizer;

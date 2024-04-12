@@ -12,6 +12,7 @@ var options = {
 	"season": 4,
 	"buySeed": false,
     "replant": false,
+    "nextyear": false,
 	"buyFert": false,
 	"average": false,
     "fertilizer": 2,
