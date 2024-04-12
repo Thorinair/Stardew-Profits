@@ -267,11 +267,13 @@ function profit(crop) {
     var total_harvest = num_planted * 1.0 + num_planted * crop.produce.extraPerc * crop.produce.extra;
 	var forSeeds = 0;
 	if (options.replant && !isTea) {
-		if(isCoffee) {
+		if (isCoffee) {
 			forSeeds = num_planted;
-		} else if(crop.growth.regrow == 0) {
+		} 
+		else if (crop.growth.regrow == 0) {
 			forSeeds = num_planted * crop.harvests * 0.5;
-		} else {
+		} 
+		else {
 			forSeeds = num_planted * 0.5;
 		}
 	}
@@ -327,19 +329,6 @@ function profit(crop) {
             netIncome += Math.trunc(crop.produce.price * 1.25) * countS;
             netIncome += Math.trunc(crop.produce.price * 1.5) * countG;
             netIncome += crop.produce.price * 2 * countI;
-
-            /*
-            netIncome += crop.produce.price * ratioN * total_harvests;
-            netIncome += Math.trunc(crop.produce.price * 1.25) * ratioS * total_harvests;
-            netIncome += Math.trunc(crop.produce.price * 1.5) * ratioG * total_harvests;
-            netIncome += crop.produce.price * 2 * ratioI * total_harvests;
-            // console.log("Profit (After normal produce): " + profit);
-
-            if (crop.produce.extra > 0) {
-                netIncome += crop.produce.price * crop.produce.extraPerc * crop.produce.extra * total_harvests;
-                // console.log("Profit (After extra produce): " + profit);
-            }
-            */
 
             if (options.skills.till) {
                 netIncome *= 1.1;
