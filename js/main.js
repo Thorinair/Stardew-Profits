@@ -267,14 +267,16 @@ function profit(crop) {
     var total_harvest = num_planted * 1.0 + num_planted * crop.produce.extraPerc * crop.produce.extra;
 	var forSeeds = 0;
 	if (options.replant && !isTea) {
-		if (isCoffee) {
+		if (isCoffee && options.nextyear) {
 			forSeeds = num_planted;
+		} 
+		else if (crop.growth.regrow > 0 && options.nextyear) {
+			forSeeds = num_planted * 0.5;
 		} 
 		else if (crop.growth.regrow == 0) {
 			forSeeds = num_planted * crop.harvests * 0.5;
-		} 
-		else {
-			forSeeds = num_planted * 0.5;
+			if(!options.nextyear && forSeeds >= 1) 
+				forSeeds--;
 		}
 	}
 	
@@ -355,7 +357,7 @@ function profit(crop) {
 		items = items * crop.harvests;
 		
 		if(excesseProduce < forSeeds)
-			items -= forSeeds + excesseProduce; //use unused produce for seeds
+			items = items - forSeeds + excesseProduce; //use unused produce for seeds
 		
 		if(items < 0) 
 			items = 0; //because ancient fruit may not yield any produce resulting in negativ profit
