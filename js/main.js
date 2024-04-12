@@ -376,7 +376,7 @@ function profit(crop) {
             netIncome += items * (crop.produce.jar != null ? crop.produce.jar : crop.produce.price * 2 + 50);
         else if (options.produce == 2)
             netIncome += items * (crop.produce.keg != null ? crop.produce.keg * caskModifier : crop.produce.price * kegModifier * caskModifier);
-		
+    
 		if (options.skills.arti) {
 			netIncome *= 1.4;
 		}
