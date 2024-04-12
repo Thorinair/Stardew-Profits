@@ -350,15 +350,16 @@ function profit(crop) {
             items = Math.min(options.equipment, total_harvest);
         }
 		
-		var total_items = items * crop.harvests
-		total_items = total_items < 0 ? 0 : total_items; //because ancient fruit may not yield any produce resulting in negativ profit
+		var items = items * crop.harvests
+		if(items < 0) 
+			items = 0; //because ancient fruit may not yield any produce resulting in negativ profit
 		
 
         if (options.produce == 1)
-        	netIncome += total_items * (crop.produce.jarType != null ? crop.produce.price * 2 + 50 : crop.produce.price);
+            netIncome += items * (crop.produce.jar != null ? crop.produce.jar : crop.produce.price * 2 + 50);
         else if (options.produce == 2)
-        	netIncome += total_items * (crop.produce.kegType != null ? crop.produce.price * kegModifier * caskModifier : crop.produce.price);
-
+            netIncome += items * (crop.produce.keg != null ? crop.produce.keg * caskModifier : crop.produce.price * kegModifier * caskModifier);
+		
 		if (options.skills.arti) {
 			netIncome *= 1.4;
 		}
