@@ -235,6 +235,8 @@ function profit(crop) {
 	//var total_harvests = crop.harvests * num_planted;
 	var fertilizer = fertilizers[options.fertilizer];
 	var produce = options.produce;
+	var isTea = crop.name == "Tea Leaves";
+	var isCoffee = crop.name == "Coffee Bean";
 
     var useLevel = options.level;
     if (crop.isWildseed)
@@ -242,7 +244,7 @@ function profit(crop) {
 
 	var {ratioN, ratioS, ratioG, ratioI} = levelRatio(fertilizer.ratio, useLevel+options.foodLevel, crop.isWildseed);
         
-	if (crop.name == "Tea Leaves") ratioN = 1, ratioS = ratioG = ratioI = 0;
+	if (isTea) ratioN = 1, ratioS = ratioG = ratioI = 0;
 	var netIncome = 0;
 	var netExpenses = 0;
 	var totalProfit = 0;
@@ -262,6 +264,20 @@ function profit(crop) {
 			break;
 	}
 	
+    var total_harvest = num_planted * 1.0 + num_planted * crop.produce.extraPerc * crop.produce.extra;
+	var forSeeds = 0;
+	if (options.replant && !isTea) {
+		if(isCoffee) {
+			forSeeds = num_planted;
+		} else if(crop.growth.regrow == 0) {
+			forSeeds = num_planted * crop.harvests * 0.5;
+		} else {
+			forSeeds = num_planted * 0.5;
+		}
+	}
+	
+	var total_crops = total_harvest * crop.harvests;
+	
 	// console.log("Calculating raw produce value for: " + crop.name);
 	// Determine income
 	if (produce == 0 || userawproduce) {
@@ -269,13 +285,11 @@ function profit(crop) {
             netIncome = 0;
         }
         else {
-            var total_crops = num_planted * 1.0 + num_planted * crop.produce.extraPerc * crop.produce.extra;
             var countN = total_crops * ratioN;
             var countS = total_crops * ratioS;
             var countG = total_crops * ratioG;
             var countI = total_crops * ratioI;
-            if (options.replant && crop.growth.regrow == 0) {
-                var forSeeds = total_crops * 0.5;
+            if (options.replant) {
                 if (countN - forSeeds < 0) {
                     forSeeds -= countN;
                     countN = 0;
@@ -313,7 +327,6 @@ function profit(crop) {
             netIncome += Math.trunc(crop.produce.price * 1.25) * countS;
             netIncome += Math.trunc(crop.produce.price * 1.5) * countG;
             netIncome += crop.produce.price * 2 * countI;
-            netIncome *= crop.harvests;
 
             /*
             netIncome += crop.produce.price * ratioN * total_harvests;
@@ -335,30 +348,35 @@ function profit(crop) {
         }
 	}
     else if (produce == 3) {
-        var total_crops = num_planted * 1.0 + num_planted * crop.produce.extraPerc * crop.produce.extra;
-        if (options.replant && crop.growth.regrow == 0)
-            total_crops *= 0.5;
-
-        netIncome += 2 * total_crops * crop.harvests * crop.seeds.sell;
+        netIncome += 2 * (total_crops - forSeeds) * crop.seeds.sell;
     }
 	else {
-        var total_crops = num_planted * 1.0 + num_planted * crop.produce.extraPerc * crop.produce.extra;
-        if (options.replant && crop.growth.regrow == 0)
-            total_crops *= 0.5;
-
         var kegModifier = getKegModifier(crop);
         var caskModifier = getCaskModifier();
 
-        var items = total_crops;
+        var items = total_harvest;
         if (options.equipment > 0 && (options.produce == 1 || options.produce == 2)) {
-            items = Math.min(options.equipment, total_crops);
+            items = Math.min(options.equipment, total_harvest);
         }
+		
+		var excesseProduce = (total_harvest - items) * crop.harvests;
+		if(excesseProduce < 0) 
+			excesseProduce = 0;
+		
+		items = items * crop.harvests;
+		
+		if(excesseProduce < forSeeds)
+			items -= forSeeds + excesseProduce; //use unused produce for seeds
+		
+		if(items < 0) 
+			items = 0; //because ancient fruit may not yield any produce resulting in negativ profit
+		
 
         if (options.produce == 1)
-            netIncome += items * crop.harvests * (crop.produce.jar != null ? crop.produce.jar : crop.produce.price * 2 + 50);
+            netIncome += items * (crop.produce.jar != null ? crop.produce.jar : crop.produce.price * 2 + 50);
         else if (options.produce == 2)
-            netIncome += items * crop.harvests * (crop.produce.keg != null ? crop.produce.keg * caskModifier : crop.produce.price * kegModifier * caskModifier);
-
+            netIncome += items * (crop.produce.keg != null ? crop.produce.keg * caskModifier : crop.produce.price * kegModifier * caskModifier);
+    
 		if (options.skills.arti) {
 			netIncome *= 1.4;
 		}
