@@ -918,7 +918,7 @@ function renderGraph() {
                     var fertilizer = fertilizers[options.fertilizer];
                     var kegModifier = getKegModifier(d);
                     var caskModifier = getCaskModifier();
-					var kegPrice = d.produce.kegType != null ? d.produce.price * kegModifier * caskModifier : d.produce.price;
+					var kegPrice = d.produce.keg != null ? d.produce.keg * caskModifier : d.produce.price * kegModifier * caskModifier;
                     var seedPrice = d.seeds.sell;
                     var initialGrow = 0;
                     if (options.skills.agri)
