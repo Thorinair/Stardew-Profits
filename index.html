@@ -9,11 +9,36 @@
 		<link rel="stylesheet" type="text/css" href="style/style.css" />
 		<link rel="shortcut icon" type="image/png" href="img/ancientfruit.png">
 	</head>
-	<body>
+	<body > <!-- style="display: none" -->
 
-		<div class="title">
+		<!-- MY CODE -->
+
+		<div style="display: flex;
+		justify-content: center;
+		align-items: center;">
+
+		
+			<div style="position: absolute;" class="title">
+			</div>
+			<table style="
+			margin-top: 37px;
+			margin-bottom: 19px;
+			background-color: #222222;
+			border-radius: 4px;
+			font: 0.875em sans-serif;
+			color: #eeeeee;
+			margin-left: auto;
+" cellspacing="2">
+				<tr>
+					<td id="top.right.table.language.selector"></td>
+					<td>
+						<select id="select_language" onChange="setLanguage()"/>
+					</td>
+				</tr>
+			</table>
 		</div>
-
+		<!-- MY CODE -->
+			
 		<script src="js/crops.js"> </script>
 		<script src="js/data.js"> </script>
 		<div class="graph">
@@ -24,7 +49,7 @@
 		<table cellspacing="2">
 
 			<tr>
-				<td>Season:</td>
+				<td id="bottom.table.season.selector"></td>
 				<td>
 					<select id="select_season" onChange="rebuild()">
 						<option value="0" id="season_0" selected="true">Spring</option>
