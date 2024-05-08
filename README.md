@@ -5,7 +5,7 @@ Stardew Profits is a calculation and graphing tool designed to help the players 
 The tool is split up to two sections: graph box and options box. The options box lets the user quickly change the parameters which are then reflected on the graph.
 
 ### Graph Box
-The graph box displays a live rendered graph based on the options that the user has set. The number of bars changes based on the set conditions (like different seasons). The profit in gold can be viewed on the side as a scale. The graph shows both profit and loss. Additionally, if the seed buying loss is selected, the loss will be shown in orange, and if fertilizer buying loss is selected, the loss will be shown in brown. Hovering the mouse over a crop will show a tooltip with information about profits, loss and more. Pressing on a crop will open the official Wiki page for that crop.
+The graph box displays a live rendered graph based on the options that the user has set. The number of bars changes based on the set conditions (like different seasons). The profit in gold can be viewed on the side as a scale. The graph shows both profit and loss. Additionally, if the seed buying loss is selected, the loss will be shown in orange, and if fertilizer buying loss is selected, the loss will be shown in brown. Hovering the mouse over a crop will show a tooltip with information about profits, loss and more. Pressing on a crop will open the official Wiki page for that crop, or you can disable this feature selecting the "Disable Links" option.
 
 ### Options Box
 The following table describes all the options and how they affect the graph.
@@ -38,6 +38,7 @@ Foraging Level 5 Skill | The *Gatherer* skill is available once the player reach
 Foraging Level 10 Skill | The *Botanist* skill is available once the player reaches level 10 in *Foraging*. This option is disabled unless the correct level is set and unless *Gatherer* is enabled under Level 5 skills.
 Farming Food Buff | The consumable buff active on the player.
 Show Extra Info | Selecting this will show additional detailed info about every crop on the tooltip.
+Disable Links | Selecting this will disable opening the Official Wiki when the bar graph is clicked.
 
 # Contact
 You may contact me on the following locations: [Twitter](https://twitter.com/thorinair_music) | [Reddit](https://www.reddit.com/user/Thorinair/) | [YouTube](https://www.youtube.com/user/Thorinair) | [deviantArt](http://thorinair.deviantart.com/)

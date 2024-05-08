@@ -1047,8 +1047,10 @@ function renderGraph() {
 				tooltip.style("top", (d3.event.pageY - 16) + "px").style("left",(d3.event.pageX + 20) + "px");
 			})
 			.on("mouseout", function() { tooltip.style("visibility", "hidden"); })
-			.on("click", function(d) { window.open(d.url, "_blank"); });
-
+			.on("click", function(d) { 
+				if(!options.disableLinks)
+					window.open(d.url, "_blank"); 
+			});
 
 }
 
@@ -1343,7 +1345,7 @@ function updateData() {
 	options.fertilizerSource = parseInt(document.getElementById('speed_gro_source').value);
 
 	if (document.getElementById('farming_level').value <= 0)
-		document.getElementById('farming_level').value = 1;
+		document.getElementById('farming_level').value = 0;
 	if (document.getElementById('farming_level').value > 13)
 		document.getElementById('farming_level').value = 13;
 	options.level = parseInt(document.getElementById('farming_level').value);
@@ -1382,7 +1384,7 @@ function updateData() {
 	}
 
     if (document.getElementById('foraging_level').value <= 0)
-        document.getElementById('foraging_level').value = 1;
+        document.getElementById('foraging_level').value = 0;
     if (document.getElementById('foraging_level').value > 13)
         document.getElementById('foraging_level').value = 13;
     options.foragingLevel = parseInt(document.getElementById('foraging_level').value);
@@ -1417,6 +1419,7 @@ function updateData() {
 		document.getElementById('speed_gro_source').disabled = true;
 
 	options.extra = document.getElementById('check_extra').checked;
+	options.disableLinks = document.getElementById('disable_links').checked;
 
     updateSeasonNames();
 
@@ -1564,6 +1567,9 @@ function optionsLoad() {
 
 	options.extra = validBoolean(options.extra);
 	document.getElementById('check_extra').checked = options.extra;
+
+	options.disableLinks = validBoolean(options.disableLinks);
+	document.getElementById('disable_links').checked = options.disableLinks;
 
     updateSeasonNames();
 }

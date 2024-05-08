@@ -31,7 +31,8 @@ var options = {
 	},
 	"foodIndex": 0,
 	"foodLevel": 0,
-	"extra": false
+	"extra": false,
+	"disableLinks": false
 };
 
 // Different fertilizers with their stats.
