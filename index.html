@@ -64,6 +64,7 @@
 						<option value="1">Jar</option>
 						<option value="2">Keg</option>
                         <option value="3">Seeds</option>
+						<option value="4">Dehydrator</option>
 					</select>
 				</td>
 			</tr>
@@ -74,6 +75,10 @@
                         <tr>
                             <td>Equipment:</td>
                             <td><input type="number" id="equipment" value="0" onChange="refresh()"/></td>
+                        </tr>
+                        <tr>
+                            <td>Sell Excess:</td>
+                            <td><input type="checkbox" id="sell_excess" onChange="refresh()"/>Raw<br /></td>
                         </tr>
                         <tr>
                             <td>Non-existent:</td>
