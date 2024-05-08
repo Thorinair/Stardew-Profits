@@ -1047,8 +1047,10 @@ function renderGraph() {
 				tooltip.style("top", (d3.event.pageY - 16) + "px").style("left",(d3.event.pageX + 20) + "px");
 			})
 			.on("mouseout", function() { tooltip.style("visibility", "hidden"); })
-			.on("click", function(d) { window.open(d.url, "_blank"); });
-
+			.on("click", function(d) { 
+				if(!options.disableLinks)
+					window.open(d.url, "_blank"); 
+			});
 
 }
 
@@ -1417,6 +1419,7 @@ function updateData() {
 		document.getElementById('speed_gro_source').disabled = true;
 
 	options.extra = document.getElementById('check_extra').checked;
+	options.disableLinks = document.getElementById('disable_links').checked;
 
     updateSeasonNames();
 
@@ -1564,6 +1567,9 @@ function optionsLoad() {
 
 	options.extra = validBoolean(options.extra);
 	document.getElementById('check_extra').checked = options.extra;
+
+	options.disableLinks = validBoolean(options.disableLinks);
+	document.getElementById('disable_links').checked = options.disableLinks;
 
     updateSeasonNames();
 }
