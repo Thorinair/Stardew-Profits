@@ -240,21 +240,6 @@ function getDehydratorModifier(crop) {
 }
 
 /*
- * Calculates the dehydrator modifier for 1 crop.
- * @param crop The crop object, containing all the crop data.
- * @return The dehydrator modifier.
- */
-function getDehydratorModifierPerCrop(crop) {
-	//1.5 × Base + 5g per Fruit
-	var modifier = 1.5 * crop.produce.price + 5;
-	if (options.skills.arti) {
-		modifier = 2.1 * crop.produce.price + 7;
-	}
-	
-    return crop.produce.dehydratorType == "Dried Fruit" ? modifier: 120;
-}
-
-/*
  * Calculates profit from excess produced unused calculated at normal quality.
  * @param crop The crop object, containing all the crop data.
  * @param excessProduce Quantity of produce to sell.
@@ -425,7 +410,6 @@ function profit(crop) {
 	else { //option 4 Dehydrator Profits
 		//if total crops not divisible by 5 then we produced no dried items!
 		var quotient = Math.floor(total_crops / 5);
-		// var remainder = total_crops % 5 != 1;
 		var items = 0;
 		var excessProduce = 0;
 		if(quotient !=0 ){
@@ -433,7 +417,6 @@ function profit(crop) {
 			items = quotient;
 			if (options.equipment > 0 && ( options.produce == 4)) {
 				items = Math.min(options.equipment, quotient);
-				// dehydratorModifier = getDehydratorModifier(crop);
 			}
 			
 			excessProduce = total_crops - (quotient*5);
@@ -454,6 +437,7 @@ function profit(crop) {
 			//will only happen if the player sets 'sell excess = true'
 			netIncome += excessProduceProfit(crop,total_crops);
 		}
+
 		profitData.quantityOfItemsSold 	= items;
 		profitData.excessProduce 		= excessProduce;
 
