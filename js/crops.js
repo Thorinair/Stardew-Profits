@@ -66,7 +66,7 @@ var crops = {
     },
     "growth": {
       "initial": 8,
-      "regrow": 3
+      "regrow": 4
     },
     "produce": {
       "extra": 0,
