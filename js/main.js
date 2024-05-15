@@ -226,11 +226,41 @@ function getCaskModifier() {
 }
 
 /*
+ * Calculates the dehydrator modifier for 5 crops.
+ * @param crop The crop object, containing all the crop data.
+ * @return The dehydrator modifier.
+ */
+function getDehydratorModifier(crop) {
+	//7.5 × Fruit Base Price + 25g
+	var modifier = 7.5 * crop.produce.price + 25;
+	if (options.skills.arti) {
+		modifier = 10.5 * crop.produce.price + 35;
+	}
+    return crop.produce.dehydratorType == "Dried Fruit" ? modifier : 600;
+}
+
+/*
+ * Calculates profit from excess produced unused calculated at normal quality.
+ * @param crop The crop object, containing all the crop data.
+ * @param excessProduce Quantity of produce to sell.
+ * @return total profit from excess produce.
+ */
+function excessProduceProfit(crop,excessProduce){
+	if(options.sellExcess && excessProduce > 0){
+		const cropPrice = options.skills.till ? crop.produce.price * 1.1 : crop.produce.price;
+		return (excessProduce * cropPrice);
+	} else {
+		return 0;
+	}
+}
+
+/*
  * Calculates the profit for a specified crop.
  * @param crop The crop object, containing all the crop data.
  * @return The total profit.
  */
 function profit(crop) {
+    profitData = {}
 	var num_planted = planted(crop);
 	//var total_harvests = crop.harvests * num_planted;
 	var fertilizer = fertilizers[options.fertilizer];
@@ -261,6 +291,9 @@ function profit(crop) {
 			break;
 		case 2:
 			if(crop.produce.kegType == null) userawproduce = true;
+			break;	
+		case 4:
+			if(crop.produce.dehydratorType == null) userawproduce = true;
 			break;
 	}
 	
@@ -341,7 +374,7 @@ function profit(crop) {
     else if (produce == 3) {
         netIncome += 2 * (total_crops - forSeeds) * crop.seeds.sell;
     }
-	else {
+	else if(produce == 2 || produce == 1) {
         var kegModifier = getKegModifier(crop);
         var caskModifier = getCaskModifier();
 
@@ -350,14 +383,14 @@ function profit(crop) {
             items = Math.min(options.equipment, total_harvest);
         }
 		
-		var excesseProduce = (total_harvest - items) * crop.harvests;
-		if(excesseProduce < 0) 
-			excesseProduce = 0;
+		var excessProduce = (total_harvest - items) * crop.harvests;
+		if(!Number.isInteger(excessProduce))
+			excessProduce = 0;
 		
 		items = items * crop.harvests;
 		
-		if(excesseProduce < forSeeds)
-			items = items - forSeeds + excesseProduce; //use unused produce for seeds
+		if(excessProduce < forSeeds)
+			items = items - forSeeds + excessProduce; //use unused produce for seeds
 		
 		if(items < 0) 
 			items = 0; //because ancient fruit may not yield any produce resulting in negativ profit
@@ -371,6 +404,43 @@ function profit(crop) {
 		if (options.skills.arti) {
 			netIncome *= 1.4;
 		}
+		
+		profitData.quantityOfItemsSold 	= items;
+	} 
+	else { //option 4 Dehydrator Profits
+		//if total crops not divisible by 5 then we produced no dried items!
+		var quotient = Math.floor(total_crops / 5);
+		var items = 0;
+		var excessProduce = 0;
+		if(quotient !=0 ){
+			var dehydratorModifier = getDehydratorModifier(crop);
+			items = quotient;
+			if (options.equipment > 0 && ( options.produce == 4)) {
+				items = Math.min(options.equipment, quotient);
+			}
+			
+			excessProduce = total_crops - (quotient*5);
+			if(!Number.isInteger(excessProduce)) //Checking if excess is 0 with decimals
+				excessProduce = 0; 
+			
+			if(excessProduce < forSeeds)
+				items = items - forSeeds + excessProduce; //use unused produce for seeds
+			
+			if(!Number.isInteger(items)) 
+				items = 0; //because crop may not yield any produce resulting in negative profit
+
+			//If option to sell excess produce, collect the profit
+			netIncome += excessProduceProfit(crop,excessProduce);
+			netIncome += items * (crop.produce.dehydratorType != null ? items * dehydratorModifier : 0);
+		
+		} else if ((total_crops % 5) != 1) { //see if there are remainders we want to sell
+			//will only happen if the player sets 'sell excess = true'
+			netIncome += excessProduceProfit(crop,total_crops);
+		}
+
+		profitData.quantityOfItemsSold 	= items;
+		profitData.excessProduce 		= excessProduce;
+
 	}
 
 	// Determine expenses
@@ -400,7 +470,6 @@ function profit(crop) {
 		averageReturnOnInvestment = 0;
 	}
 
-    profitData = {}
 	profitData.totalReturnOnInvestment = totalReturnOnInvestment;
 	profitData.averageReturnOnInvestment = averageReturnOnInvestment;
 	profitData.netExpenses = netExpenses;
@@ -890,18 +959,47 @@ function renderGraph() {
 				switch (options.produce) {
 					case 0: tooltipTr.append("td").attr("class", "tooltipTdRight").text("Raw crops"); break;
 					case 1:
-						if (d.produce.jarType != null)
+						if (d.produce.jarType != null){
 							tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.jarType);
+							tooltipTr = tooltipTable.append("tr");
+							tooltipTr.append("td").attr("class", "tooltipTdRight").text("Quantity Sold:");
+							tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.profitData.quantityOfItemsSold);
+						}
 						else if (options.sellRaw)
                             tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("Raw crops");
                         else
 							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("None");
 						break;
 					case 2:
-						if (d.produce.kegType != null)
+						if (d.produce.kegType != null){
 							tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.kegType);
+							tooltipTr = tooltipTable.append("tr");
+							tooltipTr.append("td").attr("class", "tooltipTdRight").text("Quantity Sold:");
+							tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.profitData.quantityOfItemsSold);
+						}
                         else if (options.sellRaw)
                             tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("Raw crops");
+						else
+							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("None");
+						break;
+					case 4:
+						if (d.produce.dehydratorType != null){
+							tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.dehydratorType);
+							tooltipTr = tooltipTable.append("tr");
+							tooltipTr.append("td").attr("class", "tooltipTdRight").text("Quantity Sold:");
+
+							if(d.profitData.quantityOfItemsSold > 0 ){
+								tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.profitData.quantityOfItemsSold);
+								tooltipTr = tooltipTable.append("tr");
+								tooltipTr.append("td").attr("class", "tooltipTdRight").text("Excess Produce:");
+								tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.profitData.excessProduce);
+							}
+							else
+								tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text(d.profitData.quantityOfItemsSold);
+							
+						}
+						else if (options.sellRaw)
+							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("Raw crops");
 						else
 							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("None");
 						break;
@@ -921,6 +1019,7 @@ function renderGraph() {
                     var kegModifier = getKegModifier(d);
                     var caskModifier = getCaskModifier();
 					var kegPrice = d.produce.keg != null ? d.produce.keg * caskModifier : d.produce.price * kegModifier * caskModifier;
+                    var dehydratorModifierByCrop = d.produce.dehydratorType != null ? getDehydratorModifier(d): 0;
                     var seedPrice = d.seeds.sell;
                     var initialGrow = 0;
                     if (options.skills.agri)
@@ -962,7 +1061,7 @@ function renderGraph() {
                         }
 					}
 					tooltipTr = tooltipTable.append("tr");
-					if (d.produce.jarType != null) {
+					if (d.produce.jarType) {
 						tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Value (" + d.produce.jarType + "):");
 						tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.price * 2 + 50)
 						.append("div").attr("class", "gold");
@@ -979,6 +1078,16 @@ function renderGraph() {
 					}
 					else {
 						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Keg):");
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text("None");
+					}
+					tooltipTr = tooltipTable.append("tr");
+					if (d.produce.dehydratorType) {
+						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (" + d.produce.dehydratorType + "):");
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text(dehydratorModifierByCrop)
+						.append("div").attr("class", "gold");
+					}
+					else {
+						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Dehydrator):");
 						tooltipTr.append("td").attr("class", "tooltipTdRight").text("None");
 					}
                     tooltipTr = tooltipTable.append("tr");
@@ -1235,14 +1344,29 @@ function updateData() {
 	options.produce = parseInt(document.getElementById('select_produce').value);
 
     if (options.produce == 0 || options.produce == 3) {
+        document.getElementById('sell_excess').disabled = true;
+        document.getElementById('sell_excess').style.cursor = "default";
+
         document.getElementById('check_sellRaw').disabled = true;
         document.getElementById('check_sellRaw').style.cursor = "default";
     }
+	else if (options.produce == 1 || options.produce == 2) {
+        document.getElementById('sell_excess').disabled = true;
+        document.getElementById('sell_excess').style.cursor = "default";
+
+        document.getElementById('check_sellRaw').disabled = false;
+        document.getElementById('check_sellRaw').style.cursor = "default";
+	}
     else {
+        document.getElementById('sell_excess').disabled = false;
+        document.getElementById('sell_excess').style.cursor = "default";
+
         document.getElementById('check_sellRaw').disabled = false;
         document.getElementById('check_sellRaw').style.cursor = "pointer";
     }
-    options.sellRaw = document.getElementById('check_sellRaw').checked;
+    options.sellRaw 	= document.getElementById('check_sellRaw').checked;
+	
+    options.sellExcess 	= document.getElementById('sell_excess').checked;
 
     if (options.produce == 0 || options.produce == 3) {
         document.getElementById('equipment').disabled = true;
@@ -1336,6 +1460,7 @@ function updateData() {
         document.getElementById('number_planted').value = 1;
     if (options.replant && parseInt(document.getElementById('number_planted').value) % 2 == 1)
         document.getElementById('number_planted').value = parseInt(document.getElementById('number_planted').value) + 1;
+
     options.planted = document.getElementById('number_planted').value;
 
 	options.fertilizer = parseInt(document.getElementById('select_fertilizer').value);
@@ -1478,6 +1603,9 @@ function optionsLoad() {
 
     options.sellRaw = validBoolean(options.sellRaw);
     document.getElementById('check_sellRaw').checked = options.sellRaw;
+
+    options.sellExcess = validBoolean(options.sellExcess);
+    document.getElementById('sell_excess').checked = options.sellExcess;
 
     options.aging = validIntRange(0, 3, options.aging);
     document.getElementById('select_aging').value = options.aging;
