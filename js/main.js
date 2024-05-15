@@ -1344,29 +1344,28 @@ function updateData() {
 	options.produce = parseInt(document.getElementById('select_produce').value);
 
     if (options.produce == 0 || options.produce == 3) {
-        document.getElementById('sell_excess').disabled = true;
-        document.getElementById('sell_excess').style.cursor = "default";
-
         document.getElementById('check_sellRaw').disabled = true;
         document.getElementById('check_sellRaw').style.cursor = "default";
+
+        document.getElementById('check_sellExcess').disabled = true;
+        document.getElementById('check_sellExcess').style.cursor = "default";
     }
 	else if (options.produce == 1 || options.produce == 2) {
-        document.getElementById('sell_excess').disabled = true;
-        document.getElementById('sell_excess').style.cursor = "default";
-
         document.getElementById('check_sellRaw').disabled = false;
         document.getElementById('check_sellRaw').style.cursor = "default";
+
+        document.getElementById('check_sellExcess').disabled = true;
+        document.getElementById('check_sellExcess').style.cursor = "default";
 	}
     else {
-        document.getElementById('sell_excess').disabled = false;
-        document.getElementById('sell_excess').style.cursor = "default";
-
         document.getElementById('check_sellRaw').disabled = false;
         document.getElementById('check_sellRaw').style.cursor = "pointer";
+
+        document.getElementById('check_sellExcess').disabled = false;
+        document.getElementById('check_sellExcess').style.cursor = "default";
     }
-    options.sellRaw 	= document.getElementById('check_sellRaw').checked;
-	
-    options.sellExcess 	= document.getElementById('sell_excess').checked;
+    options.sellRaw 	= document.getElementById('check_sellRaw').checked;	
+    options.sellExcess 	= document.getElementById('check_sellExcess').checked;
 
     if (options.produce == 0 || options.produce == 3) {
         document.getElementById('equipment').disabled = true;
@@ -1605,7 +1604,7 @@ function optionsLoad() {
     document.getElementById('check_sellRaw').checked = options.sellRaw;
 
     options.sellExcess = validBoolean(options.sellExcess);
-    document.getElementById('sell_excess').checked = options.sellExcess;
+    document.getElementById('check_sellExcess').checked = options.sellExcess;
 
     options.aging = validIntRange(0, 3, options.aging);
     document.getElementById('select_aging').value = options.aging;

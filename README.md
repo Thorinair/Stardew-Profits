@@ -19,8 +19,8 @@ Number of Days | Designates the number of days to be used in the calculation. Th
 Number of Crops | This controls the number of crops that the player has planted.
 Produce Type | Designates the type of produce to be sold after harvesting. By default, all crops are harvested and sold as raw. This option accounts for Normal/Silver/Gold ratios, *Farming* skill level, and some additional skills. Other options let you select one of the three different artisan goods. *Please take note that the Dehydrator may not use all produced crops, or not have enough crops to create dried goods. See `Sell Excess` for unused produce.
 Equipment | Specifies how many Jars, Kegs, or Dehydrators you plan to use. This acts as a hard limit to the number of harvested crops on each harvest and ignores the time duration. Value is ignored when set to 0.
-Sell Excess | If there are unused produce from the Dehydrator type product; the excess produce will be sold at normal value and added to profit
-Non-existent | In case there is no available produce of the selected type, use the Raw crop sell price.
+No Artisan Good | In case there is no available artisan good of the selected type, use the Raw crop sell price.
+Dehydrator Excess | If there is unused produce from the Dehydrator type product, the excess produce will be sold at normal value and added to the profit.
 Aging | Can only be changed if Keg produce type is selected. Specifies the level of aging in a Cask for the final produce. Does not take in account how long it takes to age. This means that Hops might not necessarily be the best option as they would require a new additional Cask each day.
 Profit Display | Changes how the graph is organized. ROI is calculated by dividing the profit by the expenses. Daily is calculated through the number of days set earlier.
 Max Seed Money | The maximum amount of money available in player's savings. This will limit how many crops can be planted when buying seeds.
