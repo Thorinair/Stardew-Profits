@@ -1174,5 +1174,101 @@ var crops = {
       "kegType": "Wine"
     },
     "isWildseed": true
-  }
+  },
+  "jojaberry": {
+    "name": "Joja Berry",
+    "url": "https://stardew-valley-expanded.fandom.com/wiki/Joja_Berry",
+    "img": "jojaberry.png",
+    "seeds": {
+      "sell": 1000,
+      "pierre": 0,
+      "joja": 6500,
+      "special": 0,
+      "specialLoc": "",
+      "specialUrl": ""
+    },
+    "growth": {
+      "initial": 25,
+      "regrow": 4
+    },
+    "produce": {
+      "extra": 0,
+      "extraPerc": 0,
+      "price": 650,
+      "jarType": "Jelly",
+      "kegType": "Wine"
+    }
+  },
+  "jojaveggie": {
+    "name": "Joja Veggie",
+    "url": "https://stardew-valley-expanded.fandom.com/wiki/Joja_Veggie",
+    "img": "jojaveggie.png",
+    "seeds": {
+      "sell": 200,
+      "pierre": 0,
+      "joja": 600,
+      "special": 0,
+      "specialLoc": "",
+      "specialUrl": ""
+    },
+    "growth": {
+      "initial": 13,
+      "regrow": 0
+    },
+    "produce": {
+      "extra": 0,
+      "extraPerc": 0,
+      "price": 1140,
+      "jarType": "Pickles",
+      "kegType": "Juice"
+    }
+  },
+  "salalberry": {
+    "name": "Salal Berry",
+    "url": "https://stardew-valley-expanded.fandom.com/wiki/Salal_Berry",
+    "img": "salalberry.png",
+    "seeds": {
+      "sell": 0,
+      "pierre": 0,
+      "joja": 0,
+      "special": 0,
+      "specialLoc": "Unpurchasable",
+      "specialUrl": "https://stardew-valley-expanded.fandom.com/wiki/Shrub_Seed"
+    },
+    "growth": {
+      "initial": 13,
+      "regrow": 4
+    },
+    "produce": {
+      "extra": 1, // drops min of 2
+      "extraPerc": 1, // 3% of extra crops, up to max of 4
+      "price": 65,
+      "jarType": "Jelly",
+      "kegType": "Wine"
+    }
+  },
+   "slimeberry": {
+    "name": "Slime Berry",
+    "url": "https://stardew-valley-expanded.fandom.com/wiki/Slime_Berry",
+    "img": "slimeberry.png",
+    "seeds": {
+      "sell": 0,
+      "pierre": 0,
+      "joja": 0,
+      "special": 0,
+      "specialLoc": "Unpurchasable",
+      "specialUrl": "https://stardew-valley-expanded.fandom.com/wiki/Slime_Seed"
+    },
+    "growth": {
+      "initial": 13,
+      "regrow": 4
+    },
+    "produce": {
+      "extra": 1, // drops min of 1
+      "extraPerc": 0.1, // 10% chance of extra crops, up to max of 3
+      "price": 65,
+      "jarType": "Jelly",
+      "kegType": "Wine"
+    }
+  },
 };
