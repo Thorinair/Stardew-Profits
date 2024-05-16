@@ -1271,4 +1271,100 @@ var crops = {
       "kegType": "Wine"
     }
   },
+  "ancientfiber": {
+    "name": "Ancient Fiber",
+    "url": "https://stardew-valley-expanded.fandom.com/wiki/Ancient_Fiber",
+    "img": "ancientfiber.png",
+    "seeds": {
+      "sell": 0,
+      "pierre": 0,
+      "joja": 0,
+      "special": 0,
+      "specialLoc": "Unpurchasable",
+      "specialUrl": "https://stardew-valley-expanded.fandom.com/wiki/Ancient_Fern_Seed"
+    },
+    "growth": {
+      "initial": 12,
+      "regrow": 0
+    },
+    "produce": {
+      "extra": 1, // drops min of 2
+      "extraPerc": 1, // 5% chance of extra crops, up to max of 4
+      "price": 145,
+      "jarType": "Pickles",
+      "kegType": "Juice"
+    }
+  },
+   "monsterfruit": {
+    "name": "Monster Fruit",
+    "url": "https://stardew-valley-expanded.fandom.com/wiki/Monster_Fruit",
+    "img": "monsterfruit.png",
+    "seeds": {
+      "sell": 0,
+      "pierre": 0,
+      "joja": 0,
+      "special": 0,
+      "specialLoc": "Unpurchasable",
+      "specialUrl": "https://stardew-valley-expanded.fandom.com/wiki/Stalk_Seed"
+    },
+    "growth": {
+      "initial": 25,
+      "regrow": 0
+    },
+    "produce": {
+      "extra": 0,
+      "extraPerc": 0,
+      "price": 1525,
+      "jarType": "Jelly",
+      "kegType": "Wine"
+    }
+  },
+  "monstermushroom": {
+    "name": "Monster Mushroom",
+    "url": "https://stardew-valley-expanded.fandom.com/wiki/Monster_Mushroom",
+    "img": "monstermushroom.png",
+    "seeds": {
+      "sell": 0,
+      "pierre": 0,
+      "joja": 0,
+      "special": 0,
+      "specialLoc": "Unpurchasable",
+      "specialUrl": "https://stardew-valley-expanded.fandom.com/wiki/Fungus_Seed"
+    },
+    "growth": {
+      "initial": 13,
+      "regrow": 0
+    },
+    "produce": {
+      "extra": 0,
+      "extraPerc": 0,
+      "price": 850,
+      "jarType": "Pickles",
+      "kegType": "Juice"
+    }
+  },
+  "voidroot": {
+    "name": "Void Root",
+    "url": "https://stardew-valley-expanded.fandom.com/wiki/Void_Root",
+    "img": "voidroot.png",
+    "seeds": {
+      "sell": 0,
+      "pierre": 0,
+      "joja": 0,
+      "special": 0,
+      "specialLoc": "Unpurchasable",
+      "specialUrl": "https://stardew-valley-expanded.fandom.com/wiki/Void_Seed"
+    },
+    "growth": {
+      "initial": 8,
+      "regrow": 0
+    },
+    "produce": {
+      "extra": 0,
+      "extraPerc": 0,
+      "price": 235,
+      "jarType": "Pickles",
+      "kegType": "Juice"
+    }
+  },
 };
