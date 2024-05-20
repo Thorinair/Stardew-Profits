@@ -9,9 +9,7 @@
 		<link rel="stylesheet" type="text/css" href="style/style.css" />
 		<link rel="shortcut icon" type="image/png" href="img/ancientfruit.png">
 	</head>
-	<body > <!-- style="display: none" -->
-
-		<!-- MY CODE -->
+	<body >
 
 		<div style="display: flex;
 		justify-content: center;
@@ -21,14 +19,14 @@
 			<div style="position: absolute;" class="title">
 			</div>
 			<table style="
-			margin-top: 37px;
-			margin-bottom: 19px;
-			background-color: #222222;
-			border-radius: 4px;
-			font: 0.875em sans-serif;
-			color: #eeeeee;
-			margin-left: auto;
-" cellspacing="2">
+				margin-top: 37px;
+				margin-bottom: 19px;
+				background-color: #222222;
+				border-radius: 4px;
+				font: 0.875em sans-serif;
+				color: #eeeeee;
+				margin-left: auto;
+			" cellspacing="2">
 				<tr>
 					<td id="top.right.table.language.selector"></td>
 					<td>
@@ -37,7 +35,6 @@
 				</tr>
 			</table>
 		</div>
-		<!-- MY CODE -->
 			
 		<script src="js/crops.js"> </script>
 		<script src="js/data.js"> </script>
@@ -51,44 +48,44 @@
 			<tr>
 				<td id="bottom.table.season.selector"></td>
 				<td>
-					<select id="select_season" onChange="rebuild()">
-						<option value="0" id="season_0" selected="true">Spring</option>
-						<option value="1" id="season_1">Summer</option>
-						<option value="2" id="season_2">Fall</option>
-						<option value="3" id="season_3">Winter</option>
-						<option value="4" id="season_4">Greenhouse</option>
+					<select style="width: 6rem;" id="select_season" onChange="rebuild()">
+						<option value="0" id="season_0" selected="true"></option>
+						<option value="1" id="season_1"></option>
+						<option value="2" id="season_2"></option>
+						<option value="3" id="season_3"></option>
+						<option value="4" id="season_4"></option>
 					</select>
 				</td>
 			</tr>
 
             <tr id="cross_season_row">
-                <td>Cross-Season:</td>
+                <td id="bottom.table.cross.season.toggle"></td>
                 <td><input type="checkbox" id="cross_season" onChange="refresh()" /></td>
             </tr>
 
 			<tr id="current_day_row">
-				<td>Current Day:</td>
+				<td id="bottom.table.current.day.field"></td>
 				<td><input type="number" id="current_day" value="1" onChange="refresh()"/></td>
 			</tr>
 
             <tr id="number_days_row">
-                <td>Number of Days:</td>
+                <td id="bottom.table.number.days.field"></td>
                 <td><input type="number" id="number_days" value="28" onChange="refresh()"/></td>
             </tr>
 
             <tr>
-                <td>Number of Crops:</td>
+                <td id="bottom.table.number.crops.field"></td>
                 <td><input type="number" id="number_planted" value="1" onChange="refresh()"/></td>
             </tr>
 
 			<tr>
-				<td>Produce Type:</td>
+				<td id="bottom.table.produce.type.field"></td>
 				<td>
 					<select id="select_produce" onChange="refresh()">
-						<option value="0" selected="true">Raw</option>
-						<option value="1">Jar</option>
-						<option value="2">Keg</option>
-                        <option value="3">Seeds</option>
+						<option id="bottom.table.select_produce.raw.selection" value="0" selected="true"><!-- Raw --></option>
+						<option id="bottom.table.select_produce.jar.selection" value="1"><!-- Jar --></option>
+						<option id="bottom.table.select_produce.keg.selection" value="2"><!-- Keg --></option>
+                        <option id="bottom.table.select_produce.seeds.selection" value="3"><!-- Seeds --></option>
 					</select>
 				</td>
 			</tr>
@@ -97,21 +94,25 @@
                 <td colspan="2" class="sub">
                     <table cellspacing="2" class="subt">
                         <tr>
-                            <td>Equipment:</td>
+                            <td id="bottom.table.equipment.field"><!-- Equipment: --></td>
                             <td><input type="number" id="equipment" value="0" onChange="refresh()"/></td>
                         </tr>
                         <tr>
-                            <td>Non-existent:</td>
-                            <td><input type="checkbox" id="check_sellRaw" onChange="refresh()"/> Sell Raw<br /></td>
+                            <td id="bottom.table.non-existent.field"><!-- Non-existent: --></td>
+                            <td>
+								<input type="checkbox" id="check_sellRaw" onChange="refresh()"/>
+								<span id="bottom.table.non-existent.toggle"><!-- Sell Raw --></span>
+								<br/>
+							</td>
                         </tr>
                         <tr>
-                            <td>Aging:</td>
+                            <td id="bottom.table.aging.selector"><!-- Aging: --></td>
                             <td >
                                 <select id="select_aging" onChange="refresh()">
-                                    <option value="0" selected="true">None</option>
-                                    <option value="1">Silver</option>
-                                    <option value="2">Gold</option>
-                                    <option value="3">Iridium</option>
+                                    <option id="bottom.table.aging.none.selection" value="0" selected="true"><!-- None --></option>
+                                    <option id="bottom.table.aging.silver.selection" value="1"><!-- Silver --></option>
+                                    <option id="bottom.table.aging.gold.selection" value="2"><!-- Gold --></option>
+                                    <option id="bottom.table.aging.iridium.selection" value="3"><!-- Iridium --></option>
                                 </select>
                             </td>
                         </tr>
@@ -124,71 +125,71 @@
 		<table cellspacing="2">
 
             <tr>
-                <td>Profit Display:</td>
+                <td id="bottom.table.profit-display.selection"><!-- Profit Display: --></td>
                 <td>
                     <select id="select_profit_display" onChange="refresh()">
-                        <option value="0" id="display_0" selected="true">Total Profit</option>
-                        <option value="1" id="display_1">Daily Profit</option>
-                        <option value="2" id="display_2">Total ROI</option>
-                        <option value="3" id="display_3">Daily ROI</option>
+                        <option value="0" id="display_0" selected="true"><!-- Total Profit --></option>
+                        <option value="1" id="display_1"><!-- Daily Profit --></option>
+                        <option value="2" id="display_2"><!-- Total ROI --></option>
+                        <option value="3" id="display_3"><!-- Daily ROI --></option>
                     </select>
                 </td>
             </tr>
 
             <tr>
-                <td>Max Seed Money:</td>
+                <td id="bottom.table.max-seed-money.field"><!-- Max Seed Money: --></td>
                 <td><input type="number" id="max_seed_money" value="0" onChange="refresh()"/></td>
             </tr>
 
 			<tr>
-				<td>Seed Sources:</td>
+				<td id="bottom.table.seed-sources.field.selection"><!-- Seed Sources: --></td>
 				<td>
-					<input type="checkbox" id="check_seedsPierre" onChange="rebuild()" checked="true" /> <label for="check_seedsPierre">Pierre</label><br />
-					<input type="checkbox" id="check_seedsJoja" onChange="rebuild()" checked="true" /> <label for="check_seedsJoja">Joja</label><br />
-					<input type="checkbox" id="check_seedsSpecial" onChange="rebuild()" checked="true" /> <label for="check_seedsSpecial">Special</label>
+					<input type="checkbox" id="check_seedsPierre" onChange="rebuild()" checked="true" /> <label  id="bottom.table.seed-sources.field.pierre.selection" for="check_seedsPierre"><!-- Pierre --></label><br />
+					<input type="checkbox" id="check_seedsJoja" onChange="rebuild()" checked="true" /> <label    id="bottom.table.seed-sources.field.joja.selection" for="check_seedsJoja"><!-- Joja --></label><br />
+					<input type="checkbox" id="check_seedsSpecial" onChange="rebuild()" checked="true" /> <label id="bottom.table.seed-sources.field.special.selection" for="check_seedsSpecial"><!-- Special --></label>
 				</td>
 			</tr>
 
 			<tr>
-				<td>Pay For Seeds:</td>
+				<td id="bottom.table.pay-for-seeds.toggle"><!-- Pay For Seeds: --></td>
 				<td><input type="checkbox" id="check_buySeed" onChange="refresh()" /></td>
 			</tr>
 
             <tr>
-                <td>Process & Replant:</td>
-                <td><input type="checkbox" id="check_replant" onChange="refresh()" /> <label for="check_replant">(Forces even crops)</label></td>
+                <td id="bottom.table.process-replant.toggle"><!-- Process & Replant: --></td>
+                <td><input type="checkbox" id="check_replant" onChange="refresh()" /> <label id="bottom.table.process-replant.check-replant.toggle" for="check_replant"><!-- (Forces even crops) --></label></td>
             </tr>
 
             <tr>
-                <td>Use Next Year:</td>
+                <td id="bottom.table.use-next-year.toggle"><!-- Use Next Year: --></td>
                 <td><input type="checkbox" id="check_nextyear" onChange="refresh()" /></td>
             </tr>
 
 			<tr>
-				<td>Fertilizer:</td>
+				<td id="bottom.table.fertilizer.selector"><!-- Fertilizer: --></td>
 				<td>
 					<select id="select_fertilizer" onChange="refresh()">
-						<option value="0" selected="true">None</option>
-						<option value="1">Basic Fertilizer</option>
-						<option value="2">Quality Fertilizer</option>
-						<option value="5">Deluxe Fertilizer</option>
-						<option value="3">Speed-Gro</option>
-						<option value="4">Deluxe Speed-Gro</option>
-						<option value="6">Hyper Speed-Gro</option>
+						<option id="bottom.table.fertilizer.none.selection" value="0" selected="true"><!-- None --></option>
+						<option id="bottom.table.fertilizer.basic-fertilizer.selection" value="1"><!-- Basic Fertilizer --></option>
+						<option id="bottom.table.fertilizer.quality-fertilizer.selection" value="2"><!-- Quality Fertilizer --></option>
+						<option id="bottom.table.fertilizer.deluxe-fertilizer.selection" value="5"><!-- Deluxe Fertilizer --></option>
+						<option id="bottom.table.fertilizer.speed-gro.selection" value="3"><!-- Speed-Gro --></option>
+						<option id="bottom.table.fertilizer.deluxe-speed-gro.selection" value="4"><!-- Deluxe Speed-Gro --></option>
+						<option id="bottom.table.fertilizer.hyper-speed-gro.selection" value="6"><!-- Hyper Speed-Gro --></option>
 					</select>
 				</td>
 			</tr>
 
 			<tr>
-				<td>Pay For Fertilizer:</td>
+				<td id="bottom.table.pay-for-fertilizer.toggle"><!-- Pay For Fertilizer: --></td>
 				<td><input type="checkbox" id="check_buyFert" onChange="refresh()" /></td>
 			</tr>
 			<tr id = "deluxe_speed_input">
-				<td>Speed-Gro Source:</td>
+				<td id="bottom.table.speed-gro-source.selector"><!-- Speed-Gro Source: --></td>
 				<td>
 					<select id="speed_gro_source" onChange="refresh()">
-						<option value="0" selected="true">Pierre</option>
-						<option value="1">Sandy</option>
+						<option id="bottom.table.speed-gro-source.pierre.selection" value="0" selected="true"><!-- Pierre --></option>
+						<option id="bottom.table.speed-gro-source.sandy.selection" value="1"><!-- Sandy --></option>
 				</td>
 			</tr>
 		</table>
@@ -196,7 +197,7 @@
 		<table cellspacing="2">
 
 			<tr>
-				<td>Farming Level:</td>
+				<td id="bottom.table.farming-level.field"><!-- Farming Level: --></td>
 				<td><input type="number" id="farming_level" value="0" onChange="refresh()"/></td>
 			</tr>
 
@@ -204,16 +205,20 @@
 				<td colspan="2" class="sub">
                     <table cellspacing="2" class="subt">
                         <tr>
-                            <td>Level 5 Skill:</td>
-                            <td><input type="checkbox" id="check_skillsTill" onChange="refresh()" /> Tiller<br /></td>
+                            <td id="bottom.table.farming.level-5.field"><!-- Level 5 Skill: --></td>
+							<td>
+								<input type="checkbox" id="check_skillsTill" onChange="refresh()"/>
+								<span id="bottom.table.farming.level-5.toggle"><!-- Tiller --></span>
+								<br/>
+							</td>
                         </tr>
                         <tr>
-                            <td>Level 10 Skill:</td>
+                            <td id="bottom.table.farming.level-10.selector"><!-- Level 10 Skill: --></td>
                             <td >
                                 <select id="select_skills" onChange="refresh()">
-                                    <option value="0" selected="true">None</option>
-                                    <option value="1">Agriculturist</option>
-                                    <option value="2">Artisan</option>
+                                    <option id="bottom.table.farming.level-10.none.selection" value="0" selected="true"><!-- None --></option>
+                                    <option id="bottom.table.farming.level-10.agriculturist.selection" value="1"><!-- Agriculturist --></option>
+                                    <option id="bottom.table.farming.level-10.artisan.selection" value="2"><!-- Artisan --></option>
                                 </select>
                             </td>
                         </tr>
@@ -229,7 +234,7 @@
             </tr>
 
             <tr>
-                <td>Foraging Level:</td>
+                <td id="bottom.table.foraging-level.field"><!-- Foraging Level: --></td>
                 <td ><input type="number" id="foraging_level" value="0" onChange="refresh()"/></td>
             </tr>
 
@@ -237,46 +242,66 @@
                 <td colspan="2" class="sub">
                     <table cellspacing="2" class="subt">
                         <tr>
-                            <td>Level 5 skill:</td>
-                            <td><input type="checkbox" id="check_skillsGatherer" onChange="refresh()" /> Gatherer<br /></td>
+                            <td id="bottom.table.foraging.level-5.field"><!-- Level 5 skill: --></td>
+                            <td>
+								<input type="checkbox" id="check_skillsGatherer" onChange="refresh()" />
+								<span id="bottom.table.foraging.level-5.toggle"><!-- Gatherer --></span>
+								<br/>
+							</td>
                         </tr>
                         <tr>
-                            <td>Level 10 skill:</td>
-                            <td><input type="checkbox" id="check_skillsBotanist" onChange="refresh()" /> Botanist<br /></td>
+                            <td id="bottom.table.foraging.level-10.field"><!-- Level 10 skill: --></td>
+                            <td>
+								<input type="checkbox" id="check_skillsBotanist" onChange="refresh()" /> 
+								<span id="bottom.table.foraging.level-10.toggle"><!-- Botanist --></span>
+								<br/>
+							</td>
                         </tr>
                     </table>
                 </td>
             </tr>
 
 			<tr>
-				<td>Farming Food Buff:</td>
+				<td id="bottom.table.farming-food-buff.selector"><!-- Farming Food Buff: --></td>
 				<td>
 					<select id="select_food" onChange="refresh()">
-						<option value="0" selected="true">None</option>
-						<option value="1">Maple Bar</option>
-						<option value="1">Hashbrowns</option>
-						<option value="2">Complete Breakfast</option>
-						<option value="2">Pepper Poppers</option>
-						<option value="2">Tom Kha Soup</option>
-						<option value="3">Farmer's Lunch</option>
+						<option id="bottom.table.farming-food-buff.none.selection":" value="0" selected="true"><!-- None --></option>
+						<option id="bottom.table.farming-food-buff.maple-bar.selection" value="1"><!-- Maple Bar --></option>
+						<option id="bottom.table.farming-food-buff.hashbrowns.selection":" value="1"><!-- Hashbrowns --></option>
+						<option id="bottom.table.farming-food-buff.complete-breakfast.selection" value="2"><!-- Complete Breakfast --></option>
+						<option id="bottom.table.farming-food-buff.pepper-poppers.selection" value="2"><!-- Pepper Poppers --></option>
+						<option id="bottom.table.farming-food-buff.tom-kha-soup.selection" value="2"><!-- Tom Kha Soup --></option>
+						<option id="bottom.table.farming-food-buff.farmer-lunch.selection" value="3"><!-- Farmer's Lunch --></option>
 					</select>
 				</td>
 			</tr>
 
 			<tr>
-				<td>Show Extra Info:</td>
+				<td id="bottom.table.show-extra-info.field"><!-- Show Extra Info: --></td>
 				<td><input type="checkbox" id="check_extra" onChange="refresh()" checked="true" /></td>
 			</tr>
 
 			<tr>
-				<td colspan="3" id="tdhelp"><div id="divhelp"><a href="help.html">Help</a><a href="changes.html">Changes</a><a href="#" id="reset">Reset</a></div></td>
+				<td colspan="3" id="tdhelp">
+					<div id="divhelp">
+						<a id="bottom.table.button.help.label" href="help.html"><!-- Help --></a>
+						<a id="bottom.table.button.changes.label" href="changes.html"><!-- Changes --></a>
+						<a id="bottom.table.button.reset.label" href="#" id="reset"><!-- Reset --></a>
+					</div>
+				</td>
 			</tr>
 
 		</table>
 		</div>
 
 		<div class="footer">
-			<p><a href="http://stardewvalley.net/" target="_blank">Stardew Valley v1.6.3</a> &copy; <a href="https://twitter.com/ConcernedApe" target="_blank">ConcernedApe</a> | Website designed by <a href="https://twitter.com/thorinair_music" target="_blank">Thorinair</a> | <a href="https://github.com/Thorinair/Stardew-Profits" target="_blank">Stardew Profits v1.6.7</a></p>
+			<p>
+				<a id="bottom.page.game.version.hyperlink" href="http://stardewvalley.net/" target="_blank"></a>
+				&copy;
+				<a href="https://twitter.com/ConcernedApe" target="_blank">ConcernedApe</a>
+				<span>| Website designed by</span>
+				<a href="https://twitter.com/thorinair_music" target="_blank">Thorinair</a> |
+				<a id="bottom.page.website.version.hyperlink" href="https://github.com/Thorinair/Stardew-Profits" target="_blank">Stardew Profits v1.6.7</a></p>
 		</div>
 
 		<script src="js/time.js"> </script>
