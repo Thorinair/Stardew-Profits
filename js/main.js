@@ -409,6 +409,11 @@ function profit(crop) {
 	} 
 	else { //option 4 Dehydrator Profits
 		//if total crops not divisible by 5 then we produced no dried items!
+		/*
+		Fix:
+		1. Processing Per Harvest - not total by season
+		2. Dehydrator Ignores the need of keeping half the produce for seeds, if Porcess & Replant is enabled
+		*/
 		var quotient = Math.floor(total_crops / 5);
 		var items = 0;
 		var excessProduce = 0;
