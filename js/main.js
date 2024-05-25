@@ -408,42 +408,47 @@ function profit(crop) {
 		profitData.quantityOfItemsSold 	= items;
 	} 
 	else { //option 4 Dehydrator Profits
-		//if total crops not divisible by 5 then we produced no dried items!
 		/*
 		Fix:
 		1. Processing Per Harvest - not total by season
-		2. Dehydrator Ignores the need of keeping half the produce for seeds, if Porcess & Replant is enabled
+		2. Dehydrator Ignores the need of keeping half the produce for seeds, if Process & Replant is enabled
+		3. What if equipment is used
 		*/
-		var quotient = Math.floor(total_crops / 5);
-		var items = 0;
-		var excessProduce = 0;
-		if(quotient !=0 ){
-			var dehydratorModifier = getDehydratorModifier(crop);
-			items = quotient;
-			if (options.equipment > 0 && ( options.produce == 4)) {
-				items = Math.min(options.equipment, quotient);
-			}
-			
-			excessProduce = total_crops - (quotient*5);
-			if(!Number.isInteger(excessProduce)) //Checking if excess is 0 with decimals
-				excessProduce = 0; 
-			
-			if(excessProduce < forSeeds)
-				items = items - forSeeds + excessProduce; //use unused produce for seeds
-			
-			if(!Number.isInteger(items)) 
-				items = 0; //because crop may not yield any produce resulting in negative profit
 
-			//If option to sell excess produce, collect the profit
-			netIncome += excessProduceProfit(crop,excessProduce);
-			netIncome += items * (crop.produce.dehydratorType != null ? items * dehydratorModifier : 0);
+		//Requires 5 produce to make 1 Item
+		var itemsMade = Math.floor(total_harvest/5) * crop.harvests;
+
+		//Account for unused produce
+		var remaining = (total_harvest % 5) * crop.harvests;
+
+		//If remainders to last day accumulate enough to make an item, add them to the total
+		itemsMade += Math.floor(remaining/5);
+
+		//Determine excess produce by last day
+		var excessProduce = Math.floor(remaining % 5);
+
+		//Come back to this to ensure it's accounting for # of produce restriction
+        if (options.equipment > 0 && (options.produce == 4)) {
+            itemsMade = Math.min(options.equipment, total_harvest);
+        }
 		
-		} else if ((total_crops % 5) != 1) { //see if there are remainders we want to sell
-			//will only happen if the player sets 'sell excess = true'
-			netIncome += excessProduceProfit(crop,total_crops);
-		}
+		if(!Number.isInteger(excessProduce))
+			excessProduce = 0;
+		
+		// I need to review this
+		if(excessProduce < forSeeds)
+			itemsMade = itemsMade - forSeeds + excessProduce; //use unused produce for seeds
+		
+		if(itemsMade < 0) 
+			itemsMade = 0; //because ancient fruit may not yield any produce resulting in negativ profit
+		
 
-		profitData.quantityOfItemsSold 	= items;
+		//If option to sell excess produce, collect the profit
+		var dehydratorModifier = getDehydratorModifier(crop);
+		netIncome += excessProduceProfit(crop,excessProduce);
+		netIncome += crop.produce.dehydratorType != null ? itemsMade * dehydratorModifier : 0;
+		
+		profitData.quantityOfItemsSold 	= itemsMade;
 		profitData.excessProduce 		= excessProduce;
 
 	}
@@ -1466,6 +1471,8 @@ function updateData() {
         document.getElementById('number_planted').value = parseInt(document.getElementById('number_planted').value) + 1;
 
     options.planted = document.getElementById('number_planted').value;
+
+	//Add Dehydrator force 5 produce here?
 
 	options.fertilizer = parseInt(document.getElementById('select_fertilizer').value);
 
