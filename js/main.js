@@ -1630,7 +1630,7 @@ function setLanguage(){
 			for (var key in data) {
 				var element = document.getElementById(key);
 				if (element) {
-					element.innerText = data[key];
+					element.innerHTML = data[key];
 				}
 			}
 		});

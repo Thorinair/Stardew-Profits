@@ -76,5 +76,9 @@
     "bottom.table.show-extra-info.field": "Informações Extras:",
     "bottom.table.button.help.label": "Ajuda",
     "bottom.table.button.changes.label": "Mudanças",
-    "bottom.table.button.reset.label": "Resetar"
+    "bottom.table.button.reset.label": "Resetar",
+
+
+    "top.page.title": "Stardew Profits",
+    "top.page.title.description": "Stardew Profits is a calculation and graphing tool designed to help the players of the popular game \"Stardew Valley\" to easily calculate and compare their profits from planting different crops under different conditions.",
 }
