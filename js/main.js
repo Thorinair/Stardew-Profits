@@ -1533,8 +1533,6 @@ function updateData() {
 
     options.planted = document.getElementById('number_planted').value;
 
-	//Add Dehydrator force 5 produce here?
-
 	options.fertilizer = parseInt(document.getElementById('select_fertilizer').value);
 
 	options.buyFert = document.getElementById('check_buyFert').checked;
