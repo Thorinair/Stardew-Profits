@@ -163,6 +163,47 @@ function planted(crop) {
 		return options.planted;
 	}
 }
+/*
+ * Calculates total harvest including extraPerc and extra
+ * @param crop The crop object, containing all the crop data.
+ * @return The number of crops harvested, taking extra produce into account.
+ */
+function totalHarvest(crop){
+	var num_planted = planted(crop);
+	var total_harvest = num_planted * 1.0 + num_planted * crop.produce.extraPerc * crop.produce.extra;
+	return [total_harvest,num_planted];
+}
+/*
+ * Calculates total harvest left based on conditional replant.
+ * @param crop The crop object, containing all the crop data.
+ * @return total_harvestLeft total_lastHarvest, Total Harvest Left is useable or sellable harvest after taking replant into account. total_lastHarvest is how much useable or sellable harvest from the last crop and is dependant on Option NextYear.
+ */
+function harvestLeft(crop){
+	var forSeeds = 0;
+	var num_planted = 0;
+	var total_harvest = 0;
+	[total_harvest,num_planted] = totalHarvest(crop);
+
+	var total_lastHarvest = 0;
+	var total_harvestLeft = 0;
+
+	if (options.replant && crop.name != "Tea Leaves") {
+		if (crop.name == "Coffee Bean" && options.nextyear) {
+			forSeeds = num_planted;
+		} 
+		else if (crop.growth.regrow > 0 && options.nextyear) {
+			forSeeds = num_planted * 0.5;
+		} 
+		else if (crop.growth.regrow == 0) {
+			forSeeds = num_planted * 0.5;
+			total_lastHarvest = total_harvest;
+			if(options.nextyear && forSeeds >= 1) 
+				total_lastHarvest = 0;
+		}
+	}
+	total_harvestLeft = total_harvest - forSeeds;
+	return [total_harvestLeft,total_lastHarvest];
+}
 
 /*
  * Calculates the ratios of different crop ratings based on fertilizer level and player farming level
@@ -252,6 +293,27 @@ function excessProduceProfit(crop,excessProduce){
 	} else {
 		return 0;
 	}
+}
+
+/*
+ * Calculates items made and remaining crops based on number of equipment used.
+ * @param itemsMade The current number of itemsMade without using Equipment.
+ * @param remaining Produced unused thus far to create item.
+ * @param quantifier How many produce it takes to create an item
+ * @param crop The crop object, containing all the crop data.
+ * @return itemsMade,remaining The total Items Made and potential remaining harvests unused do to dependance on Equipment limitations 
+ */
+function useEquipment(itemsMade,remaining,quantifier,crop){
+	//If equipment is used - limit items created by min of equipment vs produce needed to create items
+	if (options.equipment > 0) {
+		if((options.equipment * crop.harvests) < itemsMade ){
+			//Put back unused produce due to # of equipment utilized.
+			remaining += (itemsMade - (options.equipment * crop.harvests)) * quantifier;
+		}
+		//Down the road: Add function to handle equipment by time?
+		itemsMade = Math.min((options.equipment * crop.harvests), itemsMade);
+	}
+	return [itemsMade, remaining];
 }
 
 /*
@@ -408,44 +470,43 @@ function profit(crop) {
 		profitData.quantityOfItemsSold 	= items;
 	} 
 	else { //option 4 Dehydrator Profits
-		/*
-		Fix:
-		1. Processing Per Harvest - not total by season
-		2. Dehydrator Ignores the need of keeping half the produce for seeds, if Process & Replant is enabled
-		3. What if equipment is used
-		*/
+		//------------PER HARVEST------------//
+		var total_harvestLeft = 0;
+		var total_lastHarvest = 0;
+		[total_harvestLeft,total_lastHarvest] = harvestLeft(crop);
+		
+		//Items made per harvest
+		var itemsMade = Math.floor((total_harvestLeft) /5)
 
-		//Requires 5 produce to make 1 Item
-		var itemsMade = Math.floor(total_harvest/5) * crop.harvests;
+		//Account for unused produce per harvest
+		var remaining = total_harvestLeft  % 5;
+		//------------END PER HARVEST------------//
 
-		//Account for unused produce
-		var remaining = (total_harvest % 5) * crop.harvests;
+		//Total of excess produce 
+		var excessProduce = total_lastHarvest == 0 ?
+			((remaining * crop.harvests) + (itemsMade * 5))%5
+			:
+			(((remaining * (crop.harvests - 1)) + total_lastHarvest) + (itemsMade * 5))%5;  //If replant and reuse is true, we need to include total_lastHarvest and subtract this harvest from crop.harvests
 
-		//If remainders to last day accumulate enough to make an item, add them to the total
-		itemsMade += Math.floor(remaining/5);
+		//Determine total Items Made 
+		itemsMade = total_lastHarvest == 0 ?
+			(itemsMade * crop.harvests ) + Math.floor((remaining * crop.harvests)/5)
+			:
+			(itemsMade * (crop.harvests -1) ) + Math.floor(((remaining * (crop.harvests - 1)) + total_lastHarvest) /5); //If replant and reuse is true, we need to include total_lastHarvest and subtract this harvest from crop.harvests
 
-		//Determine excess produce by last day
-		var excessProduce = Math.floor(remaining % 5);
-
-		//Come back to this to ensure it's accounting for # of produce restriction
-        if (options.equipment > 0 && (options.produce == 4)) {
-            itemsMade = Math.min(options.equipment, total_harvest);
-        }
+		//If Equipment used, Determine if itemsMade and excessProduce will change
+		[itemsMade, excessProduce] = useEquipment(itemsMade,excessProduce,5,crop);
 		
 		if(!Number.isInteger(excessProduce))
 			excessProduce = 0;
-		
-		// I need to review this
-		if(excessProduce < forSeeds)
-			itemsMade = itemsMade - forSeeds + excessProduce; //use unused produce for seeds
-		
-		if(itemsMade < 0) 
-			itemsMade = 0; //because ancient fruit may not yield any produce resulting in negativ profit
-		
 
+		if(itemsMade < 0) 
+			itemsMade = 0; //because ancient fruit may not yield any produce resulting in negative profit
+		
 		//If option to sell excess produce, collect the profit
-		var dehydratorModifier = getDehydratorModifier(crop);
 		netIncome += excessProduceProfit(crop,excessProduce);
+
+		var dehydratorModifier = getDehydratorModifier(crop);
 		netIncome += crop.produce.dehydratorType != null ? itemsMade * dehydratorModifier : 0;
 		
 		profitData.quantityOfItemsSold 	= itemsMade;
