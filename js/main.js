@@ -163,6 +163,47 @@ function planted(crop) {
 		return options.planted;
 	}
 }
+/*
+ * Calculates total harvest including extraPerc and extra
+ * @param crop The crop object, containing all the crop data.
+ * @return The number of crops harvested, taking extra produce into account.
+ */
+function totalHarvest(crop){
+	var num_planted = planted(crop);
+	var total_harvest = num_planted * 1.0 + num_planted * crop.produce.extraPerc * crop.produce.extra;
+	return [total_harvest,num_planted];
+}
+/*
+ * Calculates total harvest left based on conditional replant.
+ * @param crop The crop object, containing all the crop data.
+ * @return total_harvestLeft total_lastHarvest, Total Harvest Left is useable or sellable harvest after taking replant into account. total_lastHarvest is how much useable or sellable harvest from the last crop and is dependant on Option NextYear.
+ */
+function harvestLeft(crop){
+	var forSeeds = 0;
+	var num_planted = 0;
+	var total_harvest = 0;
+	[total_harvest,num_planted] = totalHarvest(crop);
+
+	var total_lastHarvest = 0;
+	var total_harvestLeft = 0;
+
+	if (options.replant && crop.name != "Tea Leaves") {
+		if (crop.name == "Coffee Bean" && options.nextyear) {
+			forSeeds = num_planted;
+		} 
+		else if (crop.growth.regrow > 0 && options.nextyear) {
+			forSeeds = num_planted * 0.5;
+		} 
+		else if (crop.growth.regrow == 0) {
+			forSeeds = num_planted * 0.5;
+			total_lastHarvest = total_harvest;
+			if(options.nextyear && forSeeds >= 1) 
+				total_lastHarvest = 0;
+		}
+	}
+	total_harvestLeft = total_harvest - forSeeds;
+	return [total_harvestLeft,total_lastHarvest];
+}
 
 /*
  * Calculates the ratios of different crop ratings based on fertilizer level and player farming level
@@ -231,12 +272,15 @@ function getCaskModifier() {
  * @return The dehydrator modifier.
  */
 function getDehydratorModifier(crop) {
-	//7.5 × Fruit Base Price + 25g
 	var modifier = 7.5 * crop.produce.price + 25;
-	if (options.skills.arti) {
-		modifier = 10.5 * crop.produce.price + 35;
+	switch(crop.produce.dehydratorType){
+		case "Dried Fruit":
+			modifier = options.skills.arti ?  10.5 * crop.produce.price + 35 : modifier;
+			break;
+		default: //We aren't calculating Mushrooms thus all else would be Grapes/Rasins
+			modifier = options.skills.arti ? 840 : 600;
 	}
-    return crop.produce.dehydratorType == "Dried Fruit" ? modifier : 600;
+    return modifier;
 }
 
 /*
@@ -252,6 +296,27 @@ function excessProduceProfit(crop,excessProduce){
 	} else {
 		return 0;
 	}
+}
+
+/*
+ * Calculates items made and remaining crops based on number of equipment used.
+ * @param itemsMade The current number of itemsMade without using Equipment.
+ * @param remaining Produced unused thus far to create item.
+ * @param quantifier How many produce it takes to create an item
+ * @param crop The crop object, containing all the crop data.
+ * @return itemsMade,remaining The total Items Made and potential remaining harvests unused do to dependance on Equipment limitations 
+ */
+function useEquipment(itemsMade,remaining,quantifier,crop){
+	//If equipment is used - limit items created by min of equipment vs produce needed to create items
+	if (options.equipment > 0) {
+		if((options.equipment * crop.harvests) < itemsMade ){
+			//Put back unused produce due to # of equipment utilized.
+			remaining += (itemsMade - (options.equipment * crop.harvests)) * quantifier;
+		}
+		//Down the road: Add function to handle equipment by time?
+		itemsMade = Math.min((options.equipment * crop.harvests), itemsMade);
+	}
+	return [itemsMade, remaining];
 }
 
 /*
@@ -408,37 +473,46 @@ function profit(crop) {
 		profitData.quantityOfItemsSold 	= items;
 	} 
 	else { //option 4 Dehydrator Profits
-		//if total crops not divisible by 5 then we produced no dried items!
-		var quotient = Math.floor(total_crops / 5);
-		var items = 0;
-		var excessProduce = 0;
-		if(quotient !=0 ){
-			var dehydratorModifier = getDehydratorModifier(crop);
-			items = quotient;
-			if (options.equipment > 0 && ( options.produce == 4)) {
-				items = Math.min(options.equipment, quotient);
-			}
-			
-			excessProduce = total_crops - (quotient*5);
-			if(!Number.isInteger(excessProduce)) //Checking if excess is 0 with decimals
-				excessProduce = 0; 
-			
-			if(excessProduce < forSeeds)
-				items = items - forSeeds + excessProduce; //use unused produce for seeds
-			
-			if(!Number.isInteger(items)) 
-				items = 0; //because crop may not yield any produce resulting in negative profit
-
-			//If option to sell excess produce, collect the profit
-			netIncome += excessProduceProfit(crop,excessProduce);
-			netIncome += items * (crop.produce.dehydratorType != null ? items * dehydratorModifier : 0);
+		//------------PER HARVEST------------//
+		var total_harvestLeft = 0;
+		var total_lastHarvest = 0;
+		[total_harvestLeft,total_lastHarvest] = harvestLeft(crop);
 		
-		} else if ((total_crops % 5) != 1) { //see if there are remainders we want to sell
-			//will only happen if the player sets 'sell excess = true'
-			netIncome += excessProduceProfit(crop,total_crops);
-		}
+		//Items made per harvest
+		var itemsMade = Math.floor((total_harvestLeft) /5)
 
-		profitData.quantityOfItemsSold 	= items;
+		//Account for unused produce per harvest
+		var remaining = total_harvestLeft  % 5;
+		//------------END PER HARVEST------------//
+
+		//Total of excess produce 
+		var excessProduce = total_lastHarvest == 0 ?
+			((remaining * crop.harvests) + (itemsMade * 5))%5
+			:
+			(((remaining * (crop.harvests - 1)) + total_lastHarvest) + (itemsMade * 5))%5;  //If replant and reuse is true, we need to include total_lastHarvest and subtract this harvest from crop.harvests
+
+		//Determine total Items Made 
+		itemsMade = total_lastHarvest == 0 ?
+			(itemsMade * crop.harvests ) + Math.floor((remaining * crop.harvests)/5)
+			:
+			(itemsMade * (crop.harvests -1) ) + Math.floor(((remaining * (crop.harvests - 1)) + total_lastHarvest) /5); //If replant and reuse is true, we need to include total_lastHarvest and subtract this harvest from crop.harvests
+
+		//If Equipment used, Determine if itemsMade and excessProduce will change
+		[itemsMade, excessProduce] = useEquipment(itemsMade,excessProduce,5,crop);
+		
+		if(!Number.isInteger(excessProduce))
+			excessProduce = 0;
+
+		if(itemsMade < 0) 
+			itemsMade = 0; //because ancient fruit may not yield any produce resulting in negative profit
+		
+		//If option to sell excess produce, collect the profit
+		netIncome += excessProduceProfit(crop,excessProduce);
+
+		var dehydratorModifier = getDehydratorModifier(crop);
+		netIncome += crop.produce.dehydratorType != null ? itemsMade * dehydratorModifier : 0;
+		
+		profitData.quantityOfItemsSold 	= itemsMade;
 		profitData.excessProduce 		= excessProduce;
 
 	}
