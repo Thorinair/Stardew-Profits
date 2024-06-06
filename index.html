@@ -72,19 +72,23 @@
             <tr>
                 <td colspan="2" class="sub">
                     <table cellspacing="2" class="subt">
-                        <tr>
+                        <tr id="equipment">
                             <td>Equipment:</td>
                             <td><input type="number" id="equipment" value="0" onChange="refresh()"/></td>
                         </tr>
-                        <tr>
+                        <tr id="noArtisanGood">
                             <td>No Artisan Good:</td>
                             <td><input type="checkbox" id="check_sellRaw" onChange="refresh()"/> Sell Raw<br /></td>
                         </tr>
-                        <tr>
-                            <td>Dehydrator Excess:</td>
+                        <tr id="excess">
+                            <td>Excess:</td>
                             <td><input type="checkbox" id="check_sellExcess" onChange="refresh()"/> Sell Raw<br /></td>
                         </tr>
-                        <tr>
+                        <tr id="byHarvest">
+                            <td>By Harvest:</td>
+                            <td><input type="checkbox" id="check_byHarvest" onChange="refresh()"/><br /></td>
+                        </tr>
+                        <tr id="aging">
                             <td>Aging:</td>
                             <td >
                                 <select id="select_aging" onChange="refresh()">
