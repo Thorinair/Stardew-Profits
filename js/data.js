@@ -3,6 +3,7 @@ var options = {
 	"produce": 0,
     "equipment": 0,
     "sellRaw": false,
+    "sellExcess": false,
     "aging": 0,
 	"planted": 1,
     "maxSeedMoney": 0,
@@ -31,7 +32,8 @@ var options = {
 	},
 	"foodIndex": 0,
 	"foodLevel": 0,
-	"extra": false
+	"extra": false,
+	"disableLinks": false
 };
 
 // Different fertilizers with their stats.

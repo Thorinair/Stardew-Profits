@@ -66,7 +66,7 @@ var crops = {
     },
     "growth": {
       "initial": 8,
-      "regrow": 3
+      "regrow": 4
     },
     "produce": {
       "extra": 0,
@@ -98,6 +98,7 @@ var crops = {
       "price": 70,
       "jarType": "Jelly",
       "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     }
   },
   "amaranth": {
@@ -145,7 +146,8 @@ var crops = {
       "extraPerc": 0,
       "price": 80,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Raisins"
     }
   },
   "hops": {
@@ -194,7 +196,8 @@ var crops = {
       "extraPerc": 0,
       "price": 300,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     }
   },
   "sweetgemberry": {
@@ -613,7 +616,8 @@ var crops = {
       "extraPerc": 0,
       "price": 220,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     }
   },
   "melon": {
@@ -637,7 +641,8 @@ var crops = {
       "extraPerc": 0,
       "price": 250,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     }
   },
   "tomato": {
@@ -685,7 +690,8 @@ var crops = {
       "extraPerc": 1,
       "price": 50,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     }
   },
   "hotpepper": {
@@ -709,7 +715,8 @@ var crops = {
       "extraPerc": 0.03,
       "price": 40,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     }
   },
   "wheat": {
@@ -806,7 +813,8 @@ var crops = {
       "extraPerc": 0,
       "price": 750,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     }
   },
   "corn": {
@@ -974,7 +982,8 @@ var crops = {
       "extraPerc": 1,
       "price": 75,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     }
   },
   "beet": {
@@ -1022,7 +1031,8 @@ var crops = {
       "extraPerc": 0,
       "price": 550,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     }
   },
   "cactusfruit": {
@@ -1046,7 +1056,8 @@ var crops = {
       "extraPerc": 0,
       "price": 75,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     }
   },
   "strawberry": {
@@ -1070,7 +1081,8 @@ var crops = {
       "extraPerc": 0.02,
       "price": 120,
       "jarType": "Jelly",
-      "kegType": "Wine"
+      "kegType": "Wine",
+      "dehydratorType": "Dried Fruit"
     }
   },
   "springseeds": {

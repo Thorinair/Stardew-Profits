@@ -60,7 +60,7 @@ body {
 }
 
 .options table tr td {
-	padding: 4px;
+	padding: 4px 8px 4px 8px;
 	background-color: #222222;
 	border-radius: 4px;
 }
@@ -82,6 +82,10 @@ body {
 .options table tr td .subt td {
     background-color: #181818;
     margin: 0px;
+}
+
+.hidden {
+	display: none;
 }
 
 #tdhelp {

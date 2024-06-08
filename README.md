@@ -5,7 +5,7 @@ Stardew Profits is a calculation and graphing tool designed to help the players 
 The tool is split up to two sections: graph box and options box. The options box lets the user quickly change the parameters which are then reflected on the graph.
 
 ### Graph Box
-The graph box displays a live rendered graph based on the options that the user has set. The number of bars changes based on the set conditions (like different seasons). The profit in gold can be viewed on the side as a scale. The graph shows both profit and loss. Additionally, if the seed buying loss is selected, the loss will be shown in orange, and if fertilizer buying loss is selected, the loss will be shown in brown. Hovering the mouse over a crop will show a tooltip with information about profits, loss and more. Pressing on a crop will open the official Wiki page for that crop.
+The graph box displays a live rendered graph based on the options that the user has set. The number of bars changes based on the set conditions (like different seasons). The profit in gold can be viewed on the side as a scale. The graph shows both profit and loss. Additionally, if the seed buying loss is selected, the loss will be shown in orange, and if fertilizer buying loss is selected, the loss will be shown in brown. Hovering the mouse over a crop will show a tooltip with information about profits, loss and more. Pressing on a crop will open the official Wiki page for that crop, or you can disable this feature selecting the "Disable Links" option.
 
 ### Options Box
 The following table describes all the options and how they affect the graph.
@@ -17,10 +17,12 @@ Cross-Season | If this is checked, the calculations will take into account the c
 Current Day | The current date within the selected season. This is almost the same as "Number of days", but instead of specifying how many days are left, as a convenience you can just input the current in-game date.
 Number of Days | Designates the number of days to be used in the calculation. The shorter the duration, the less crops will have time to grow. Some crops might not have time to grow even once if a too low value is set.
 Number of Crops | This controls the number of crops that the player has planted.
-Produce Type | Designates the type of produce to be sold after harvesting. By default, all crops are harvested and sold as raw. This option accounts for Normal/Silver/Gold ratios, *Farming* skill level, and some additional skills. Other options let you select the two different artisan goods.
-Equipment | Specifies how many Jars or Kegs you plan to use. This acts as a hard limit to the number of harvested crops on each harvest and ignores the time duration. Value is ignored when set to 0.
-Non-existent | In case there is no available produce of the selected type, use the Raw crop sell price.
-Aging | Can only be changed if Keg produce type is selected. Specifies the level of aging in a Cask for the final produce. Does not take in account how long it takes to age. This means that Hops might not necessarily be the best option as they would require a new additional Cask each day.
+Produce Type | Designates the type of produce to be sold after harvesting. By default, all crops are harvested and sold as raw. This option accounts for Normal/Silver/Gold ratios, *Farming* skill level, and some additional skills. Other options let you select one of the three different artisan goods. *Please take note that the Dehydrator may not use all produced crops, or not have enough crops to create dried goods.
+Equipment | Specifies how many Jars, Kegs, or Dehydrators you plan to use. This acts as a hard limit to the number of harvested crops on each harvest and ignores the time duration. Value is ignored when set to 0.
+No Artisan Good | In case there is no available artisan good of the selected type, use the Raw crop sell price.
+Excess | If there is unused produce when 5 are required for Dehydrators, or if not enough equipemnt is specified, the excess produce will be sold at normal value and added to the profit.
+Dehydrator By Harvest | Dried goods will only be created that can be per harvest. If there are excess crops unused, they will not be crafted into a dry good. Deselecting this will accumulate unused excess per harvest to see if a dried good can be created.
+Aging | Specifies the level of aging in a Cask for the final produce. Does not take in account how long it takes to age. This means that Hops might not necessarily be the best option as they would require a new additional Cask each day.
 Profit Display | Changes how the graph is organized. ROI is calculated by dividing the profit by the expenses. Daily is calculated through the number of days set earlier.
 Max Seed Money | The maximum amount of money available in player's savings. This will limit how many crops can be planted when buying seeds.
 Seed Sources | Seeds can be obtained at different locations and different locations always have different costs too. This option lets you check which sources the graph should be looking for. Note that the cheapest option will always be shown on the graph. Unselecting certain locations might hide no longer obtainable crops.
@@ -38,6 +40,7 @@ Foraging Level 5 Skill | The *Gatherer* skill is available once the player reach
 Foraging Level 10 Skill | The *Botanist* skill is available once the player reaches level 10 in *Foraging*. This option is disabled unless the correct level is set and unless *Gatherer* is enabled under Level 5 skills.
 Farming Food Buff | The consumable buff active on the player.
 Show Extra Info | Selecting this will show additional detailed info about every crop on the tooltip.
+Disable Links | Selecting this will disable opening the Official Wiki when the bar graph is clicked.
 
 # Contact
 You may contact me on the following locations: [Twitter](https://twitter.com/thorinair_music) | [Reddit](https://www.reddit.com/user/Thorinair/) | [YouTube](https://www.youtube.com/user/Thorinair) | [deviantArt](http://thorinair.deviantart.com/)
