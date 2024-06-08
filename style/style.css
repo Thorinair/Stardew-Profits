@@ -89,7 +89,8 @@ body {
 }
 
 #divhelp {
-	padding: 12px;
+	padding: 2px;
+	padding-top: 12px;
 	margin: auto;
 	text-align: center;
 }
