@@ -208,11 +208,13 @@ function levelRatio(fertilizer, level, isWildseed) {
  * @return The keg modifier.
  */
 function getKegModifier(crop) {
-	if (options.skills.arti ){
+	if (options.skills.arti) {
 		result = crop.produce.kegType == "Wine" ? 4.2 : 3.15;
-	}else{
+	}
+	else {
 		result = crop.produce.kegType == "Wine" ? 3 : 2.25;
 	}
+	
     return result;
 }
 
