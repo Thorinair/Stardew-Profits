@@ -104,7 +104,11 @@ var seasons = [
 			crops.tulip,
 			crops.ancientfruit,
 			crops.springseeds,
-			crops.carrot
+			crops.carrot,
+			crops.jojaberry,
+			crops.jojaveggie,
+			crops.salalberry,
+			crops.slimeberry
 		]
 	},
 	{
@@ -130,7 +134,11 @@ var seasons = [
 			crops.ancientfruit,
 			crops.taroroot,
 			crops.summerseeds,
-			crops.summersquash
+			crops.summersquash,
+			crops.jojaberry,
+			crops.jojaveggie,
+			crops.ancientfiber,
+			crops.monsterfruit
 		]
 	},
 	{
@@ -154,7 +162,10 @@ var seasons = [
 			crops.corn,
 			crops.ancientfruit,
 			crops.fallseeds,
-			crops.broccoli
+			crops.broccoli,
+			crops.jojaberry,
+			crops.jojaveggie,
+			crops.monstermushroom
 		]
 	},
 	{
@@ -162,7 +173,8 @@ var seasons = [
 		"duration": 28,
 		"crops": [
 			crops.winterseeds,
-			crops.powdermelon
+			crops.powdermelon,
+			crops.voidroot
 		]
 	},
 	{
