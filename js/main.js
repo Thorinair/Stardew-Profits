@@ -231,10 +231,10 @@ function profit(crop) {
 	if (isTea) regular = 1, silver = gold = iridium = 0;
 	var netIncome = 0;
 	var netExpenses = 0;
-	var maxNetIncome = 0;
+	// var maxNetIncome = 0;
 	var totalProfit = 0;
-	var maxTotalProfit = 0;
-	var predNetIncome = 0;
+	// var maxTotalProfit = 0;
+	// var predNetIncome = 0;
 	var totalReturnOnInvestment = 0;
 	var averageReturnOnInvestment = 0;
 	crop.produce.regular = 0
@@ -294,7 +294,8 @@ function profit(crop) {
             var countGold = 0
             var countIridium = 0
 
-			var [countRegular, countSilver, countGold, countIridium] = CountCropQuality(crop,total_harvest,0,useLevel,fertilizer,extra);
+			var [countRegular, countSilver, countGold, countIridium] = CountCropQuality(crop,total_harvest,useLevel,fertilizer,extra);
+			var qualityByHarvest = CountCropQualityByHarvest(crop,total_harvest,useLevel,fertilizer,extra);
 
             var tempSeeds = forSeeds;
             if (options.replant) {
@@ -407,7 +408,7 @@ function profit(crop) {
                 }
 
                 if (options.sellExcess && cropsLeft > 0){
-					[countRegular, countSilver, countGold, countIridium] = CountCropQuality(crop,total_harvest,cropsLeft,useLevel,fertilizer,extra);
+					[countRegular, countSilver, countGold, countIridium] = RemoveCropQuality(crop,cropsLeft,extra,countRegular, countSilver, countGold, countIridium);
 
 					netIncome += PredictiveNetIncome(crop, countRegular, countSilver, countGold, countIridium);
 					crop.produce.regular = countRegular
@@ -454,8 +455,8 @@ function profit(crop) {
 
 	// Determine total profit
 	totalProfit = netIncome + netExpenses;
-	maxTotalProfit = maxNetIncome + netExpenses;
-	predTotalProfit = predNetIncome + netExpenses;
+	// maxTotalProfit = maxNetIncome + netExpenses;
+	// predTotalProfit = predNetIncome + netExpenses;
 	if (netExpenses != 0) {
 		totalReturnOnInvestment = 100 * ((totalProfit) / -netExpenses); // Calculate the return on investment and scale it to a % increase
 		if (crop.growth.regrow == 0) {
@@ -475,8 +476,8 @@ function profit(crop) {
 	profitData.netExpenses = netExpenses;
     profitData.profit = totalProfit;
 
-    profitData.maxProfit = maxTotalProfit;
-	profitData.predTotalProfit = predTotalProfit
+    // profitData.maxProfit = maxTotalProfit;
+	// profitData.predTotalProfit = predTotalProfit
 
     profitData.regular = probability.regular;
     profitData.silver = probability.silver;

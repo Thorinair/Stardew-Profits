@@ -178,19 +178,6 @@ function Probability( farmingLevel,  fertilizerQualityLevel){
 	}
 	
 	let probabilityRegularWillOccur = (fertilizerQualityLevel < 3) ? probabilityGoldWillNot * probabilitySilverWillNot : 0.00;
-	
-	//OUTPUT One Result Probability
-		// console.log("~*~*~Probability of Crop Quality~*~*~\n");
-
-		// console.log("Farming Level:\t\t%f",farmingLevel);
-		// console.log("Fertilizer Level:\t%f\n",fertilizerQualityLevel);
-
-		// console.log("Iridium:\t",probabilityIridiumWillOccur*100);
-		// console.log("Gold:\t",probabilityGoldWillOccur*100);
-		// console.log("Silver:\t",probabilitySilverWillOccur*100);
-		// console.log("Regular:\t",probabilityRegularWillOccur*100);
-		// console.log("~~~~~~~~~~~~~~~~~\n\n");
-
 
     probability.iridium = probabilityIridiumWillOccur;
     probability.gold = probabilityGoldWillOccur;
@@ -201,7 +188,17 @@ function Probability( farmingLevel,  fertilizerQualityLevel){
 		
 }
 
-function CountCropQuality(crop,totalHarvest,cropsLeft,useLevel,fertilizer,extra){
+/*
+ * Calculates number of crops that will be of a specific quality based on predictions.
+ *
+ * @param crop Crop Data
+ * @param totalHarvest Total Produce picked on a harvest.
+ * @param useLevel Players skill level
+ * @param fertilizer Fertilizer quality used.
+ * @param extra Extra Crops produced
+ * @return [countRegular, countSilver, countGold, countIridium] Number of produce for each quality.
+ */
+function CountCropQuality(crop,totalHarvest,useLevel,fertilizer,extra){
 	var countRegular = 0
 	var countSilver = 0
 	var countGold = 0
@@ -232,6 +229,71 @@ function CountCropQuality(crop,totalHarvest,cropsLeft,useLevel,fertilizer,extra)
 		}
 	}
 
+	return [countRegular, countSilver, countGold, countIridium];
+}
+
+/*
+ * Calculates number of crops that will be of a specific quality based on predictions per harvest.
+ *
+ * @param crop Crop Data
+ * @param totalHarvest Total Produce picked on a harvest.
+ * @param useLevel Players skill level
+ * @param fertilizer Fertilizer quality used.
+ * @param extra Extra Crops produced
+ * @return [countRegular, countSilver, countGold, countIridium] Number of produce for each quality.
+ */
+function CountCropQualityByHarvest(crop,totalHarvest,useLevel,fertilizer,extra){
+	var countRegular = 0
+	var countSilver = 0
+	var countGold = 0
+	var countIridium = 0
+	var harvest = []
+
+	// totalCrops = totalHarvest * crop.harvests;
+
+	if (extra > 0 ){
+		countRegular += extra;
+	}
+
+	for (let h = 0; h < crop.harvests; h++){
+		for (let i = 0; i < totalHarvest; i++ ){
+			const predicted = (crop.isWildseed) ? PredictForaging(options.foragingLevel,options.skills.botanist) : Predict(useLevel+options.foodLevel,fertilizer.ratio);
+			
+			switch(predicted.cropQuality){
+				case 4:
+					countIridium++
+					break;
+				case 2:
+					countGold++
+					break;
+				case 1:
+					countSilver++
+					break;
+				default:
+					countRegular++
+					break;
+			}
+		}
+		harvest[h] = [countRegular, countSilver, countGold, countIridium]
+		countRegular = 0
+		countSilver = 0
+		countGold = 0
+		countIridium = 0
+	}
+
+	return harvest;
+	
+}
+
+/*
+ * Removes number of crops that will be of a specific quality based on predictions.
+ *
+ * @param crop Crop Data
+ * @param cropsLeft Crops left unused if not selling raw.
+ * @param extra Extra Crops produced
+ * @return [countRegular, countSilver, countGold, countIridium] Number of produce for each quality.
+ */
+function RemoveCropQuality(crop,cropsLeft,extra,countRegular, countSilver, countGold, countIridium){
 	if(cropsLeft != 0){
 		used = (totalCrops + (extra * crop.produce.extra)) - cropsLeft //something wrong with selling excess here
 		if (countRegular - used < 0){
@@ -263,6 +325,16 @@ function CountCropQuality(crop,totalHarvest,cropsLeft,useLevel,fertilizer,extra)
 	return [countRegular, countSilver, countGold, countIridium];
 }
 
+/*
+ * Calculates netIncome based on Quality of Raw produce.
+ *
+ * @param crop Crop Data
+ * @param countRegular Number of crops at regular quality.
+ * @param countSilver Number of crops at silver quality.
+ * @param countGold Number of crops at gold quality.
+ * @param countIridium Number of crops at iridium quality.
+ * @return netIncome Total Net Income based only on raw produce by quality including till skill.
+ */
 function PredictiveNetIncome(crop, countRegular, countSilver, countGold, countIridium){
 	netIncome = 0;
 	
