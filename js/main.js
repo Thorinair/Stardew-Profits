@@ -463,9 +463,9 @@ function profit(crop) {
                         usableCrops -= num_planted * 0.5;
                     usableCrops = Math.max(0, usableCrops);
 
-					for (const h of extra.extraByHarvest){
-						console.log(h)
-					}
+					// for (const h of extra.extraByHarvest){
+					// 	console.log(h)
+					// }
                 }
                 else {
                     usableCrops = Math.floor(total_crops - forSeeds);
@@ -1232,7 +1232,7 @@ function renderGraph() {
 					var fertilizer = fertilizers[options.fertilizer];
 					var kegModifier = getKegModifier(d);
 					var caskModifier = getCaskModifier();
-					var kegPrice = d.produce.keg != null ? d.produce.keg * caskModifier : d.produce.price * kegModifier * caskModifier;
+					var kegPrice = d.produce.keg != null ? d.produce.keg * caskModifier : d.produce.price * kegModifier;
 					var dehydratorModifierByCrop = d.produce.dehydratorType != null ? getDehydratorModifier(d): 0;
 					var seedPrice = d.seeds.sell;
 					var initialGrow = 0;
