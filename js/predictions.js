@@ -249,8 +249,6 @@ function CountCropQualityByHarvest(crop,totalHarvest,useLevel,fertilizer,extra){
 	var countIridium = 0
 	var harvest = []
 
-	// totalCrops = totalHarvest * crop.harvests;
-
 	if (extra > 0 ){
 		countRegular += extra;
 	}
@@ -283,109 +281,4 @@ function CountCropQualityByHarvest(crop,totalHarvest,useLevel,fertilizer,extra){
 
 	return harvest;
 	
-}
-
-/*
- * Removes x of crops from a quality for specified scenarios. Use this function to take produce away used as seeds or consumed for artisan goods.
- *
- * @param crop Crop Data
- * @param cropsLeft Crops left unused if not selling raw.
- * @param extra Extra Crops produced
- * @return [countRegular, countSilver, countGold, countIridium] Number of produce for each quality.
- */
-function RemoveCropQuality(removeCrop,countRegular, countSilver, countGold, countIridium){
-	if(removeCrop != 0){
-		// used = (totalCrops + (extra * crop.produce.extra)) - cropsLeft //something wrong with selling excess here
-		if (countRegular - removeCrop < 0){
-			removeCrop -= countRegular;
-			countRegular = 0;
-			if (countSilver - removeCrop < 0 ){
-				removeCrop -= countSilver;
-				countSilver = 0;
-				if (countGold - removeCrop < 0){
-					removeCrop -= countGold;
-					countSilver = 0;
-					if (countIridium - removeCrop < 0 ){
-						removeCrop -= countIridium;
-						countIridium = 0;
-					} else {
-						countIridium -= removeCrop;
-						removeCrop = 0;
-					}
-				} else {
-					countGold -= removeCrop;
-					removeCrop = 0;
-				}
-			} else {
-				countSilver -= removeCrop;
-				removeCrop = 0;
-			}
-		} else {
-			countRegular -= removeCrop;
-			removeCrop = 0;
-		}
-	}
-
-	return [countRegular, countSilver, countGold, countIridium];
-
-	// var tempSeeds = forSeeds;
-	// if (options.replant) {
-	// 	if (countRegular - tempSeeds < 0) {
-	// 		tempSeeds -= countRegular;
-	// 		countRegular = 0;
-	// 	}
-	// 	else {
-	// 		countRegular -= tempSeeds;
-	// 		tempSeeds = 0;
-	// 	}
-	// 	if (countSilver - tempSeeds < 0) {
-	// 		tempSeeds -= countSilver;
-	// 		countSilver = 0;
-	// 	}
-	// 	else {
-	// 		countSilver -= tempSeeds;
-	// 		tempSeeds = 0;
-	// 	}
-	// 	if (countGold - tempSeeds < 0) {
-	// 		tempSeeds -= countGold;
-	// 		countGold = 0;
-	// 	}
-	// 	else {
-	// 		countGold -= tempSeeds;
-	// 		tempSeeds = 0;
-	// 	}
-	// 	if (countIridium - tempSeeds < 0) {
-	// 		tempSeeds -= countIridium;
-	// 		countIridium = 0;
-	// 	}
-	// 	else {
-	// 		countIridium -= tempSeeds;
-	// 		tempSeeds = 0;
-	// 	}
-	// }
-}
-
-/*
- * Calculates netIncome based on Quality of Raw produce.
- *
- * @param crop Crop Data
- * @param countRegular Number of crops at regular quality.
- * @param countSilver Number of crops at silver quality.
- * @param countGold Number of crops at gold quality.
- * @param countIridium Number of crops at iridium quality.
- * @return netIncome Total Net Income based only on raw produce by quality including till skill.
- */
-function PredictiveNetIncome(crop, countRegular, countSilver, countGold, countIridium){
-	netIncome = 0;
-	
-	netIncome += crop.produce.price * countRegular;
-	netIncome += Math.trunc(crop.produce.price * 1.25) * countSilver;
-	netIncome += Math.trunc(crop.produce.price * 1.5) * countGold;
-	netIncome += crop.produce.price * 2 * countIridium;
-	
-	if (options.skills.till) {
-		netIncome *= 1.1;
-	}
-
-	return netIncome;
 }
