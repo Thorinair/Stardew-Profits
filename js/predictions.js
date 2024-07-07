@@ -20,7 +20,6 @@ function Clamp(value, min, max){
 
 function PredictExtraHarvest(crop,num_planted){
 	let r2 = Math.random();
-	// let chance = {};
 	let extra = 0;
 
 	/*actual game code v1.6.3
@@ -29,9 +28,6 @@ function PredictExtraHarvest(crop,num_planted){
 		numToHarvest++;
 	}
 	*/
-
-	//modified, we're just going to roll the dice once.
-	// extraHarvest = (r2 < Math.min(0.9,Number(crop.extraPerc))) ? true : false;
 
 	//Per Harvest
 	if(crop.produce.extraPerc != 1){
@@ -42,13 +38,11 @@ function PredictExtraHarvest(crop,num_planted){
 				if (r2 < Math.min(0.9,Number(crop.produce.extraPerc))){
 					extra++;
 				}
-		
 			}
 		}
 	} else {
 		extra = num_planted * crop.harvests;
 	}
-	// chance.harvest = extraHarvest;
 	return extra;
 }
 
@@ -105,9 +99,9 @@ function Predict(farmingLevel, fertilizerQualityLevel){
   var r2 = Math.random();
   let chance = {};
 
-	let forRegularQuality	  = 0;
+	let forRegularQuality	= 0;
 	let forGoldQuality      = 0.2 * (farmingLevel / 10.0) + 0.2 * fertilizerQualityLevel * ((farmingLevel + 2.0) / 12.0) + 0.01;
-	let forSilverQuality 	  = Math.min(0.75, forGoldQuality * 2.0);
+	let forSilverQuality 	= Math.min(0.75, forGoldQuality * 2.0);
 	let forIridiumQuality 	= 0;
 	
 	if(fertilizerQualityLevel < 3){
@@ -117,7 +111,7 @@ function Predict(farmingLevel, fertilizerQualityLevel){
 		forIridiumQuality = forGoldQuality / 2.0;
 	}
 
-  //Regular
+  	//Regular
 	let cropQuality = 0;
 	if (fertilizerQualityLevel >= 3 && r2 < forGoldQuality / 2.0)
 	{
@@ -144,35 +138,35 @@ function Predict(farmingLevel, fertilizerQualityLevel){
 	}
 	cropQuality = Clamp(cropQuality, minQuailty, maxQuailty);
 
-  chance.forRegularQuality = forRegularQuality;
-  chance.forSilverQuality = forSilverQuality;
-  chance.forGoldQuality = forGoldQuality;
-  chance.forIridiumQuality = forIridiumQuality;
-  chance.cropQuality = cropQuality;
+  chance.forRegularQuality 	= forRegularQuality;
+  chance.forSilverQuality 	= forSilverQuality;
+  chance.forGoldQuality 	= forGoldQuality;
+  chance.forIridiumQuality 	= forIridiumQuality;
+  chance.cropQuality 		= cropQuality;
 
   return chance;
 }
 
 /*
- * Calculates the probability of crop quality based on farmingLevel level and grade of fertilizer.
+ * Calculates the conditional probability of crop quality based event chance.
  * Math is from decompiled 1.6 game data
  *
  * @param farmingLevel The level of the Players farming skill (0-14)
  * @param fertilizerQualityLevel Quality of Fertilizer (0:Normal, 1:Silver, 2:Gold, 3:Iridium)
- * @return Object returning predicted crop quality and part of probability of potential qualities.
+ * @return probability Object of crop qualities probability of occuring.
  */
 function Probability( farmingLevel,  fertilizerQualityLevel){
 	const chance = Predict(farmingLevel,fertilizerQualityLevel);
     let probability = {};
 		
-	let probabilityIridiumWillOccur 	= chance.forIridiumQuality;
+	let probabilityIridiumWillOccur = chance.forIridiumQuality;
 	let probabilityIridiumWillNot	= 1 - probabilityIridiumWillOccur;
 	
-	let probabilityGoldWillOccur = (fertilizerQualityLevel >= 3) ? chance.forGoldQuality * probabilityIridiumWillNot : chance.forGoldQuality;
-	let probabilityGoldWillNot 	= 1 - chance.forGoldQuality;
+	let probabilityGoldWillOccur 	= (fertilizerQualityLevel >= 3) ? chance.forGoldQuality * probabilityIridiumWillNot : chance.forGoldQuality;
+	let probabilityGoldWillNot 		= 1 - chance.forGoldQuality;
 	
 	let probabilitySilverWillOccur 	= probabilityGoldWillNot * chance.forSilverQuality;
-	let probabilitySilverWillNot	 	= 1 - chance.forSilverQuality;
+	let probabilitySilverWillNot	= 1 - chance.forSilverQuality;
 	if(fertilizerQualityLevel >= 3){
 		probabilitySilverWillOccur = (probabilityGoldWillNot * probabilityIridiumWillNot < 0) ? 0.00 : probabilityGoldWillNot * probabilityIridiumWillNot;
 	}
@@ -207,7 +201,7 @@ function CountCropQuality(crop,totalHarvest,useLevel,fertilizer,extra){
 	totalCrops = totalHarvest * crop.harvests;
 
 	if (extra > 0 ){
-		countRegular += extra;
+		countRegular += (extra * crop.produce.extra);
 	}
 
 	for (let i = 0; i < totalCrops; i++ ){
@@ -286,43 +280,83 @@ function CountCropQualityByHarvest(crop,totalHarvest,useLevel,fertilizer,extra){
 }
 
 /*
- * Removes number of crops that will be of a specific quality based on predictions.
+ * Removes x of crops from a quality for specified scenarios. Use this function to take produce away used as seeds or consumed for artisan goods.
  *
  * @param crop Crop Data
  * @param cropsLeft Crops left unused if not selling raw.
  * @param extra Extra Crops produced
  * @return [countRegular, countSilver, countGold, countIridium] Number of produce for each quality.
  */
-function RemoveCropQuality(crop,cropsLeft,extra,countRegular, countSilver, countGold, countIridium){
-	if(cropsLeft != 0){
-		used = (totalCrops + (extra * crop.produce.extra)) - cropsLeft //something wrong with selling excess here
-		if (countRegular - used < 0){
-			used -= countRegular;
+function RemoveCropQuality(removeCrop,countRegular, countSilver, countGold, countIridium){
+	if(removeCrop != 0){
+		// used = (totalCrops + (extra * crop.produce.extra)) - cropsLeft //something wrong with selling excess here
+		if (countRegular - removeCrop < 0){
+			removeCrop -= countRegular;
 			countRegular = 0;
-			if (countSilver - used < 0 ){
-				used -= countSilver;
+			if (countSilver - removeCrop < 0 ){
+				removeCrop -= countSilver;
 				countSilver = 0;
-				if (countGold - used < 0){
-					used -= countGold;
+				if (countGold - removeCrop < 0){
+					removeCrop -= countGold;
 					countSilver = 0;
-					if (countIridium - used < 0 ){
-						used -= countIridium;
+					if (countIridium - removeCrop < 0 ){
+						removeCrop -= countIridium;
 						countIridium = 0;
 					} else {
-						countIridium -= used;
+						countIridium -= removeCrop;
+						removeCrop = 0;
 					}
 				} else {
-					countGold -= used;
+					countGold -= removeCrop;
+					removeCrop = 0;
 				}
 			} else {
-				countSilver -= used;
+				countSilver -= removeCrop;
+				removeCrop = 0;
 			}
 		} else {
-			countRegular -= used;
+			countRegular -= removeCrop;
+			removeCrop = 0;
 		}
 	}
 
 	return [countRegular, countSilver, countGold, countIridium];
+
+	// var tempSeeds = forSeeds;
+	// if (options.replant) {
+	// 	if (countRegular - tempSeeds < 0) {
+	// 		tempSeeds -= countRegular;
+	// 		countRegular = 0;
+	// 	}
+	// 	else {
+	// 		countRegular -= tempSeeds;
+	// 		tempSeeds = 0;
+	// 	}
+	// 	if (countSilver - tempSeeds < 0) {
+	// 		tempSeeds -= countSilver;
+	// 		countSilver = 0;
+	// 	}
+	// 	else {
+	// 		countSilver -= tempSeeds;
+	// 		tempSeeds = 0;
+	// 	}
+	// 	if (countGold - tempSeeds < 0) {
+	// 		tempSeeds -= countGold;
+	// 		countGold = 0;
+	// 	}
+	// 	else {
+	// 		countGold -= tempSeeds;
+	// 		tempSeeds = 0;
+	// 	}
+	// 	if (countIridium - tempSeeds < 0) {
+	// 		tempSeeds -= countIridium;
+	// 		countIridium = 0;
+	// 	}
+	// 	else {
+	// 		countIridium -= tempSeeds;
+	// 		tempSeeds = 0;
+	// 	}
+	// }
 }
 
 /*

@@ -165,6 +165,30 @@ function planted(crop) {
 }
 
 /*
+ * Calculates the number of crops convert to seed for replant.
+ * @param crop The crop object, containing all the crop data.
+ * @param num_planted The number of crops planted.
+ * @return The number of crops planted, taking the desired number planted and the max seed money into account.
+ */
+function convertToSeeds(crop,num_planted, isTea,isCoffee){
+	var forSeeds = 0;
+	if (options.replant && !isTea) {
+		if (isCoffee && options.nextyear) {
+			forSeeds = num_planted;
+		} 
+		else if (crop.growth.regrow > 0 && options.nextyear) {
+			forSeeds = num_planted * 0.5;
+		} 
+		else if (crop.growth.regrow == 0) {
+			forSeeds = num_planted * crop.harvests * 0.5;
+			if(!options.nextyear && forSeeds >= 1) 
+				forSeeds -= num_planted * 0.5;
+		}
+	}
+	return forSeeds;
+}
+
+/*
  * Calculates the keg modifier for the crop.
  * @param crop The crop object, containing all the crop data.
  * @return The keg modifier.
@@ -231,10 +255,7 @@ function profit(crop) {
 	if (isTea) regular = 1, silver = gold = iridium = 0;
 	var netIncome = 0;
 	var netExpenses = 0;
-	// var maxNetIncome = 0;
 	var totalProfit = 0;
-	// var maxTotalProfit = 0;
-	// var predNetIncome = 0;
 	var totalReturnOnInvestment = 0;
 	var averageReturnOnInvestment = 0;
 	crop.produce.regular = 0
@@ -258,80 +279,45 @@ function profit(crop) {
 			break;
 	}
 	
-    var total_harvest = num_planted * 1.0;
-	var extra = 0
-	if (crop.produce.extra > 0 ){
-		extra = PredictExtraHarvest(crop,num_planted)
-	}
+	//Determine how many produce will be used for seeds.
+	var forSeeds = convertToSeeds(crop,num_planted,isTea,isCoffee)
+
+	//Calculate extra produce
+	var extra = (crop.produce.extra > 0 ) ? PredictExtraHarvest(crop,num_planted) : 0;
 	crop.produce.extraProduced = extra * crop.produce.extra;
 
-	var forSeeds = 0;
-	if (options.replant && !isTea) {
-		if (isCoffee && options.nextyear) {
-			forSeeds = num_planted;
-		} 
-		else if (crop.growth.regrow > 0 && options.nextyear) {
-			forSeeds = num_planted * 0.5;
-		} 
-		else if (crop.growth.regrow == 0) {
-			forSeeds = num_planted * crop.harvests * 0.5;
-			if(!options.nextyear && forSeeds >= 1) 
-				forSeeds -= num_planted * 0.5;
-		}
-	}
-	
+	//this is really redundant now that I broke up parts of total
+	var total_harvest = num_planted * 1.0;
+
+	//Add all harvests and extra as total crops
 	var total_crops = (total_harvest * crop.harvests) + (extra * crop.produce.extra);
 	
-	// console.log("Calculating raw produce value for: " + crop.name);
 	// Determine income
+	/*
+	* 	Produce Types:
+	*	0 = Raw
+	*	1 = Jar
+	*	2 = Keg
+	*	3 = Seeds
+	*	4 = Dehydrator
+	*/
 	if (produce != 3 || userawproduce) {
         if (userawproduce && !options.sellRaw) {
             netIncome = 0;
         }
         else {
+			//First we need to find crop quality for all crops
+			//Then remove crops repurposed for seeds (take away from regular quality first)
+			//If we're working with an artisan then we will look at excess (by time) to take away qualities
             var countRegular = 0
             var countSilver = 0
             var countGold = 0
             var countIridium = 0
 
 			var [countRegular, countSilver, countGold, countIridium] = CountCropQuality(crop,total_harvest,useLevel,fertilizer,extra);
-			var qualityByHarvest = CountCropQualityByHarvest(crop,total_harvest,useLevel,fertilizer,extra);
+			// var qualityByHarvest = CountCropQualityByHarvest(crop,total_harvest,useLevel,fertilizer,extra);
 
-            var tempSeeds = forSeeds;
-            if (options.replant) {
-                if (countRegular - tempSeeds < 0) {
-                    tempSeeds -= countRegular;
-                    countRegular = 0;
-                }
-                else {
-                    countRegular -= tempSeeds;
-                    tempSeeds = 0;
-                }
-                if (countSilver - tempSeeds < 0) {
-                    tempSeeds -= countSilver;
-                    countSilver = 0;
-                }
-                else {
-                    countSilver -= tempSeeds;
-                    tempSeeds = 0;
-                }
-                if (countGold - tempSeeds < 0) {
-                    tempSeeds -= countGold;
-                    countGold = 0;
-                }
-                else {
-                    countGold -= tempSeeds;
-                    tempSeeds = 0;
-                }
-                if (countIridium - tempSeeds < 0) {
-                    tempSeeds -= countIridium;
-                    countIridium = 0;
-                }
-                else {
-                    countIridium -= tempSeeds;
-                    tempSeeds = 0;
-                }
-            }
+			var [countRegular, countSilver, countGold, countIridium] = RemoveCropQuality(forSeeds,countRegular, countSilver, countGold, countIridium)
 
             if (produce == 0 || userawproduce) {
 				
@@ -1454,6 +1440,7 @@ function updateData() {
 	var tr_check_sellExcessID = document.getElementById('tr_check_sellExcess');
 	var tr_check_byHarvestID = document.getElementById('tr_check_byHarvest');
 	var tr_select_agingID = document.getElementById('tr_select_aging');
+	var tr_select_create_artisan_timeID = document.getElementById('tr_select_create_artisan_time');
 
     if (options.produce == 0 || options.produce == 3) {
 		tr_equipmentID.classList.add('hidden');
@@ -1461,11 +1448,13 @@ function updateData() {
 		tr_check_sellExcessID.classList.add('hidden');
 		tr_check_byHarvestID.classList.add('hidden');
 		tr_select_agingID.classList.add('hidden');
+		tr_select_create_artisan_timeID.classList.add('hidden');
     }
 	else if (options.produce == 1 || options.produce == 2) {
 		tr_equipmentID.classList.remove('hidden');
 		tr_check_sellRawID.classList.remove('hidden');
 		tr_check_sellExcessID.classList.remove('hidden');
+		tr_select_create_artisan_timeID.classList.remove('hidden');
 		tr_check_byHarvestID.classList.add('hidden');
 		if(options.produce == 2){
 			tr_select_agingID.classList.remove('hidden');
@@ -1478,6 +1467,7 @@ function updateData() {
 		tr_check_sellRawID.classList.remove('hidden');
 		tr_check_sellExcessID.classList.remove('hidden');
 		tr_check_byHarvestID.classList.remove('hidden');
+		tr_select_create_artisan_timeID.classList.remove('hidden');
 		tr_select_agingID.classList.add('hidden');
     }
     options.sellRaw 	= document.getElementById('check_sellRaw').checked;	
@@ -1506,6 +1496,7 @@ function updateData() {
         document.getElementById('select_aging').value = 0;
     }
     options.aging = parseInt(document.getElementById('select_aging').value);
+    options.artisanTime = parseInt(document.getElementById('select_create_artisan_time').value);
 
 	if (document.getElementById('max_seed_money').value < 0)
 		document.getElementById('max_seed_money').value = '0';
@@ -1600,6 +1591,7 @@ function updateData() {
 		document.getElementById('check_skillsTill').disabled = true;
 		document.getElementById('check_skillsTill').style.cursor = "default";
 		document.getElementById('check_skillsTill').checked = false;
+		options.skills.till = document.getElementById('check_skillsTill').checked;
 	}
 
 	if (options.level >= 10 && options.skills.till) {
