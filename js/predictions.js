@@ -18,9 +18,10 @@ function Clamp(value, min, max){
 	return value;
 }
 
-function PredictExtraHarvest(crop,num_planted){
+function PredictExtraHarvest(crop,num_planted,byHarvest){
 	let r2 = Math.random();
-	let extra = 0;
+	let total = 0;
+	let extraByHarvest = [];
 
 	/*actual game code v1.6.3
 	Random r2 = Utility.CreateRandom((double)xTile * 7.0, (double)yTile * 11.0, Game1.stats.DaysPlayed, Game1.uniqueIDForThisGame);
@@ -29,21 +30,26 @@ function PredictExtraHarvest(crop,num_planted){
 	}
 	*/
 
-	//Per Harvest
-	if(crop.produce.extraPerc != 1){
-		for (var k = 0; k < crop.harvests; k++){
-			//Per Plant Picked
-			for (var i = 0; i < num_planted; i++){
-				r2 = Math.random();
-				if (r2 < Math.min(0.9,Number(crop.produce.extraPerc))){
-					extra++;
+	if(crop.produce.extraPerc != 0 ){		
+		if(crop.produce.extraPerc != 1){
+			//Per Harvest
+			for (var h = 0; h < crop.harvests; h++){
+				var hExtra = 0
+				//Per Plant Picked
+				for (var i = 0; i < num_planted; i++){
+					r2 = Math.random();
+					if (r2 < Math.min(0.9,Number(crop.produce.extraPerc))){
+						total++;
+						hExtra++;
+					}
 				}
+				extraByHarvest[h] = hExtra;
 			}
+		} else {
+			total = num_planted * crop.harvests;
 		}
-	} else {
-		extra = num_planted * crop.harvests;
 	}
-	return extra;
+	return {total, extraByHarvest};
 }
 
 /*

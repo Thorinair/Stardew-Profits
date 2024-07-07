@@ -104,8 +104,8 @@
                             <td>Create Artisan:</td>
                             <td >
                                 <select id="select_create_artisan_time" onChange="refresh()">
-                                    <option value="0" selected="true">At Harvest</option>
-                                    <option value="1">End of Harvest</option>
+                                    <option value="0" selected="true">Per Harvest</option>
+                                    <option value="1">After All Harvests</option>
                                 </select>
                             </td>
                         </tr>
@@ -265,6 +265,11 @@
 			<tr>
 				<td>Disable Crop Links:</td>
 				<td><input type="checkbox" id="disable_links" onChange="refresh()" /></td>
+			</tr>
+
+			<tr>
+				<td>Use Prediction Model:</td>
+				<td><input type="checkbox" id="predictionModel" onChange="refresh()" /></td>
 			</tr>
 			
 			<tr>
