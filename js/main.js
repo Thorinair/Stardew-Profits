@@ -443,7 +443,13 @@ function profit(crop) {
                 var itemsMade = 0;
                 var cropsLeft = 0;
                 if (produce == 1 || produce == 2) {
-                    itemsMade = usableCrops;
+					if(options.predictionModel && usableCropsByHarvest.length > 0){
+						for (i in usableCropsByHarvest){
+							itemsMade += Math.floor(usableCropsByHarvest[i]);
+						}
+					} else {
+						itemsMade = usableCrops;
+					}
                 }
                 else if (produce == 4) {
 					if(options.predictionModel && usableCropsByHarvest.length > 0){
@@ -484,8 +490,14 @@ function profit(crop) {
 
                 if (options.equipment > 0) {
                     if (produce == 1 || produce == 2) {
-                        cropsLeft += Math.max(0, itemsMade - options.equipment) * crop.harvests;
-                        itemsMade = Math.min(options.equipment, itemsMade) * crop.harvests;
+						if(options.predictionModel && usableCropsByHarvest.length > 0){
+							itemsMade = Math.min(options.equipment * crop.harvests, Math.floor(total_crops));
+							cropsLeft = total_crops - itemsMade; 
+
+						} else {
+							cropsLeft += Math.max(0, itemsMade - options.equipment) * crop.harvests;
+							itemsMade = Math.min(options.equipment, itemsMade) * crop.harvests;
+						}
                     }
                     if (produce == 4 && !options.byHarvest) {
                         cropsLeft += Math.max(0, itemsMade - options.equipment) * 5;
@@ -494,7 +506,9 @@ function profit(crop) {
                 }
                 else {
                     if (produce == 1 || produce == 2) {
-                        itemsMade *= crop.harvests;
+						if(!options.predictionModel){
+                        	itemsMade *= crop.harvests;
+						}
                     }
                 }
 
