@@ -101,54 +101,62 @@ function PredictForaging(foragingLevel,botanist){
  * @param fertilizerQualityLevel Quality of Fertilizer (0:Normal, 1:Silver, 2:Gold, 3:Iridium)
  * @return Object returning predicted crop quality and part of probability of potential qualities.
  */
-function Predict(farmingLevel, fertilizerQualityLevel){
-  var r2 = Math.random();
-  let chance = {};
+function Predict(farmingLevel, fertilizerQualityLevel,isTea){
+	let chance = {};
+	if(isTea){
+		chance.forRegularQuality 	= 1;
+		chance.forSilverQuality 	= 0;
+		chance.forGoldQuality 		= 0;
+		chance.forIridiumQuality 	= 0;
+		chance.cropQuality 			= 0;
+	} else {
+		var r2 = Math.random();
 
-	let forRegularQuality	= 0;
-	let forGoldQuality      = 0.2 * (farmingLevel / 10.0) + 0.2 * fertilizerQualityLevel * ((farmingLevel + 2.0) / 12.0) + 0.01;
-	let forSilverQuality 	= Math.min(0.75, forGoldQuality * 2.0);
-	let forIridiumQuality 	= 0;
+		let forRegularQuality	= 0;
+		let forGoldQuality      = 0.2 * (farmingLevel / 10.0) + 0.2 * fertilizerQualityLevel * ((farmingLevel + 2.0) / 12.0) + 0.01;
+		let forSilverQuality 	= Math.min(0.75, forGoldQuality * 2.0);
+		let forIridiumQuality 	= 0;
+		
+		if(fertilizerQualityLevel < 3){
+			forRegularQuality = 1 - (forSilverQuality + forGoldQuality);
+		}
+		if(fertilizerQualityLevel >= 3){
+			forIridiumQuality = forGoldQuality / 2.0;
+		}
 	
-	if(fertilizerQualityLevel < 3){
-		forRegularQuality = 1 - (forSilverQuality + forGoldQuality);
-	}
-	if(fertilizerQualityLevel >= 3){
-		forIridiumQuality = forGoldQuality / 2.0;
-	}
-
-  	//Regular
-	let cropQuality = 0;
-	if (fertilizerQualityLevel >= 3 && r2 < forGoldQuality / 2.0)
-	{
-		//iridium
-		cropQuality = 4;
-	}
-	else if (r2 < forGoldQuality)
-	{
-		//Gold
-		cropQuality = 2;
-	}
-	else if (r2 < forSilverQuality || fertilizerQualityLevel >= 3)
-	{
-		//Silver
-		cropQuality = 1;
-	}
-	/* Code by ConcernedApe END */
+		  //Regular
+		let cropQuality = 0;
+		if (fertilizerQualityLevel >= 3 && r2 < forGoldQuality / 2.0)
+		{
+			//iridium
+			cropQuality = 4;
+		}
+		else if (r2 < forGoldQuality)
+		{
+			//Gold
+			cropQuality = 2;
+		}
+		else if (r2 < forSilverQuality || fertilizerQualityLevel >= 3)
+		{
+			//Silver
+			cropQuality = 1;
+		}
+		/* Code by ConcernedApe END */
+		
+		let minQuailty = 0;
+		let maxQuailty = 3;
+		if (fertilizerQualityLevel >= 3){
+			minQuailty = 1;
+			 maxQuailty = 4;
+		}
+		cropQuality = Clamp(cropQuality, minQuailty, maxQuailty);
 	
-	let minQuailty = 0;
-	let maxQuailty = 3;
-	if (fertilizerQualityLevel >= 3){
-		minQuailty = 1;
-	 	maxQuailty = 4;
+	  chance.forRegularQuality 	= forRegularQuality;
+	  chance.forSilverQuality 	= forSilverQuality;
+	  chance.forGoldQuality 	= forGoldQuality;
+	  chance.forIridiumQuality 	= forIridiumQuality;
+	  chance.cropQuality 		= cropQuality;
 	}
-	cropQuality = Clamp(cropQuality, minQuailty, maxQuailty);
-
-  chance.forRegularQuality 	= forRegularQuality;
-  chance.forSilverQuality 	= forSilverQuality;
-  chance.forGoldQuality 	= forGoldQuality;
-  chance.forIridiumQuality 	= forIridiumQuality;
-  chance.cropQuality 		= cropQuality;
 
   return chance;
 }
@@ -161,28 +169,36 @@ function Predict(farmingLevel, fertilizerQualityLevel){
  * @param fertilizerQualityLevel Quality of Fertilizer (0:Normal, 1:Silver, 2:Gold, 3:Iridium)
  * @return probability Object of crop qualities probability of occuring.
  */
-function Probability( farmingLevel,  fertilizerQualityLevel){
-	const chance = Predict(farmingLevel,fertilizerQualityLevel);
+function Probability( farmingLevel,  fertilizerQualityLevel,isTea){
     let probability = {};
-		
-	let probabilityIridiumWillOccur = chance.forIridiumQuality;
-	let probabilityIridiumWillNot	= 1 - probabilityIridiumWillOccur;
-	
-	let probabilityGoldWillOccur 	= (fertilizerQualityLevel >= 3) ? chance.forGoldQuality * probabilityIridiumWillNot : chance.forGoldQuality;
-	let probabilityGoldWillNot 		= 1 - chance.forGoldQuality;
-	
-	let probabilitySilverWillOccur 	= probabilityGoldWillNot * chance.forSilverQuality;
-	let probabilitySilverWillNot	= 1 - chance.forSilverQuality;
-	if(fertilizerQualityLevel >= 3){
-		probabilitySilverWillOccur = (probabilityGoldWillNot * probabilityIridiumWillNot < 0) ? 0.00 : probabilityGoldWillNot * probabilityIridiumWillNot;
-	}
-	
-	let probabilityRegularWillOccur = (fertilizerQualityLevel < 3) ? probabilityGoldWillNot * probabilitySilverWillNot : 0.00;
+	if(isTea){
+		probability.iridium = 0;
+		probability.gold = 0;
+		probability.silver = 0;
+		probability.regular = 1;
 
-    probability.iridium = probabilityIridiumWillOccur;
-    probability.gold = probabilityGoldWillOccur;
-    probability.silver = probabilitySilverWillOccur;
-    probability.regular = probabilityRegularWillOccur;
+	} else {
+		const chance = Predict(farmingLevel,fertilizerQualityLevel,false);
+		
+		let probabilityIridiumWillOccur = chance.forIridiumQuality;
+		let probabilityIridiumWillNot	= 1 - probabilityIridiumWillOccur;
+		
+		let probabilityGoldWillOccur 	= (fertilizerQualityLevel >= 3) ? chance.forGoldQuality * probabilityIridiumWillNot : chance.forGoldQuality;
+		let probabilityGoldWillNot 		= 1 - chance.forGoldQuality;
+		
+		let probabilitySilverWillOccur 	= probabilityGoldWillNot * chance.forSilverQuality;
+		let probabilitySilverWillNot	= 1 - chance.forSilverQuality;
+		if(fertilizerQualityLevel >= 3){
+			probabilitySilverWillOccur = (probabilityGoldWillNot * probabilityIridiumWillNot < 0) ? 0.00 : probabilityGoldWillNot * probabilityIridiumWillNot;
+		}
+		
+		let probabilityRegularWillOccur = (fertilizerQualityLevel < 3) ? probabilityGoldWillNot * probabilitySilverWillNot : 0.00;
+	
+		probability.iridium = probabilityIridiumWillOccur;
+		probability.gold = probabilityGoldWillOccur;
+		probability.silver = probabilitySilverWillOccur;
+		probability.regular = probabilityRegularWillOccur;
+	}
 		
 	return probability;
 		
@@ -211,7 +227,7 @@ function CountCropQuality(crop,totalHarvest,useLevel,fertilizer,extra){
 	}
 
 	for (let i = 0; i < totalCrops; i++ ){
-		const predicted = (crop.isWildseed) ? PredictForaging(options.foragingLevel,options.skills.botanist) : Predict(useLevel+options.foodLevel,fertilizer.ratio);
+		const predicted = (crop.isWildseed) ? PredictForaging(options.foragingLevel,options.skills.botanist) : Predict(useLevel+options.foodLevel,fertilizer.ratio,crop.name == "Tea Leaves");
 		
 		switch(predicted.cropQuality){
 			case 4:
