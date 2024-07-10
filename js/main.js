@@ -534,10 +534,10 @@ function profit(crop) {
                 var caskModifier = getCaskModifier();
                 var dehydratorModifier = getDehydratorModifier(crop);
                 if (options.produce == 1) {
-                    netIncome += itemsMade * (crop.produce.jar != null ? crop.produce.jar : options.skills.arti ? (crop.produce.price * 2 + 50) * 1.4 : crop.produce.price * 2 + 50);
+                    netIncome += itemsMade * (crop.produce.jarType != null ? crop.produce.jarType : options.skills.arti ? (crop.produce.price * 2 + 50) * 1.4 : crop.produce.price * 2 + 50);
                 }
                 else if (options.produce == 2) {
-                    netIncome += itemsMade * (crop.produce.keg != null ? crop.produce.keg * caskModifier : crop.produce.price * kegModifier);
+                    netIncome += itemsMade * (crop.produce.kegType != null && options.aging != "None" ? crop.produce.price * kegModifier * caskModifier : crop.produce.price * kegModifier);
                 }
                 else if (options.produce == 4) {
                     netIncome += crop.produce.dehydratorType != null ? itemsMade * dehydratorModifier : 0;
@@ -1209,7 +1209,7 @@ function renderGraph() {
 					var fertilizer = fertilizers[options.fertilizer];
 					var kegModifier = getKegModifier(d);
 					var caskModifier = getCaskModifier();
-					var kegPrice = d.produce.keg != null ? d.produce.keg * caskModifier : d.produce.price * kegModifier;
+					var kegPrice = d.produce.kegType != null && options.aging != "None" ? d.produce.price * kegModifier * caskModifier : d.produce.price * kegModifier;
 					var dehydratorModifierByCrop = d.produce.dehydratorType != null ? getDehydratorModifier(d): 0;
 					var seedPrice = d.seeds.sell;
 					var initialGrow = 0;
