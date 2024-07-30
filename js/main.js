@@ -208,10 +208,9 @@ function levelRatio(fertilizer, level, isWildseed) {
  * @return The keg modifier.
  */
 function getKegModifier(crop) {
-	if (options.skills.arti) {
-		result = crop.produce.kegType == "Wine" ? 4.2 : 3.15;
-	}
-	else {
+	if (crop.produce.kegType == "Coffee" || crop.produce.kegType == "Tea"){
+		result = 1;
+	} else {
 		result = crop.produce.kegType == "Wine" ? 3 : 2.25;
 	}
 	
@@ -225,10 +224,10 @@ function getKegModifier(crop) {
  */
 function getCaskModifier() {
     switch (options.aging) {
-        case 1: return options.skills.arti ? 1.75 : 1.25;
-        case 2: return options.skills.arti ? 2.145 : 1.5;
-        case 3: return options.skills.arti ? 2.8 : 2;
-        default: return options.skills.arti ? 1.4 : 1;
+        case 1: return 1.25;
+        case 2: return 1.5;
+        case 3: return 2;
+        default: return 1;
     }
 }
 
@@ -442,16 +441,19 @@ function profit(crop) {
                 var kegModifier = getKegModifier(crop);
                 var caskModifier = getCaskModifier();
                 var dehydratorModifier = getDehydratorModifier(crop);
+				var kegPrice = 0;
                 if (options.produce == 1) {
-                    netIncome += itemsMade * (crop.produce.jarType != null ? crop.produce.jarType : options.skills.arti ? (crop.produce.price * 2 + 50) * 1.4 : crop.produce.price * 2 + 50);
+                    netIncome += itemsMade * (crop.produce.jarType == null ? 0 : options.skills.arti ? (crop.produce.price * 2 + 50) * 1.4 : crop.produce.price * 2 + 50);
                 }
                 else if (options.produce == 2) {
-                    netIncome += itemsMade * (crop.produce.kegType != null && options.aging != "None" ? crop.produce.price * kegModifier * caskModifier : crop.produce.price * kegModifier);
+					kegPrice = crop.produce.keg != null ? crop.produce.keg * kegModifier : crop.produce.kegType != null && options.aging != 0 ? crop.produce.price * kegModifier * caskModifier : crop.produce.price * kegModifier;
+                    netIncome += options.skills.arti ? itemsMade * (kegPrice * 1.4) : itemsMde * kegPrice;
                 }
                 else if (options.produce == 4) {
                     netIncome += crop.produce.dehydratorType != null ? itemsMade * dehydratorModifier : 0;
                 }
         
+				profitData.kegPrice = kegPrice;
                 profitData.quantitySold = itemsMade;
                 profitData.excessProduce = cropsLeft;
             }
@@ -1087,9 +1089,6 @@ function renderGraph() {
 
 				if (options.extra) {
                     var fertilizer = fertilizers[options.fertilizer];
-                    var kegModifier = getKegModifier(d);
-                    var caskModifier = getCaskModifier();
-					var kegPrice = d.produce.kegType != null && options.aging != "None" ? d.produce.price * kegModifier * caskModifier : d.produce.price * kegModifier;
                     var dehydratorModifierByCrop = d.produce.dehydratorType != null ? getDehydratorModifier(d): 0;
                     var seedPrice = d.seeds.sell;
                     var initialGrow = 0;
@@ -1144,7 +1143,7 @@ function renderGraph() {
 					tooltipTr = tooltipTable.append("tr");
 					if (d.produce.kegType) {
 						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (" + d.produce.kegType + "):");
-						tooltipTr.append("td").attr("class", "tooltipTdRight").text(Math.round(kegPrice))
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text(Math.round(d.profitData.kegPrice))
 						.append("div").attr("class", "gold");
 					}
 					else {
