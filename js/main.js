@@ -203,18 +203,13 @@ function levelRatio(fertilizer, level, isWildseed) {
 }
 
 /*
- * Calculates the keg modifier for the crop.
+ * Calculates the keg base price for the crop.
  * @param crop The crop object, containing all the crop data.
- * @return The keg modifier.
+ * @return The keg base price.
  */
-function getKegModifier(crop) {
-	if (crop.produce.kegType == "Coffee" || crop.produce.kegType == "Tea"){
-		result = 1;
-	} else {
-		result = crop.produce.kegType == "Wine" ? 3 : 2.25;
-	}
-	
-    return result;
+function getKegBasePrice(crop) {
+
+	return crop.produce.keg != null ? crop.produce.keg : crop.produce.kegType == "Wine" ? crop.produce.price * 3 : crop.produce.price * 2.25;
 }
 
 /*
@@ -222,13 +217,20 @@ function getKegModifier(crop) {
  * @param crop The crop object, containing all the crop data.
  * @return The cask modifier.
  */
-function getCaskModifier() {
-    switch (options.aging) {
-        case 1: return 1.25;
-        case 2: return 1.5;
-        case 3: return 2;
-        default: return 1;
-    }
+function getCaskModifier(crop) {
+	var modifier = 1
+	if (options.aging > 0 && crop.produce.ages){
+		switch (options.aging) {
+			case 1: modifier = 1.25;
+				break;
+			case 2: modifier = 1.5;
+				break;
+			case 3: modifier = 2;
+				break;
+			default: modifier = 1;
+		}
+	}
+	return modifier;
 }
 
 /*
@@ -438,22 +440,21 @@ function profit(crop) {
                     cropPrice = options.skills.till ? crop.produce.price * 1.1 : crop.produce.price;
                 netIncome += cropsLeft * cropPrice;
 
-                var kegModifier = getKegModifier(crop);
-                var caskModifier = getCaskModifier();
+                var kegBasePrice = getKegBasePrice(crop);
+                var caskModifier = getCaskModifier(crop);
                 var dehydratorModifier = getDehydratorModifier(crop);
 				var kegPrice = 0;
                 if (options.produce == 1) {
                     netIncome += itemsMade * (crop.produce.jarType == null ? 0 : options.skills.arti ? (crop.produce.price * 2 + 50) * 1.4 : crop.produce.price * 2 + 50);
                 }
                 else if (options.produce == 2) {
-					kegPrice = crop.produce.keg != null ? crop.produce.keg * kegModifier : crop.produce.kegType != null && options.aging != 0 ? crop.produce.price * kegModifier * caskModifier : crop.produce.price * kegModifier;
-                    netIncome += options.skills.arti ? itemsMade * (kegPrice * 1.4) : itemsMde * kegPrice;
+					kegPrice = crop.produce.ages ? kegBasePrice * caskModifier : kegBasePrice;
+                    netIncome += options.skills.arti && crop.produce.kegType != "Coffee" ? itemsMade * (kegPrice * 1.4) : itemsMade * kegPrice;
                 }
                 else if (options.produce == 4) {
                     netIncome += crop.produce.dehydratorType != null ? itemsMade * dehydratorModifier : 0;
                 }
         
-				profitData.kegPrice = kegPrice;
                 profitData.quantitySold = itemsMade;
                 profitData.excessProduce = cropsLeft;
             }
@@ -1089,6 +1090,10 @@ function renderGraph() {
 
 				if (options.extra) {
                     var fertilizer = fertilizers[options.fertilizer];
+					
+                	var kegBasePrice = getKegBasePrice(d);
+					var caskModifier = getCaskModifier(d);
+					var kegPrice = d.produce.ages ? kegBasePrice * caskModifier : kegBasePrice;
                     var dehydratorModifierByCrop = d.produce.dehydratorType != null ? getDehydratorModifier(d): 0;
                     var seedPrice = d.seeds.sell;
                     var initialGrow = 0;
@@ -1133,7 +1138,7 @@ function renderGraph() {
 					tooltipTr = tooltipTable.append("tr");
 					if (d.produce.jarType) {
 						tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Value (" + d.produce.jarType + "):");
-						tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.price * 2 + 50)
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text(options.skills.arti ? Math.round((d.produce.price * 2 + 50) * 1.4) : d.produce.price * 2 + 50)
 						.append("div").attr("class", "gold");
 					}
 					else {
@@ -1143,7 +1148,7 @@ function renderGraph() {
 					tooltipTr = tooltipTable.append("tr");
 					if (d.produce.kegType) {
 						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (" + d.produce.kegType + "):");
-						tooltipTr.append("td").attr("class", "tooltipTdRight").text(Math.round(d.profitData.kegPrice))
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text(options.skills.arti && d.produce.kegType != "Coffee" ? Math.round(kegPrice * 1.4) : Math.round(kegPrice))
 						.append("div").attr("class", "gold");
 					}
 					else {
