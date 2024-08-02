@@ -203,33 +203,33 @@ function levelRatio(fertilizer, level, isWildseed) {
 }
 
 /*
- * Calculates the keg modifier for the crop.
+ * Calculates the keg base price for the crop.
  * @param crop The crop object, containing all the crop data.
- * @return The keg modifier.
+ * @return The keg base price.
  */
-function getKegModifier(crop) {
-	if (options.skills.arti) {
-		result = crop.produce.kegType == "Wine" ? 4.2 : 3.15;
-	}
-	else {
-		result = crop.produce.kegType == "Wine" ? 3 : 2.25;
-	}
-	
-    return result;
+function getKegBasePrice(crop) {
+
+	return crop.produce.keg != null ? crop.produce.keg : crop.produce.kegType == "Wine" ? crop.produce.price * 3 : crop.produce.price * 2.25;
 }
 
 /*
- * Calculates the cask modifier for the crop.
+ * Calculates the cask modifier for the crop based on aging.
  * @param crop The crop object, containing all the crop data.
  * @return The cask modifier.
  */
-function getCaskModifier() {
-    switch (options.aging) {
-        case 1: return options.skills.arti ? 1.75 : 1.25;
-        case 2: return options.skills.arti ? 2.145 : 1.5;
-        case 3: return options.skills.arti ? 2.8 : 2;
-        default: return options.skills.arti ? 1.4 : 1;
-    }
+function getCaskModifier(crop) {
+	if (crop.produce.ages){
+		switch (options.aging) {
+			case 0 : return 1;
+			case 1: return 1.25;
+			case 2: return 1.5;
+			case 3: return 2;
+			default: return 1;
+		}
+	} else {
+		//Is not a Cask Item
+		return 1;
+	}
 }
 
 /*
@@ -439,14 +439,16 @@ function profit(crop) {
                     cropPrice = options.skills.till ? crop.produce.price * 1.1 : crop.produce.price;
                 netIncome += cropsLeft * cropPrice;
 
-                var kegModifier = getKegModifier(crop);
-                var caskModifier = getCaskModifier();
+                var kegBasePrice = getKegBasePrice(crop);
+                var caskModifier = getCaskModifier(crop);
                 var dehydratorModifier = getDehydratorModifier(crop);
+				var kegPrice = 0;
                 if (options.produce == 1) {
                     netIncome += itemsMade * (crop.produce.jar != null ? crop.produce.jar : options.skills.arti ? (crop.produce.price * 2 + 50) * 1.4 : crop.produce.price * 2 + 50);
                 }
                 else if (options.produce == 2) {
-                    netIncome += itemsMade * (crop.produce.keg != null ? crop.produce.keg * caskModifier : crop.produce.price * kegModifier);
+					kegPrice = kegBasePrice * caskModifier
+                    netIncome += options.skills.arti && crop.produce.kegType != "Coffee" ? itemsMade * (kegPrice * 1.4) : itemsMade * kegPrice;
                 }
                 else if (options.produce == 4) {
                     netIncome += crop.produce.dehydratorType != null ? itemsMade * dehydratorModifier : 0;
@@ -1087,9 +1089,10 @@ function renderGraph() {
 
 				if (options.extra) {
                     var fertilizer = fertilizers[options.fertilizer];
-                    var kegModifier = getKegModifier(d);
-                    var caskModifier = getCaskModifier();
-					var kegPrice = d.produce.keg != null ? d.produce.keg * caskModifier : d.produce.price * kegModifier * caskModifier;
+					
+                	var kegBasePrice = getKegBasePrice(d);
+					var caskModifier = getCaskModifier(d);
+					var kegPrice = d.produce.ages ? kegBasePrice * caskModifier : kegBasePrice;
                     var dehydratorModifierByCrop = d.produce.dehydratorType != null ? getDehydratorModifier(d): 0;
                     var seedPrice = d.seeds.sell;
                     var initialGrow = 0;
@@ -1144,7 +1147,7 @@ function renderGraph() {
 					tooltipTr = tooltipTable.append("tr");
 					if (d.produce.kegType) {
 						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (" + d.produce.kegType + "):");
-						tooltipTr.append("td").attr("class", "tooltipTdRight").text(Math.round(kegPrice))
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text(options.skills.arti && d.produce.kegType != "Coffee" ? Math.round(kegPrice * 1.4) : Math.round(kegPrice))
 						.append("div").attr("class", "gold");
 					}
 					else {
