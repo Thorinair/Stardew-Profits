@@ -104,7 +104,9 @@ var seasons = [
 			crops.tulip,
 			crops.ancientfruit,
 			crops.springseeds,
-			crops.carrot
+			crops.carrot,
+			crops.cucumber,
+			crops.aineflower
 		]
 	},
 	{
@@ -130,7 +132,8 @@ var seasons = [
 			crops.ancientfruit,
 			crops.taroroot,
 			crops.summerseeds,
-			crops.summersquash
+			crops.summersquash,
+			crops.aineflower
 		]
 	},
 	{
@@ -154,7 +157,8 @@ var seasons = [
 			crops.corn,
 			crops.ancientfruit,
 			crops.fallseeds,
-			crops.broccoli
+			crops.broccoli,
+			crops.aineflower
 		]
 	},
 	{
