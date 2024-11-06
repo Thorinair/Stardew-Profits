@@ -1223,7 +1223,7 @@ var crops = {
     },
     "produce": {
       "extra": 1,
-      "extraPerc": 20,
+      "extraPerc": .2,
       "price": 49,
       "jarType": "Pickles",
       "kegType": "Juice"
