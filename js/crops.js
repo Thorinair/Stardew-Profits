@@ -1186,5 +1186,47 @@ var crops = {
       "kegType": "Wine"
     },
     "isWildseed": true
+  },
+  "aineflower": {
+    "name": "Aine Flower",
+    "url": "https://www.nexusmods.com/stardewvalley/mods/20599",
+    "img": "AineFlower.png",
+    "seeds": {
+      "sell": 100,
+      "pierre": 160,
+      "joja": 0,
+      "special": 0
+    },
+    "growth": {
+      "initial": 9,
+      "regrow": 0
+    },
+    "produce": {
+      "extra": 0,
+      "extraPerc": 0,
+      "price": 372
+    }
+  },
+  "cucumber": {
+    "name": "Cucumber",
+    "url": "https://stardew-valley-expanded.fandom.com/wiki/Cucumber",
+    "img": "Cucumber.png",
+    "seeds": {
+      "sell": 35,
+      "pierre": 70,
+      "joja": 0,
+      "special": 0
+    },
+    "growth": {
+      "initial": 12,
+      "regrow": 2
+    },
+    "produce": {
+      "extra": 1,
+      "extraPerc": 20,
+      "price": 49,
+      "jarType": "Pickles",
+      "kegType": "Juice"
+    }
   }
 };
