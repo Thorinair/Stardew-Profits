@@ -133,7 +133,8 @@ var seasons = [
 			crops.taroroot,
 			crops.summerseeds,
 			crops.summersquash,
-			crops.aineflower
+			crops.aineflower,
+			crops.butternutsquash
 		]
 	},
 	{
@@ -158,7 +159,8 @@ var seasons = [
 			crops.ancientfruit,
 			crops.fallseeds,
 			crops.broccoli,
-			crops.aineflower
+			crops.aineflower,
+			crops.sweetpotato
 		]
 	},
 	{
