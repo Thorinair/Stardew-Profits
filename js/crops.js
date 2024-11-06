@@ -1270,6 +1270,6 @@ var crops = {
       "price": 280,
       "jarType": "Pickles",
       "kegType": "Juice"
-    },
-  },
+    }
+  }
 };
