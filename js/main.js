@@ -250,6 +250,27 @@ function getDehydratorModifier(crop) {
 }
 
 /*
+ * Calculates the mill modifier for 3 crops.
+ * @param crop The crop object, containing all the crop data.
+ * @return The mill modifier.
+ */
+function getMillModifier(crop) {
+	var modifier = 1;
+	switch(crop.produce.millType){
+		case "Rice":
+			modifier = 100;
+			break;
+		case "Sugar":
+			modifier = 50 * 3;
+			break;
+		default: // That leaves Wheat Flour
+			modifier = 50
+	}
+    return modifier;
+}
+
+
+/*
  * Calculates the profit for a specified crop.
  * @param crop The crop object, containing all the crop data.
  * @return The total profit.
@@ -290,6 +311,9 @@ function profit(crop) {
 		case 4:
 			if(crop.produce.dehydratorType == null) userawproduce = true;
 			break;
+		case 5:
+			if(crop.produce.millType == null) userawproduce = true;
+			break;
 	}
 	
     var total_harvest = num_planted * 1.0 + num_planted * crop.produce.extraPerc * crop.produce.extra;
@@ -312,7 +336,7 @@ function profit(crop) {
 	
 	// console.log("Calculating raw produce value for: " + crop.name);
 	// Determine income
-	if (produce != 3 || userawproduce) {
+	if (produce != 3 && produce != 5 || userawproduce) {
         if (userawproduce && !options.sellRaw) {
             netIncome = 0;
         }
@@ -462,6 +486,12 @@ function profit(crop) {
         var items = total_crops - forSeeds;
         netIncome += 2 * items * crop.seeds.sell;
 		profitData.quantitySold = Math.floor(2 * items);
+    }
+	else if (produce == 5) {
+		var items = total_crops - forSeeds;
+		var millModifier = getMillModifier(crop);
+		netIncome += millModifier * items;
+		profitData.quantitySold = items;
     }
 
 	// Determine expenses
@@ -1074,6 +1104,17 @@ function renderGraph() {
 						else
 							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("None");
 						break;
+					case 5: 
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.millType); 
+						tooltipTr = tooltipTable.append("tr");
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text("Quantity sold:");
+
+						if(d.profitData.quantitySold > 0 ){
+							tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.profitData.quantitySold);
+						}
+						else
+							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text(d.profitData.quantitySold);
+						break;
 				}
 				tooltipTr = tooltipTable.append("tr");
 				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Duration:");
@@ -1091,6 +1132,7 @@ function renderGraph() {
                     var caskModifier = getCaskModifier();
 					var kegPrice = d.produce.keg != null ? d.produce.keg * caskModifier : d.produce.price * kegModifier * caskModifier;
                     var dehydratorModifierByCrop = d.produce.dehydratorType != null ? getDehydratorModifier(d): 0;
+					var millModifierByCrop = d.produce.millType != null ? getMillModifier(d): 0;
                     var seedPrice = d.seeds.sell;
                     var initialGrow = 0;
                     if (options.skills.agri)
@@ -1156,9 +1198,17 @@ function renderGraph() {
 						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (" + d.produce.dehydratorType + "):");
 						tooltipTr.append("td").attr("class", "tooltipTdRight").text(dehydratorModifierByCrop)
 						.append("div").attr("class", "gold");
-					}
-					else {
+					} else {
 						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Dehydrator):");
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text("None");
+					}
+					tooltipTr = tooltipTable.append("tr");
+					if (d.produce.millType) {
+						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (" + d.produce.millType + "):");
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text(millModifierByCrop)
+						.append("div").attr("class", "gold");
+					} else {
+						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Mill):");
 						tooltipTr.append("td").attr("class", "tooltipTdRight").text("None");
 					}
                     tooltipTr = tooltipTable.append("tr");
@@ -1420,7 +1470,7 @@ function updateData() {
 	var tr_check_byHarvestID = document.getElementById('tr_check_byHarvest');
 	var tr_select_agingID = document.getElementById('tr_select_aging');
 
-    if (options.produce == 0 || options.produce == 3) {
+    if (options.produce == 0 || options.produce == 3 || options.produce == 5) {
 		tr_equipmentID.classList.add('hidden');
 		tr_check_sellRawID.classList.add('hidden');
 		tr_check_sellExcessID.classList.add('hidden');
@@ -1449,7 +1499,7 @@ function updateData() {
     options.sellExcess 	= document.getElementById('check_sellExcess').checked;
     options.byHarvest 	= document.getElementById('check_byHarvest').checked;
 
-    if (options.produce == 0 || options.produce == 3) {
+    if (options.produce == 0 || options.produce == 3 || options.produce == 5) {
         document.getElementById('equipment').disabled = true;
         document.getElementById('equipment').style.cursor = "default";
     }
@@ -1674,7 +1724,7 @@ function optionsLoad() {
 	options.season = validIntRange(0, 4, options.season);
 	document.getElementById('select_season').value = options.season;
 
-	options.produce = validIntRange(0, 4, options.produce);
+	options.produce = validIntRange(0, 5, options.produce);
 	document.getElementById('select_produce').value = options.produce;
 
     options.equipment = validIntRange(0, MAX_INT, options.equipment);
@@ -1793,7 +1843,7 @@ function deserialize(str) {
         .replace(/([a-z]+)/gi, '"$1":')
         .replace(/"(true|false)":/gi, '$1');
 
-    //console.log(json);
+    // console.log(json);
 
 	return JSON.parse(json);
 }
