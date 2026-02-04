@@ -14,6 +14,7 @@
 		<div class="title">
 		</div>
 
+		<script src="js/predictions.js"> </script>
 		<script src="js/crops.js"> </script>
 		<script src="js/data.js"> </script>
 		<div class="graph">
@@ -255,6 +256,12 @@
 			<tr>
 				<td>Disable Crop Links:</td>
 				<td><input type="checkbox" id="disable_links" onChange="refresh()" /></td>
+			</tr>
+
+			<tr>
+				<td>Use Prediction Model:</td>
+				<td><input type="checkbox" id="predictionModel" onChange="refresh()" />
+				<button type="button" onClick="refresh()" >ReCalculate</button></td>
 			</tr>
 			
 			<tr>
