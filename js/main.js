@@ -1241,7 +1241,7 @@ function renderGraph() {
 				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Duration:");
 				tooltipTr.append("td").attr("class", "tooltipTdRight").text(options.days + " days");
 				tooltipTr = tooltipTable.append("tr");
-				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Planted:");
+				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Seeds needed:");
 				tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.planted);
 				tooltipTr = tooltipTable.append("tr");
 				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Harvests:");
