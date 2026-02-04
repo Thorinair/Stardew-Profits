@@ -44,4 +44,4 @@ Disable Links | Selecting this will disable opening the Official Wiki when the b
 Use Prediction Model | Selecting this will enable @doodlebunnyhops prediction model, which, instead of using averaging calculations, will calculate crop predictions based on randomnes. Pressing on the Recalculate button will re-run the predictions. Results will vary on each re-run.
 
 # Contact
-You may contact me on the following locations: [Twitter](https://twitter.com/thorinair_music) | [Reddit](https://www.reddit.com/user/Thorinair/) | [YouTube](https://www.youtube.com/user/Thorinair) | [deviantArt](http://thorinair.deviantart.com/)
+You may contact me on the following locations: [Twitter](https://twitter.com/thorinair_music) | [Bluesky](https://bsky.app/profile/thorinair.bsky.social)
