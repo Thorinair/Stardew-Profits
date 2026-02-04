@@ -80,7 +80,7 @@ body {
 }
 
 .options table tr td .subt td {
-    background-color: #181818;
+    background-color: #222222;
     margin: 0px;
 }
 
@@ -247,7 +247,6 @@ td input[type="checkbox"]:focus-visible{
 }
 
 td input[type="checkbox"]:disabled{
-    opacity: .45;
     cursor: not-allowed;
     background-color: #181818;
     border-color: #181818;
