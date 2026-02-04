@@ -372,3 +372,53 @@ input[type=checkbox] {
 .changes a:visited {
     color: #aaaaaa;
 }
+
+.tooltipThCenter {
+	font: 0.875em sans-serif;
+	color: #eeeeee;
+	padding: 1px 4px 0px 4px;
+	margin-bottom: 1px;
+    vertical-align: bottom;
+	border-collapse:collapse;
+
+	/* font-weight:bold; */
+	text-align:center;
+	background-color:#2f2f2f7d;
+	border-color:#0d0d0d;
+	border-style:solid;
+	border-width:3px;
+}
+
+.tooltipTableCenter {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.tooltipTdCell {
+	font: 0.875em sans-serif;
+	color: #eeeeee;
+	padding: 1px 4px 0px 4px;
+	margin-bottom: 1px;
+    vertical-align: bottom;
+	border-collapse:collapse;
+
+	background-color: #2f2f2f7d;
+}
+
+.tooltipBodyTitle {
+	font: 0.875em sans-serif;
+	color: #eeeeee;
+	border-collapse:collapse;
+
+	font-weight:bold;
+	text-align:center;
+	background-color:616361a1;
+	/* border-color:#232423b8; */
+	border-style:solid;
+	border-width:3px;
+
+}
+
+.toolAlignRight{
+	text-align: right;
+}
