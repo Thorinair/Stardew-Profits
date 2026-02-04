@@ -41,6 +41,7 @@ Foraging Level 10 Skill | The *Botanist* skill is available once the player reac
 Farming Food Buff | The consumable buff active on the player.
 Show Extra Info | Selecting this will show additional detailed info about every crop on the tooltip.
 Disable Links | Selecting this will disable opening the Official Wiki when the bar graph is clicked.
+Use Prediction Model | Selecting this will enable @doodlebunnyhops prediction model, which, instead of using averaging calculations, will calculate crop predictions based on randomnes. Pressing on the Recalculate button will re-run the predictions. Results will vary on each re-run.
 
 # Contact
 You may contact me on the following locations: [Twitter](https://twitter.com/thorinair_music) | [Reddit](https://www.reddit.com/user/Thorinair/) | [YouTube](https://www.youtube.com/user/Thorinair) | [deviantArt](http://thorinair.deviantart.com/)

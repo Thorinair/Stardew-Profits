@@ -358,7 +358,7 @@ td input[type="checkbox"]:disabled{
 	margin-top: 8px;
 	margin-bottom: 8px;
 	font: 0.875em sans-serif;
-	text-align: justify;
+	text-align: left;
 	color: #eeeeee;
 	background-color: #333333;
 	border-radius: 8px;
