@@ -592,7 +592,8 @@ var crops = {
       "extraPerc": 0.11,
       "price": 30,
       "jarType": "Pickles",
-      "kegType": "Juice"
+      "kegType": "Juice",
+      "millType": "Rice",
     }
   },
   "rhubarb": {
@@ -741,7 +742,8 @@ var crops = {
       "price": 25,
       "keg": 200,
       "jarType": "Pickles",
-      "kegType": "Beer"
+      "kegType": "Beer",
+      "millType": "Rice",
     }
   },
   "radish": {
@@ -1007,7 +1009,8 @@ var crops = {
       "extraPerc": 0,
       "price": 100,
       "jarType": "Pickles",
-      "kegType": "Juice"
+      "kegType": "Juice",
+      "millType": "Sugar",
     }
   },
   "ancientfruit": {
