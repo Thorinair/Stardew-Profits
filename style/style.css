@@ -88,6 +88,23 @@ body {
 	display: none;
 }
 
+button {
+    padding: 8px 12px 8px 12px;
+    margin-left: 8px;
+    margin-right: 8px;
+    background-color: #111111;
+    border: 1px #111111 solid;
+    border-radius: 8px;
+    color: #eeeeee;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #222222;
+    border: 1px #222222 solid;
+}
+
 #tdhelp {
 	background-color: transparent;
 }
@@ -103,7 +120,7 @@ body {
     margin-left: 8px;
     margin-right: 8px;
 	background-color: #111111;
-	border: 1px #000000 solid;
+	border: 1px #111111 solid;
 	border-radius: 8px;
 	color: #eeeeee;
 	text-decoration: none;
@@ -112,6 +129,8 @@ body {
 #divhelp a:hover {
 	color: #eeeeee;
 	text-decoration: none;
+    background-color: #222222;
+    border: 1px #222222 solid;
 }
 
 #divhelp a:visited {
@@ -126,7 +145,15 @@ input[type=number] {
 	color: #eeeeee;
 	padding: 2px 2px 2px 4px;
 	border-radius: 3px;
-	border-width: 0px;
+    border: 1px solid #111111;
+}
+input[type=number]:hover {
+    background-color: #222222;
+    border-color: #777777;
+}
+input[type=number]:disabled {
+    background-color: #181818;
+    border-color: #181818;
 }
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button { 
@@ -157,7 +184,7 @@ select {
 	color: #eeeeee;
 	padding: 2px 16px 2px 4px;
 	border-radius: 3px;
-	border-width: 0px;
+    border: 1px solid #111111;
 	width: 100%;
 }
 
@@ -165,13 +192,65 @@ select::-ms-expand {
     display: none;
 }
 
+select:hover {
+    background-color: #222222;
+    border-color: #777777;
+}
+
 select:disabled {
     background: url("../img/drop_dis.png") no-repeat #111111 right;
+    background-color: #181818;
+    border-color: #181818;
 	color: #888888;
 }
 
-input[type=checkbox] { 
+
+td input[type="checkbox"]{
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1px solid #111111;
+    background: #111111;
+    display: inline-grid;
+    place-content: center;
     cursor: pointer;
+    margin: 0;
+    vertical-align: middle;
+    transition: background .12s ease, border-color .12s ease, box-shadow .12s ease;
+}
+
+td input[type="checkbox"]::before{
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: #ffffff;
+    transform: scale(0);
+    transition: transform .12s ease;
+}
+
+td input[type="checkbox"]:checked::before{
+    transform: scale(1);
+}
+
+td input[type="checkbox"]:hover{
+    background: #222222;
+    border-color: #777777;
+}
+
+td input[type="checkbox"]:focus-visible{
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255,255,255,.18);
+}
+
+td input[type="checkbox"]:disabled{
+    opacity: .45;
+    cursor: not-allowed;
+    background-color: #181818;
+    border-color: #181818;
 }
 
 .tooltipTitle {
