@@ -48,6 +48,20 @@ var barsSeed;
 var barsFert;
 var imgIcons;
 var barsTooltips;
+
+// ─── Utility function for localized wiki URLs ──────────────────────────────
+
+/**
+ * Generate a localized wiki URL for a crop based on current language
+ * @param {string} cropKey - The crop identifier (e.g. "parsnip", "starfruit")
+ * @return {string} The localized wiki URL
+ */
+function getLocalizedWikiUrl(cropKey) {
+	var baseUrl = i18n.t('wiki.base_url');
+	var cropName = i18n.t('wiki.' + cropKey);
+	var pattern = i18n.t('wiki.crop_url_pattern');
+	return pattern.replace('{base_url}', baseUrl).replace('{crop_name}', cropName);
+}
 var options;
 var MAX_INT = Number.MAX_SAFE_INTEGER || Number.MAX_VALUE;
 
@@ -691,8 +705,16 @@ function fetchCrops() {
 	    if ((options.seeds.pierre && season.crops[i].seeds.pierre != 0) ||
 	    	(options.seeds.joja && season.crops[i].seeds.joja != 0) ||
     	    (options.seeds.special && season.crops[i].seeds.specialLoc != "")) {
-	    	cropList.push(JSON.parse(JSON.stringify(season.crops[i])));
-	    	cropList[cropList.length - 1].id = i;
+	    	var cropCopy = JSON.parse(JSON.stringify(season.crops[i]));
+	    	cropCopy.id = i;
+	    	// Find the culture key for localization
+	    	for (var key in crops) {
+	    		if (crops[key] === season.crops[i]) {
+	    			cropCopy.cropKey = key;
+	    			break;
+	    		}
+	    	}
+	    	cropList.push(cropCopy);
 		}
 	}
 }
@@ -723,16 +745,16 @@ function valueCrops() {
 			cropList[i].drawProfit = cropList[i].averageProfit;
 			cropList[i].drawSeedLoss = cropList[i].averageSeedLoss;
 			cropList[i].drawFertLoss = cropList[i].averageFertLoss;
-			graphDescription = "Daily Profit"
+			graphDescription = i18n.t('ui.display_1');
 		}
 		else if ((options.average == 2) ){
 			if (options.buySeed || (options.buyFert && fertilizers[options.fertilizer].cost > 0)) {
 				cropList[i].drawProfit = cropList[i].totalReturnOnInvestment;
-				graphDescription = "Total Return On Investment";
+				graphDescription = i18n.t('ui.display_2');
 			}
 			else {
 				cropList[i].drawProfit = 0;
-				graphDescription = "Total Profit (Choose an expense for ROI)";
+				graphDescription = i18n.t('ui.display_0') + ' (Choose an expense for ROI)';
 			}
 			cropList[i].drawSeedLoss = cropList[i].seedLoss;
 			cropList[i].drawFertLoss = cropList[i].fertLoss;
@@ -742,18 +764,18 @@ function valueCrops() {
 			cropList[i].drawFertLoss = cropList[i].averageFertLoss;
 			if (options.buySeed || (options.buyFert && fertilizers[options.fertilizer].cost > 0)) {
 				cropList[i].drawProfit = cropList[i].averageReturnOnInvestment;
-				graphDescription = "Daily Return On Investment";
+				graphDescription = i18n.t('ui.display_3');
 			}
 			else {
 				cropList[i].drawProfit = 0;
-				graphDescription = "Daily Profit (Choose an expense for ROI)";
+				graphDescription = i18n.t('ui.display_1') + ' (Choose an expense for ROI)';
 			}
 		}
 		else {
 			cropList[i].drawProfit = cropList[i].profit;
 			cropList[i].drawSeedLoss = cropList[i].seedLoss;
 			cropList[i].drawFertLoss = cropList[i].fertLoss;
-			graphDescription = "Total Profit";
+			graphDescription = i18n.t('ui.display_0');
 		}
 	}
 }
@@ -1039,7 +1061,9 @@ function renderGraph() {
 				tooltip.selectAll("*").remove();
 				tooltip.style("visibility", "visible");
 
-				tooltip.append("h3").attr("class", "tooltipTitle").text(d.name);
+				// Use the translation of the crop name if available
+				var cropDisplayName = d.cropKey ? i18n.t('crops.' + d.cropKey) : d.name;
+				tooltip.append("h3").attr("class", "tooltipTitle").text(cropDisplayName);
 
 				var tooltipTable = tooltip.append("table")
 					.attr("class", "tooltipTable")
@@ -1048,7 +1072,7 @@ function renderGraph() {
 
 
 				tooltipTr = tooltipTable.append("tr");
-				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Total profit:");
+				tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.total_profit') + ':');
 
 				//PREDICTIVE PROFIT UI
 				// if (d.profitData.predTotalProfit > 0)
@@ -1066,7 +1090,7 @@ function renderGraph() {
 						.append("div").attr("class", "gold");
 
 				tooltipTr = tooltipTable.append("tr");
-				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Profit per day:");
+				tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.profit_per_day') + ':');
 				if (d.averageProfit > 0)
 					tooltipTr.append("td").attr("class", "tooltipTdRightPos").text("+" + formatNumber(d.averageProfit))
 						.append("div").attr("class", "gold");
@@ -1076,14 +1100,14 @@ function renderGraph() {
 
 				if (options.buySeed || options.buyFert) {
 				tooltipTr = tooltipTable.append("tr");
-				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Return on investment:");
+				tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.return_on_investment') + ':');
 				if (d.totalReturnOnInvestment > 0)
 					tooltipTr.append("td").attr("class", "tooltipTdRightPos").text("+" + formatNumber(d.totalReturnOnInvestment) + "%");
 				else
 					tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text(formatNumber(d.totalReturnOnInvestment) + "%");
 
 				tooltipTr = tooltipTable.append("tr");
-				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Return on investment per day:");
+				tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.return_on_investment_per_day') + ':');
 				if (d.averageReturnOnInvestment > 0)
 					tooltipTr.append("td").attr("class", "tooltipTdRightPos").text("+" + formatNumber(d.averageReturnOnInvestment) + "%");
 				else
@@ -1092,24 +1116,24 @@ function renderGraph() {
 
 				if (options.buySeed) {
 					tooltipTr = tooltipTable.append("tr");
-					tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Total seed loss:");
+					tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text(i18n.t('tooltip.total_seed_loss') + ':');
 					tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text(formatNumber(d.seedLoss))
 						.append("div").attr("class", "gold");
 
 					tooltipTr = tooltipTable.append("tr");
-					tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Seed loss per day:");
+					tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.seed_loss_per_day') + ':');
 					tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text(formatNumber(d.averageSeedLoss))
 						.append("div").attr("class", "gold");
 				}
 
 				if (options.buyFert) {
 					tooltipTr = tooltipTable.append("tr");
-					tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Total fertilizer loss:");
+					tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text(i18n.t('tooltip.total_fertilizer_loss') + ':');
 					tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text(formatNumber(d.fertLoss))
 						.append("div").attr("class", "gold");
 
 					tooltipTr = tooltipTable.append("tr");
-					tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Fertilizer loss per day:");
+					tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.fertilizer_loss_per_day') + ':');
 					tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text(formatNumber(d.averageFertLoss))
 						.append("div").attr("class", "gold");
 				}
@@ -1117,13 +1141,12 @@ function renderGraph() {
 
 				//Ineligible crops are sold raw.
 				tooltipTr = tooltipTable.append("tr");
-				tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Produce sold:");
+				tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text(i18n.t('tooltip.produce_sold') + ':');
 				switch (options.produce) {
 					case 0: 
-						tooltipTr.append("td").attr("class", "tooltipTdRight").text("Raw crops"); 
-						
+					tooltipTr.append("td").attr("class", "tooltipTdRight").text(i18n.t('tooltip.raw_crops'));
 						tooltipTr = tooltipTable.append("tr");
-						tooltipTr.append("td").attr("class", "tooltipTdRight").text("Quantity sold:");
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text(i18n.t('tooltip.quantity_sold') + ':');
 
 						if(d.profitData.quantitySold > 0 ){
 							tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.profitData.quantitySold);
@@ -1190,9 +1213,9 @@ function renderGraph() {
 							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text("None");
 						break;
 					case 3: 
-						tooltipTr.append("td").attr("class", "tooltipTdRight").text("Seeds"); 
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text(i18n.t('tooltip.seeds')); 
 						tooltipTr = tooltipTable.append("tr");
-						tooltipTr.append("td").attr("class", "tooltipTdRight").text("Quantity sold:");
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text(i18n.t('tooltip.quantity_sold') + ':');
 
 						if(d.profitData.quantitySold > 0 ){
 							tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.profitData.quantitySold);
@@ -1242,13 +1265,13 @@ function renderGraph() {
 						break;
 				}
 				tooltipTr = tooltipTable.append("tr");
-				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Duration:");
-				tooltipTr.append("td").attr("class", "tooltipTdRight").text(options.days + " days");
+				tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.duration') + ':');
+				tooltipTr.append("td").attr("class", "tooltipTdRight").text(options.days + " " + i18n.t('tooltip.days'));
 				tooltipTr = tooltipTable.append("tr");
-				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Crop tiles:");
+				tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.crop_tiles') + ':');
 				tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.planted);
 				tooltipTr = tooltipTable.append("tr");
-				tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Harvests:");
+				tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.harvests') + ':');
 				tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.harvests);
 
 				if (options.extra) {
@@ -1266,9 +1289,9 @@ function renderGraph() {
                     else
                         initialGrow += Math.floor(d.growth.initial * fertilizer.growth);
 
-					tooltip.append("h3").attr("class", "tooltipTitleExtra").text("Crop Info");
+					tooltip.append("h3").attr("class", "tooltipTitleExtra").text(i18n.t('tooltip.crop_info'));
 					if(options.predictionModel)
-						tooltip.append("h4").attr("class", "tooltipTitleExtra").text("Predicted Outcome:");
+						tooltip.append("h4").attr("class", "tooltipTitleExtra").text(i18n.t('tooltip.predicted_outcome'));
 					tooltipTable = tooltip.append("table")
 						.attr("class", "tooltipTable")
 						.attr("cellspacing", 0);
@@ -1277,42 +1300,42 @@ function renderGraph() {
 					if(options.predictionModel || options.sellExcess && options.predictionModel){
 						// headers
 						tooltipTr = tooltipTable.append("thead").append("tr");
-						tooltipTr.append("th").attr("class", "tooltipThCenter").text("Quality");
-						tooltipTr.append("th").attr("class", "tooltipThCenter").text("Sell Price (Chance)");
+						tooltipTr.append("th").attr("class", "tooltipThCenter").text(i18n.t('tooltip.quality'));
+						tooltipTr.append("th").attr("class", "tooltipThCenter").text(i18n.t('tooltip.sell_price_chance'));
 						// tooltipTr.append("th").attr("class", "tooltipThCenter").text("Probability");
-						tooltipTr.append("th").attr("class", "tooltipThCenter").text("Raw Sold");
+						tooltipTr.append("th").attr("class", "tooltipThCenter").text(i18n.t('tooltip.raw_sold'));
 
 						//body
 						tooltipBody = tooltipTable.append("tbody");
 
 						//Row 1
 						tooltipBodyTR = tooltipBody.append("tr");
-						tooltipBodyTR.append("td").attr("class", "tooltipTdLeft").text("Normal");
+						tooltipBodyTR.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.normal'));
 						tooltipBodyTR.append("td").attr("class", "tooltipTdRight").text(d.produce.price + " (" + (d.profitData.regular*100).toFixed(0) + "%)").append("div").attr("class", "gold");
 						tooltipBodyTR.append("td").attr("class", "tooltipTdRight").text(d.produce.regular);
 
 						//Row 2
 						tooltipBodyTR = tooltipBody.append("tr");
-						tooltipBodyTR.append("td").attr("class", "tooltipTdLeft").text("Silver");
+						tooltipBodyTR.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.silver'));
 						tooltipBodyTR.append("td").attr("class", "tooltipTdRight").text(Math.trunc(d.produce.price * 1.25) + " (" + (d.profitData.silver*100).toFixed(0) + "%)").append("div").attr("class", "gold");
 						tooltipBodyTR.append("td").attr("class", "tooltipTdRight").text(d.produce.silver);
 
 						//Row 3
 						tooltipBodyTR = tooltipBody.append("tr");
-						tooltipBodyTR.append("td").attr("class", "tooltipTdLeft").text("Gold");
+						tooltipBodyTR.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.gold'));
 						tooltipBodyTR.append("td").attr("class", "tooltipTdRight").text(Math.trunc(d.produce.price * 1.5) + " (" + (d.profitData.gold*100).toFixed(0) + "%)").append("div").attr("class", "gold");
 						tooltipBodyTR.append("td").attr("class", "tooltipTdRight").text(d.produce.gold);
 
 						//Row 4
 						tooltipBodyTR = tooltipBody.append("tr");
-						tooltipBodyTR.append("td").attr("class", "tooltipTdLeft").text("Iridium");
+						tooltipBodyTR.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.iridium'));
 						tooltipBodyTR.append("td").attr("class", "tooltipTdRight").text(Math.trunc(d.produce.price * 2) + " (" + (d.profitData.iridium*100).toFixed(0) + "%)").append("div").attr("class", "gold");
 						tooltipBodyTR.append("td").attr("class", "tooltipTdRight").text(d.produce.iridium);
 					} else {
 						
 						if (!(d.isWildseed && options.skills.botanist)) {
 							tooltipTr = tooltipTable.append("tr");
-							tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Normal):");
+							tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.value_normal') + ':');
 							tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.price)
 								.append("div").attr("class", "gold");
 							tooltipTr.append("td").attr("class", "tooltipTdRight").text("(" + (d.profitData.regular*100).toFixed(0) + "%)");
@@ -1320,19 +1343,19 @@ function renderGraph() {
 						if (d.name != "Tea Leaves") {
 							if (!(d.isWildseed && options.skills.botanist)) {
 								tooltipTr = tooltipTable.append("tr");
-								tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Silver):");
+								tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.value_silver') + ':');
 								tooltipTr.append("td").attr("class", "tooltipTdRight").text(Math.trunc(d.produce.price * 1.25))
 									.append("div").attr("class", "gold");
 								tooltipTr.append("td").attr("class", "tooltipTdRight").text("(" + (d.profitData.silver*100).toFixed(0) + "%)");
 								tooltipTr = tooltipTable.append("tr");
-								tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Gold):");
+								tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.value_gold') + ':');
 								tooltipTr.append("td").attr("class", "tooltipTdRight").text(Math.trunc(d.produce.price * 1.5))
 									.append("div").attr("class", "gold");
 								tooltipTr.append("td").attr("class", "tooltipTdRight").text("(" + (d.profitData.gold*100).toFixed(0) + "%)");
 							}
 							if ((!d.isWildseed && fertilizers[options.fertilizer].ratio >= 3) || (d.isWildseed && options.skills.botanist)) {
 								tooltipTr = tooltipTable.append("tr");
-								tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Iridium):");
+								tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.value_iridium') + ':');
 								tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.price * 2)
 									.append("div").attr("class", "gold");
 								tooltipTr.append("td").attr("class", "tooltipTdRight").text("(" + (d.profitData.iridium*100).toFixed(0) + "%)");
@@ -1340,54 +1363,54 @@ function renderGraph() {
 						}
 					}
 
-					tooltip.append("h4").attr("class", "tooltipTitleExtra").text("Artisan:");
+					tooltip.append("h4").attr("class", "tooltipTitleExtra").text(i18n.t('tooltip.artisan') + ':');
 					tooltipTable = tooltip.append("table")
 						.attr("class", "tooltipTable")
 						.attr("cellspacing", 0);
 					tooltipTr = tooltipTable.append("tr");
 					if (d.produce.jarType) {
-						tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Value (" + d.produce.jarType + "):");
+						tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text(i18n.t('tooltip.value_jar') + " (" + d.produce.jarType + "):");
 						tooltipTr.append("td").attr("class", "tooltipTdRight").text(options.skills.arti ? Math.round((d.produce.price * 2 + 50) * 1.4) : d.produce.price * 2 + 50)
 						.append("div").attr("class", "gold");
 					}
 					else {
-						tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Value (Jar):");
-						tooltipTr.append("td").attr("class", "tooltipTdRight").text("None");
+						tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text(i18n.t('tooltip.value_jar') + ':');
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text(i18n.t('tooltip.none'));
 					}
 					tooltipTr = tooltipTable.append("tr");
 					if (d.produce.kegType) {
-						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (" + d.produce.kegType + "):");
+						tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.value_keg') + " (" + d.produce.kegType + "):");
 						tooltipTr.append("td").attr("class", "tooltipTdRight").text(options.skills.arti && d.produce.kegType != "Coffee" ? Math.round(kegPrice * 1.4) : Math.round(kegPrice))
 						.append("div").attr("class", "gold");
 					}
 					else {
-						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Keg):");
-						tooltipTr.append("td").attr("class", "tooltipTdRight").text("None");
+						tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.value_keg') + ':');
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text(i18n.t('tooltip.none'));
 					}
 					tooltipTr = tooltipTable.append("tr");
 					if (d.produce.dehydratorType) {
-						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (" + d.produce.dehydratorType + "):");
+						tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.value_dehydrator') + " (" + d.produce.dehydratorType + "):");
 						tooltipTr.append("td").attr("class", "tooltipTdRight").text(dehydratorModifierByCrop)
 						.append("div").attr("class", "gold");
 					} else {
-						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Dehydrator):");
-						tooltipTr.append("td").attr("class", "tooltipTdRight").text("None");
+						tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.value_dehydrator') + ':');
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text(i18n.t('tooltip.none'));
 					}
 					tooltipTr = tooltipTable.append("tr");
 					if (d.produce.millType) {
-						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (" + d.produce.millType + "):");
+						tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.value_mill') + " (" + d.produce.millType + "):");
 						tooltipTr.append("td").attr("class", "tooltipTdRight").text(millModifierByCrop)
 						.append("div").attr("class", "gold");
 					} else {
-						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Mill):");
-						tooltipTr.append("td").attr("class", "tooltipTdRight").text("None");
+						tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.value_mill') + ':');
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text(i18n.t('tooltip.none'));
 					}
           tooltipTr = tooltipTable.append("tr");
-          tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Value (Seeds):");
+          tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.value_seeds') + ':');
           tooltipTr.append("td").attr("class", "tooltipTdRight").text(seedPrice)
           .append("div").attr("class", "gold");
 					
-					tooltip.append("h4").attr("class", "tooltipTitleExtra").text("Other Details:");
+					tooltip.append("h4").attr("class", "tooltipTitleExtra").text(i18n.t('tooltip.other_details') + ':');
 					tooltipTable = tooltip.append("table")
 						.attr("class", "tooltipTable")
 						.attr("cellspacing", 0);
@@ -1395,7 +1418,7 @@ function renderGraph() {
 					var first = true;
 					if (d.seeds.pierre > 0) {
 						tooltipTr = tooltipTable.append("tr");
-						tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Seeds (Pierre):");
+						tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text(i18n.t('tooltip.seeds_pierre') + ':');
 						first = false;
 						tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.seeds.pierre)
 						.append("div").attr("class", "gold");
@@ -1403,22 +1426,22 @@ function renderGraph() {
 					if (d.seeds.joja > 0) {
 						tooltipTr = tooltipTable.append("tr");
 						if (first) {
-							tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Seeds (Joja):");
+							tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text(i18n.t('tooltip.seeds_joja') + ':');
 							first = false;
 						}
 						else
-							tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Seeds (Joja):");
+							tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.seeds_joja') + ':');
 						tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.seeds.joja)
 						.append("div").attr("class", "gold");
 					}
 					if (d.seeds.special > 0) {
 						tooltipTr = tooltipTable.append("tr");
 						if (first) {
-							tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Seeds (Special):");
+							tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text(i18n.t('tooltip.seeds_special') + ':');
 							first = false;
 						}
 						else
-							tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Seeds (Special):");
+							tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.seeds_special') + ':');
 						tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.seeds.special)
 						.append("div").attr("class", "gold");
 						tooltipTr = tooltipTable.append("tr");
@@ -1427,14 +1450,14 @@ function renderGraph() {
 					}
 
 					tooltipTr = tooltipTable.append("tr");
-					tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text("Time to grow:");
-					tooltipTr.append("td").attr("class", "tooltipTdRight").text(initialGrow + " days");
+					tooltipTr.append("td").attr("class", "tooltipTdLeftSpace").text(i18n.t('tooltip.time_to_grow') + ':');
+					tooltipTr.append("td").attr("class", "tooltipTdRight").text(initialGrow + " " + i18n.t('tooltip.days'));
 					tooltipTr = tooltipTable.append("tr");
-					tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Time to regrow:");
+					tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.time_to_regrow') + ':');
 					if (d.growth.regrow > 0)
-						tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.growth.regrow + " days");
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.growth.regrow + " " + i18n.t('tooltip.days'));
 					else
-						tooltipTr.append("td").attr("class", "tooltipTdRight").text("N/A");
+						tooltipTr.append("td").attr("class", "tooltipTdRight").text(i18n.t('tooltip.na'));
 					if (d.produce.extra > 0) {
 						tooltipTr = tooltipTable.append("tr");
 						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Extra produce:");
@@ -1445,12 +1468,9 @@ function renderGraph() {
 					}
 					if( d.produce.extraPerc > 0 ){
 						tooltipTr = tooltipTable.append("tr");
-						tooltipTr.append("td").attr("class", "tooltipTdLeft").text("Extra Produced:");
+					tooltipTr.append("td").attr("class", "tooltipTdLeft").text(i18n.t('tooltip.extra_produced') + ':');
 
-						if(d.produce.extraProduced > 0)
-							tooltipTr.append("td").attr("class", "tooltipTdRight").text(d.produce.extraProduced);
-						
-						else 
+					if(d.produce.extraProduced > 0)
 							tooltipTr.append("td").attr("class", "tooltipTdRightNeg").text(d.produce.extraProduced);
 
 					}
@@ -1473,11 +1493,16 @@ function renderGraph() {
 					return;
 				}
 
-				window.open(d.url, "_blank"); 
+				// Use localized wiki URL if crop key is available
+				var wikiUrl = d.cropKey ? getLocalizedWikiUrl(d.cropKey) : d.url;
+				window.open(wikiUrl, "_blank"); 
 			})
 			.on("click", function(d) { 
-				if(!options.disableLinks)
-					window.open(d.url, "_blank"); 
+				if(!options.disableLinks) {
+					// Use localized wiki URL if crop key is available
+					var wikiUrl = d.cropKey ? getLocalizedWikiUrl(d.cropKey) : d.url;
+					window.open(wikiUrl, "_blank"); 
+				}
 			});
 
 }
@@ -1637,18 +1662,21 @@ function updateGraph() {
 }
 
 function updateSeasonNames() {
+    var s0 = i18n.t('ui.season_0'), s1 = i18n.t('ui.season_1'),
+        s2 = i18n.t('ui.season_2'), s3 = i18n.t('ui.season_3');
     if (options.crossSeason) {
-        document.getElementById('season_0').innerHTML = "Spring & Summer";
-        document.getElementById('season_1').innerHTML = "Summer & Fall";
-        document.getElementById('season_2').innerHTML = "Fall & Winter";
-        document.getElementById('season_3').innerHTML = "Winter & Spring";
+        document.getElementById('season_0').innerHTML = s0 + ' & ' + s1;
+        document.getElementById('season_1').innerHTML = s1 + ' & ' + s2;
+        document.getElementById('season_2').innerHTML = s2 + ' & ' + s3;
+        document.getElementById('season_3').innerHTML = s3 + ' & ' + s0;
     }
     else {
-        document.getElementById('season_0').innerHTML = "Spring";
-        document.getElementById('season_1').innerHTML = "Summer";
-        document.getElementById('season_2').innerHTML = "Fall";
-        document.getElementById('season_3').innerHTML = "Winter";
+        document.getElementById('season_0').innerHTML = s0;
+        document.getElementById('season_1').innerHTML = s1;
+        document.getElementById('season_2').innerHTML = s2;
+        document.getElementById('season_3').innerHTML = s3;
     }
+    document.getElementById('season_4').innerHTML = i18n.t('ui.season_4');
 }
 
 /*
@@ -2085,7 +2113,11 @@ function rebuild() {
 	renderGraph();
 }
 
-document.addEventListener('DOMContentLoaded', initial);
+/*
+ * Wait for the first language file to load before drawing the graph,
+ * so the very first render already shows translated labels.
+ */
+i18n._ready.then(initial);
 document.addEventListener('click', function (event) {
 	if (event.target.id === 'reset') window.location = 'index.html';
 });
