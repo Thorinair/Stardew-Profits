@@ -14,6 +14,8 @@
 		<div class="title">
 		</div>
 
+		<!-- i18n must load before predictions/crops/data so translations are ready -->
+		<script src="js/i18n.js"> </script>
 		<script src="js/predictions.js"> </script>
 		<script src="js/crops.js"> </script>
 		<script src="js/data.js"> </script>
@@ -25,48 +27,48 @@
 		<table cellspacing="2" style="height: 0;">
 
 			<tr>
-				<td>Season:</td>
+				<td data-i18n="ui.season" data-i18n-colon>Season:</td>
 				<td>
 					<select id="select_season" onChange="rebuild()">
-						<option value="0" id="season_0" selected="true">Spring</option>
-						<option value="1" id="season_1">Summer</option>
-						<option value="2" id="season_2">Fall</option>
-						<option value="3" id="season_3">Winter</option>
-						<option value="4" id="season_4">Greenhouse</option>
+						<option value="0" id="season_0" selected="true" data-i18n="ui.season_0">Spring</option>
+						<option value="1" id="season_1" data-i18n="ui.season_1">Summer</option>
+						<option value="2" id="season_2" data-i18n="ui.season_2">Fall</option>
+						<option value="3" id="season_3" data-i18n="ui.season_3">Winter</option>
+						<option value="4" id="season_4" data-i18n="ui.season_4">Greenhouse</option>
 					</select>
 				</td>
 			</tr>
 
             <tr id="cross_season_row">
-                <td>Cross-Season:</td>
+                <td data-i18n="ui.cross_season" data-i18n-colon>Cross-Season:</td>
                 <td><input type="checkbox" id="cross_season" onChange="refresh()" /></td>
             </tr>
 
 			<tr id="current_day_row">
-				<td>Current Day:</td>
+				<td data-i18n="ui.current_day" data-i18n-colon>Current Day:</td>
 				<td><input type="number" id="current_day" value="1" onChange="refresh()"/></td>
 			</tr>
 
             <tr id="number_days_row">
-                <td>Number of Days:</td>
+                <td data-i18n="ui.number_days" data-i18n-colon>Number of Days:</td>
                 <td><input type="number" id="number_days" value="28" onChange="refresh()"/></td>
             </tr>
 
             <tr>
-                <td>Crops Tiles:</td>
+                <td data-i18n="ui.crop_tiles" data-i18n-colon>Crops Tiles:</td>
                 <td><input type="number" id="number_planted" value="1" onChange="refresh()"/></td>
             </tr>
 
 			<tr>
-				<td>Produce Type:</td>
+				<td data-i18n="ui.produce_type" data-i18n-colon>Produce Type:</td>
 				<td>
 					<select id="select_produce" onChange="refresh()">
-						<option value="0" selected="true">Raw</option>
-						<option value="1">Jar</option>
-						<option value="2">Keg</option>
-                        <option value="3">Seeds</option>
-						<option value="4">Dehydrator</option>
-						<option value="5">Mill</option>
+						<option value="0" selected="true" data-i18n="ui.produce_0">Raw</option>
+						<option value="1" data-i18n="ui.produce_1">Jar</option>
+						<option value="2" data-i18n="ui.produce_2">Keg</option>
+                        <option value="3" data-i18n="ui.produce_3">Seeds</option>
+						<option value="4" data-i18n="ui.produce_4">Dehydrator</option>
+						<option value="5" data-i18n="ui.produce_5">Mill</option>
 					</select>
 				</td>
 			</tr>
@@ -75,29 +77,29 @@
                 <td colspan="2" class="sub">
                     <table cellspacing="2" class="subt">
                         <tr id="tr_equipment">
-                            <td>Equipment:</td>
+                            <td data-i18n="ui.equipment" data-i18n-colon>Equipment:</td>
                             <td><input type="number" id="equipment" value="0" onChange="refresh()"/></td>
                         </tr>
                         <tr id="tr_check_sellRaw">
-                            <td>No Artisan Good:</td>
-                            <td><input type="checkbox" id="check_sellRaw" onChange="refresh()"/> Sell Raw<br /></td>
+                            <td data-i18n="ui.no_artisan_good" data-i18n-colon>No Artisan Good:</td>
+                            <td><input type="checkbox" id="check_sellRaw" onChange="refresh()"/> <span data-i18n="ui.sell_raw">Sell Raw</span><br /></td>
                         </tr>
                         <tr id="tr_check_sellExcess">
-                            <td>Excess:</td>
-                            <td><input type="checkbox" id="check_sellExcess" onChange="refresh()"/> Sell Raw<br /></td>
+                            <td data-i18n="ui.excess" data-i18n-colon>Excess:</td>
+                            <td><input type="checkbox" id="check_sellExcess" onChange="refresh()"/> <span data-i18n="ui.sell_raw">Sell Raw</span><br /></td>
                         </tr>
                         <tr id="tr_check_byHarvest">
-                            <td>By Harvest:</td>
+                            <td data-i18n="ui.by_harvest" data-i18n-colon>By Harvest:</td>
                             <td><input type="checkbox" id="check_byHarvest" onChange="refresh()"/><br /></td>
                         </tr>
                         <tr id="tr_select_aging">
-                            <td>Aging:</td>
-                            <td >
+                            <td data-i18n="ui.aging" data-i18n-colon>Aging:</td>
+                            <td>
                                 <select id="select_aging" onChange="refresh()">
-                                    <option value="0" selected="true">None</option>
-                                    <option value="1">Silver</option>
-                                    <option value="2">Gold</option>
-                                    <option value="3">Iridium</option>
+                                    <option value="0" selected="true" data-i18n="ui.aging_none">None</option>
+                                    <option value="1" data-i18n="ui.aging_silver">Silver</option>
+                                    <option value="2" data-i18n="ui.aging_gold">Gold</option>
+                                    <option value="3" data-i18n="ui.aging_iridium">Iridium</option>
                                 </select>
                             </td>
                         </tr>
@@ -110,71 +112,71 @@
 		<table cellspacing="2">
 
             <tr>
-                <td>Profit Display:</td>
+                <td data-i18n="ui.profit_display" data-i18n-colon>Profit Display:</td>
                 <td>
                     <select id="select_profit_display" onChange="refresh()">
-                        <option value="0" id="display_0" selected="true">Total Profit</option>
-                        <option value="1" id="display_1">Daily Profit</option>
-                        <option value="2" id="display_2">Total ROI</option>
-                        <option value="3" id="display_3">Daily ROI</option>
+                        <option value="0" id="display_0" selected="true" data-i18n="ui.display_0">Total Profit</option>
+                        <option value="1" id="display_1" data-i18n="ui.display_1">Daily Profit</option>
+                        <option value="2" id="display_2" data-i18n="ui.display_2">Total ROI</option>
+                        <option value="3" id="display_3" data-i18n="ui.display_3">Daily ROI</option>
                     </select>
                 </td>
             </tr>
 
             <tr>
-                <td>Max Seed Money:</td>
+                <td data-i18n="ui.max_seed_money" data-i18n-colon>Max Seed Money:</td>
                 <td><input type="number" id="max_seed_money" value="0" onChange="refresh()"/></td>
             </tr>
 
 			<tr>
-				<td>Seed Sources:</td>
+				<td data-i18n="ui.seed_sources" data-i18n-colon>Seed Sources:</td>
 				<td>
-					<input type="checkbox" id="check_seedsPierre" onChange="rebuild()" checked="true" /> <label for="check_seedsPierre">Pierre</label><br />
-					<input type="checkbox" id="check_seedsJoja" onChange="rebuild()" checked="true" /> <label for="check_seedsJoja">Joja</label><br />
-					<input type="checkbox" id="check_seedsSpecial" onChange="rebuild()" checked="true" /> <label for="check_seedsSpecial">Special</label>
+					<input type="checkbox" id="check_seedsPierre" onChange="rebuild()" checked="true" /> <label for="check_seedsPierre" data-i18n="ui.seed_pierre">Pierre</label><br />
+					<input type="checkbox" id="check_seedsJoja" onChange="rebuild()" checked="true" /> <label for="check_seedsJoja" data-i18n="ui.seed_joja">Joja</label><br />
+					<input type="checkbox" id="check_seedsSpecial" onChange="rebuild()" checked="true" /> <label for="check_seedsSpecial" data-i18n="ui.seed_special">Special</label>
 				</td>
 			</tr>
 
 			<tr>
-				<td>Pay For Seeds:</td>
+				<td data-i18n="ui.pay_for_seeds" data-i18n-colon>Pay For Seeds:</td>
 				<td><input type="checkbox" id="check_buySeed" onChange="refresh()" /></td>
 			</tr>
 
             <tr>
-                <td>Process & Replant:</td>
-                <td><input type="checkbox" id="check_replant" onChange="refresh()" /> <label for="check_replant">(Forces even crops)</label></td>
+                <td data-i18n="ui.process_replant" data-i18n-colon>Process &amp; Replant:</td>
+                <td><input type="checkbox" id="check_replant" onChange="refresh()" /> <label for="check_replant" data-i18n="ui.forces_even">(Forces even crops)</label></td>
             </tr>
 
             <tr>
-                <td>Use Next Year:</td>
+                <td data-i18n="ui.use_next_year" data-i18n-colon>Use Next Year:</td>
                 <td><input type="checkbox" id="check_nextyear" onChange="refresh()" /></td>
             </tr>
 
 			<tr>
-				<td>Fertilizer:</td>
+				<td data-i18n="ui.fertilizer" data-i18n-colon>Fertilizer:</td>
 				<td>
 					<select id="select_fertilizer" onChange="refresh()">
-						<option value="0" selected="true">None</option>
-						<option value="1">Basic Fertilizer</option>
-						<option value="2">Quality Fertilizer</option>
-						<option value="5">Deluxe Fertilizer</option>
-						<option value="3">Speed-Gro</option>
-						<option value="4">Deluxe Speed-Gro</option>
-						<option value="6">Hyper Speed-Gro</option>
+						<option value="0" selected="true" data-i18n="ui.fert_none">None</option>
+						<option value="1" data-i18n="ui.fert_basic">Basic Fertilizer</option>
+						<option value="2" data-i18n="ui.fert_quality">Quality Fertilizer</option>
+						<option value="5" data-i18n="ui.fert_deluxe">Deluxe Fertilizer</option>
+						<option value="3" data-i18n="ui.fert_speed">Speed-Gro</option>
+						<option value="4" data-i18n="ui.fert_deluxe_speed">Deluxe Speed-Gro</option>
+						<option value="6" data-i18n="ui.fert_hyper_speed">Hyper Speed-Gro</option>
 					</select>
 				</td>
 			</tr>
 
 			<tr>
-				<td>Pay For Fertilizer:</td>
+				<td data-i18n="ui.pay_for_fertilizer" data-i18n-colon>Pay For Fertilizer:</td>
 				<td><input type="checkbox" id="check_buyFert" onChange="refresh()" /></td>
 			</tr>
-			<tr id = "deluxe_speed_input">
-				<td>Speed-Gro Source:</td>
+			<tr id="deluxe_speed_input">
+				<td data-i18n="ui.speed_gro_source" data-i18n-colon>Speed-Gro Source:</td>
 				<td>
 					<select id="speed_gro_source" onChange="refresh()">
-						<option value="0" selected="true">Pierre</option>
-						<option value="1">Sandy</option>
+						<option value="0" selected="true" data-i18n="ui.seed_pierre">Pierre</option>
+						<option value="1" data-i18n="ui.sandy">Sandy</option>
 				</td>
 			</tr>
 		</table>
@@ -182,7 +184,7 @@
 		<table cellspacing="2">
 
 			<tr>
-				<td>Farming Level:</td>
+				<td data-i18n="ui.farming_level" data-i18n-colon>Farming Level:</td>
 				<td><input type="number" id="farming_level" value="0" onChange="refresh()"/></td>
 			</tr>
 
@@ -190,16 +192,16 @@
 				<td colspan="2" class="sub">
                     <table cellspacing="2" class="subt">
                         <tr>
-                            <td>Level 5 Skill:</td>
-                            <td><input type="checkbox" id="check_skillsTill" onChange="refresh()" /> Tiller<br /></td>
+                            <td data-i18n="ui.level_5_skill" data-i18n-colon>Level 5 Skill:</td>
+                            <td><input type="checkbox" id="check_skillsTill" onChange="refresh()" /> <span data-i18n="ui.skill_tiller">Tiller</span><br /></td>
                         </tr>
                         <tr>
-                            <td>Level 10 Skill:</td>
-                            <td >
+                            <td data-i18n="ui.level_10_skill" data-i18n-colon>Level 10 Skill:</td>
+                            <td>
                                 <select id="select_skills" onChange="refresh()">
-                                    <option value="0" selected="true">None</option>
-                                    <option value="1">Agriculturist</option>
-                                    <option value="2">Artisan</option>
+                                    <option value="0" selected="true" data-i18n="ui.aging_none">None</option>
+                                    <option value="1" data-i18n="ui.skill_agriculturist">Agriculturist</option>
+                                    <option value="2" data-i18n="ui.skill_artisan">Artisan</option>
                                 </select>
                             </td>
                         </tr>
@@ -215,56 +217,66 @@
             </tr>
 
             <tr>
-                <td>Foraging Level:</td>
-                <td ><input type="number" id="foraging_level" value="0" onChange="refresh()"/></td>
+                <td data-i18n="ui.foraging_level" data-i18n-colon>Foraging Level:</td>
+                <td><input type="number" id="foraging_level" value="0" onChange="refresh()"/></td>
             </tr>
 
             <tr>
                 <td colspan="2" class="sub">
                     <table cellspacing="2" class="subt">
                         <tr>
-                            <td>Level 5 skill:</td>
-                            <td><input type="checkbox" id="check_skillsGatherer" onChange="refresh()" /> Gatherer<br /></td>
+                            <td data-i18n="ui.level_5_skill" data-i18n-colon>Level 5 skill:</td>
+                            <td><input type="checkbox" id="check_skillsGatherer" onChange="refresh()" /> <span data-i18n="ui.skill_gatherer">Gatherer</span><br /></td>
                         </tr>
                         <tr>
-                            <td>Level 10 skill:</td>
-                            <td><input type="checkbox" id="check_skillsBotanist" onChange="refresh()" /> Botanist<br /></td>
+                            <td data-i18n="ui.level_10_skill" data-i18n-colon>Level 10 skill:</td>
+                            <td><input type="checkbox" id="check_skillsBotanist" onChange="refresh()" /> <span data-i18n="ui.skill_botanist">Botanist</span><br /></td>
                         </tr>
                     </table>
                 </td>
             </tr>
 
 			<tr>
-				<td>Farming Food Buff:</td>
+				<td data-i18n="ui.farming_food_buff" data-i18n-colon>Farming Food Buff:</td>
 				<td>
 					<select id="select_food" onChange="refresh()">
-						<option value="0" selected="true">None</option>
-						<option value="1">Maple Bar</option>
-						<option value="1">Hashbrowns</option>
-						<option value="2">Complete Breakfast</option>
-						<option value="2">Pepper Poppers</option>
-						<option value="2">Tom Kha Soup</option>
-						<option value="3">Farmer's Lunch</option>
+						<option value="0" selected="true" data-i18n="ui.farming_food_none">None</option>
+						<option value="1" data-i18n="ui.farming_food_maple_bar">Maple Bar</option>
+						<option value="1" data-i18n="ui.farming_food_hashbrowns">Hashbrowns</option>
+						<option value="2" data-i18n="ui.farming_food_complete_breakfast">Complete Breakfast</option>
+						<option value="2" data-i18n="ui.farming_food_pepper_poppers">Pepper Poppers</option>
+						<option value="2" data-i18n="ui.farming_food_tom_kha_soup">Tom Kha Soup</option>
+						<option value="3" data-i18n="ui.farming_food_farmer_lunch">Farmer's Lunch</option>
 					</select>
 				</td>
 			</tr>
 
 			<tr>
-				<td>Show Extra Info:</td>
+				<td data-i18n="ui.show_extra_info" data-i18n-colon>Show Extra Info:</td>
 				<td><input type="checkbox" id="check_extra" onChange="refresh()" checked="true" /></td>
 			</tr>
 
 			<tr>
-				<td>Disable Crop Links:</td>
+				<td data-i18n="ui.disable_links" data-i18n-colon>Disable Crop Links:</td>
 				<td><input type="checkbox" id="disable_links" onChange="refresh()" /></td>
 			</tr>
 
 			<tr>
-				<td>Use Prediction Model:</td>
+				<td data-i18n="ui.use_prediction_model" data-i18n-colon>Use Prediction Model:</td>
 				<td><input type="checkbox" id="predictionModel" onChange="refresh()" />
-				<button type="button" onClick="refresh()" >Recalculate</button></td>
+				<button type="button" onClick="refresh()" data-i18n="ui.recalculate">Recalculate</button></td>
 			</tr>
-			
+
+			<tr>
+				<td data-i18n="ui.language" data-i18n-colon>Language:</td>
+				<td>
+					<select id="select_language" onChange="i18n.loadLanguage(this.value, function(){ if(typeof rebuild==='function') rebuild(); })">
+						<option value="en">English</option>
+						<option value="ru">Русский</option>
+					</select>
+				</td>
+			</tr>
+
 			<tr>
 				<td colspan="3" id="tdhelp"><div id="divhelp"><a href="help.html">Help</a><a href="changes.html">Changes</a><a href="#" id="reset">Reset</a></div></td>
 			</tr>
